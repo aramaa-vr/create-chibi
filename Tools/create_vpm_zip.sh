@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # --- 定数 ---
-readonly DEFAULT_VERSION="0.2.9"
+readonly DEFAULT_VERSION="0.3.0"
 readonly ZIP_NAME_PREFIX="jp.aramaa.create-chibi"
 readonly SOURCE_DIR="./Assets/Aramaa/CreateChibi"
 readonly TEMP_DIR="./VPM_TEMP"
