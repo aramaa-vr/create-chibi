@@ -12,6 +12,7 @@
 * package.json の 「"version": "x.y.z",」 を変更
 * package.json の 「"url": ".../x.y.z/jp.aramaa.create-chibi-x.y.z.zip?」 パスを変更
 * ChibiEditorConstants.csの 「ToolVersion = "x.y.z"」 を変更
+* Tools/create_vpm_zip.shの「readonly DEFAULT_VERSION="x.y.z"」を変更
 
 ## 3. コミットとプッシュ
 
