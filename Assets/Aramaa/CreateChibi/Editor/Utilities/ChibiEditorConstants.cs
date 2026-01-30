@@ -17,7 +17,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     internal static class ChibiEditorConstants
     {
         public const string ToolName = "おちびちゃんズ化ツール";
-        public const string ToolVersion = "0.2.9";
+        public const string ToolVersion = "0.3.0";
         public const string LatestVersionUrl = "https://aramaa-vr.github.io/create-chibi/Assets/Aramaa/CreateChibi/package.json";
         public const string SupportDiscordUrl = "https://discord.gg/BJ3BpVnMna";
         public const string ToolsMenuPath = "Tools/Aramaa/おちびちゃんズ化ツール";

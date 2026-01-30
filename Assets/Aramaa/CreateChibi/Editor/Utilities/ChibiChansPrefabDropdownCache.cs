@@ -16,7 +16,7 @@
 // ============================================================================
 // チーム開発向けルール
 // ============================================================================
-// - キャッシュは EditorUserSettings に保存し、VCS には含めません（各環境ローカル）
+// - キャッシュは Library 配下に保存し、VCS には含めません（各環境ローカル）
 // - Prefab 判定ロジックを変える際は、候補優先順位の理由もコメントに残す
 //
 // ============================================================================
@@ -37,10 +37,10 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     {
         private const string BaseFolder = ChibiEditorConstants.BaseFolder;
 
-        // EditorUserSettings に保存するキー（プロジェクト単位・ユーザー単位）。
-        // 末尾の v1 は「キャッシュ互換性（このキャッシュを再利用して良いか）」のバージョン。
-        // 互換が壊れる変更を入れたら v2 に上げる（JSON構造が同じでも上げてよい）。
-        private const string FaceMeshCacheConfigKey = "Aramaa.CreateChibi.FaceMeshCache.v1";
+        // Library に保存するファイル名（プロジェクト単位・ユーザー単位）。
+        // 末尾の v7 は「キャッシュ互換性（このキャッシュを再利用して良いか）」のバージョン。
+        // 互換が壊れる変更を入れたら v7 に上げる（JSON構造が同じでも上げてよい）。
+        private const string FaceMeshCacheFileName = "FaceMeshCache.v7.json";
 
         private static readonly Dictionary<string, CachedFaceMesh> CachedFaceMeshByPrefab =
             new Dictionary<string, CachedFaceMesh>();
@@ -60,7 +60,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
         public static void SaveCacheToDisk()
         {
-            SaveFaceMeshCacheToEditorUserSettings();
+            SaveFaceMeshCacheToLibrary();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             _selectedPrefabIndex = 0;
             _sourcePrefabAsset = null;
 
-            if (!TryGetFaceMeshId(sourceTarget, out var avatarFaceMeshId)) return;
+            if (!TryGetFaceMeshSignature(sourceTarget, out var avatarFaceMeshSignature)) return;
 
             var subFolders = AssetDatabase.GetSubFolders(BaseFolder);
             foreach (var folder in subFolders)
@@ -117,7 +117,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 var prefabPath = FindPreferredPrefabPathUnder(folder);
                 if (string.IsNullOrEmpty(prefabPath)) continue;
 
-                if (!PrefabHasMatchingFaceMesh(prefabPath, avatarFaceMeshId)) continue;
+                if (!PrefabHasMatchingFaceMesh(prefabPath, avatarFaceMeshSignature)) continue;
 
                 _candidatePrefabPaths.Add(prefabPath);
                 _candidateDisplayNames.Add(Path.GetFileName(folder));
@@ -183,21 +183,21 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             return match;
         }
 
-        private static bool PrefabHasMatchingFaceMesh(string prefabPath, MeshId targetFaceMeshId)
+        private static bool PrefabHasMatchingFaceMesh(string prefabPath, FaceMeshSignature targetFaceMeshSignature)
         {
             if (string.IsNullOrEmpty(prefabPath)) return false;
-            if (string.IsNullOrEmpty(targetFaceMeshId.Guid)) return false;
+            if (!targetFaceMeshSignature.HasAnyIdentity) return false;
 
-            return TryGetCachedFaceMeshId(prefabPath, out var prefabFaceMeshId) &&
-                   FaceMeshIdMatches(targetFaceMeshId, prefabFaceMeshId);
+            return TryGetCachedFaceMeshSignature(prefabPath, out var prefabFaceMeshSignature) &&
+                   FaceMeshSignatureMatches(targetFaceMeshSignature, prefabFaceMeshSignature);
         }
 
         /// <summary>
         /// アバターの Viseme 用メッシュから、GUID/LocalId を抽出します。
         /// </summary>
-        private static bool TryGetFaceMeshId(GameObject root, out MeshId meshId)
+        private static bool TryGetFaceMeshSignature(GameObject root, out FaceMeshSignature signature)
         {
-            meshId = default;
+            signature = default;
             if (root == null) return false;
 
 #if VRC_SDK_VRCSDK3
@@ -205,29 +205,48 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             if (!TryGetVisemeRendererFromDescriptor(descriptor, out var faceRenderer)) return false;
             if (faceRenderer == null || faceRenderer.sharedMesh == null) return false;
 
-            return TryBuildMeshId(faceRenderer.sharedMesh, out meshId);
+            var mesh = faceRenderer.sharedMesh;
+            if (!TryGetPrefabInfo(root, out var prefabGuid, out var prefabName))
+            {
+                prefabGuid = string.Empty;
+                prefabName = string.Empty;
+            }
+
+            return TryBuildFaceMeshSignature(mesh, prefabGuid, prefabName, out signature);
 #else
             return false;
 #endif
         }
 
-        private static bool TryGetFaceMeshIdFromPrefabPath(string prefabPath, out MeshId meshId)
+        private static bool TryGetFaceMeshSignatureFromPrefabPath(string prefabPath, out FaceMeshSignature signature)
         {
-            meshId = default;
+            signature = default;
             if (string.IsNullOrEmpty(prefabPath)) return false;
 
             var prefab = AssetDatabase.LoadMainAssetAtPath(prefabPath) as GameObject;
             if (prefab == null) return false;
 
-            return TryGetFaceMeshId(prefab, out meshId);
+            if (!TryGetFaceMeshSignature(prefab, out signature)) return false;
+
+            var prefabSource = PrefabUtility.GetCorrespondingObjectFromOriginalSource(prefab) ?? prefab;
+            var sourcePath = AssetDatabase.GetAssetPath(prefabSource);
+            if (string.IsNullOrEmpty(sourcePath))
+            {
+                sourcePath = prefabPath;
+            }
+
+            var prefabGuid = AssetDatabase.AssetPathToGUID(sourcePath);
+            var prefabName = sourcePath;
+            signature = signature.WithPrefabInfo(prefabGuid, prefabName);
+            return true;
         }
 
         /// <summary>
         /// Prefab の依存ハッシュを使って、顔メッシュIDのキャッシュを再利用します。
         /// </summary>
-        private static bool TryGetCachedFaceMeshId(string prefabPath, out MeshId meshId)
+        private static bool TryGetCachedFaceMeshSignature(string prefabPath, out FaceMeshSignature signature)
         {
-            meshId = default;
+            signature = default;
             if (string.IsNullOrEmpty(prefabPath)) return false;
 
             EnsureFaceMeshCacheLoaded();
@@ -238,28 +257,44 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             {
                 if (cached.HasFaceMesh)
                 {
-                    meshId = cached.FaceMeshId;
+                    signature = cached.FaceMeshSignature;
                     return true;
                 }
 
                 return false;
             }
 
-            var hasFaceMesh = TryGetFaceMeshIdFromPrefabPath(prefabPath, out var cachedMeshId);
-            CachedFaceMeshByPrefab[prefabPath] = new CachedFaceMesh(hash, cachedMeshId, hasFaceMesh);
+            var hasFaceMesh = TryGetFaceMeshSignatureFromPrefabPath(prefabPath, out var cachedSignature);
+            CachedFaceMeshByPrefab[prefabPath] = new CachedFaceMesh(hash, cachedSignature, hasFaceMesh);
             MarkFaceMeshCacheDirty();
             // ここでは即時保存しません。
             // - OnDisable でまとめて保存される
             // - 検索中に毎回ディスク/設定を書き換える回数を減らし、Editor の負荷を抑える
             if (hasFaceMesh)
             {
-                meshId = cachedMeshId;
+                signature = cachedSignature;
             }
 
             return hasFaceMesh;
         }
 
-        private static bool FaceMeshIdMatches(MeshId a, MeshId b)
+        private static bool FaceMeshSignatureMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (MeshIdMatches(a.MeshId, b.MeshId))
+            {
+                return true;
+            }
+
+            if (PrefabGuidMatches(a, b)) return true;
+            if (PrefabNameMatches(a, b)) return true;
+            if (FbxGuidMatches(a, b)) return true;
+            if (FbxNameMatches(a, b)) return true;
+            if (AssetPathMatches(a, b)) return true;
+
+            return false;
+        }
+
+        private static bool MeshIdMatches(MeshId a, MeshId b)
         {
             if (string.IsNullOrEmpty(a.Guid) || string.IsNullOrEmpty(b.Guid)) return false;
             if (!string.Equals(a.Guid, b.Guid, StringComparison.Ordinal)) return false;
@@ -269,6 +304,85 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return a.LocalId == b.LocalId;
             }
 
+            return true;
+        }
+
+        private static bool PrefabGuidMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (string.IsNullOrEmpty(a.PrefabGuid) || string.IsNullOrEmpty(b.PrefabGuid)) return false;
+            return string.Equals(a.PrefabGuid, b.PrefabGuid, StringComparison.Ordinal);
+        }
+
+        private static bool PrefabNameMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (string.IsNullOrEmpty(a.PrefabName) || string.IsNullOrEmpty(b.PrefabName)) return false;
+            return string.Equals(a.PrefabName, b.PrefabName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool FbxGuidMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (string.IsNullOrEmpty(a.FbxGuid) || string.IsNullOrEmpty(b.FbxGuid)) return false;
+            return string.Equals(a.FbxGuid, b.FbxGuid, StringComparison.Ordinal);
+        }
+
+        private static bool FbxNameMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (string.IsNullOrEmpty(a.FbxName) || string.IsNullOrEmpty(b.FbxName)) return false;
+            return string.Equals(a.FbxName, b.FbxName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool AssetPathMatches(FaceMeshSignature a, FaceMeshSignature b)
+        {
+            if (string.IsNullOrEmpty(a.FaceMeshAssetPath) || string.IsNullOrEmpty(b.FaceMeshAssetPath)) return false;
+            return string.Equals(a.FaceMeshAssetPath, b.FaceMeshAssetPath, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TryGetPrefabInfo(GameObject root, out string prefabGuid, out string prefabName)
+        {
+            prefabGuid = string.Empty;
+            prefabName = string.Empty;
+            if (root == null) return false;
+
+            var instanceRoot = PrefabUtility.GetNearestPrefabInstanceRoot(root);
+            if (instanceRoot == null) return false;
+
+            var prefabAsset = PrefabUtility.GetCorrespondingObjectFromSource(instanceRoot);
+            if (prefabAsset == null) return false;
+
+            var sourceAsset = PrefabUtility.GetCorrespondingObjectFromOriginalSource(prefabAsset) ?? prefabAsset;
+            var prefabPath = AssetDatabase.GetAssetPath(sourceAsset);
+            if (string.IsNullOrEmpty(prefabPath)) return false;
+
+            prefabGuid = AssetDatabase.AssetPathToGUID(prefabPath);
+            prefabName = prefabPath;
+            return !string.IsNullOrEmpty(prefabGuid) || !string.IsNullOrEmpty(prefabName);
+        }
+
+        private static bool TryBuildFaceMeshSignature(
+            Mesh mesh,
+            string prefabGuid,
+            string prefabName,
+            out FaceMeshSignature signature)
+        {
+            signature = default;
+            if (mesh == null) return false;
+
+            var assetPath = AssetDatabase.GetAssetPath(mesh);
+            var fbxGuid = string.IsNullOrEmpty(assetPath) ? string.Empty : AssetDatabase.AssetPathToGUID(assetPath);
+            var fbxName = string.IsNullOrEmpty(assetPath) ? string.Empty : assetPath;
+            var hasMeshId = TryBuildMeshId(mesh, out var meshId);
+
+            if (!hasMeshId &&
+                string.IsNullOrEmpty(prefabGuid) &&
+                string.IsNullOrEmpty(prefabName) &&
+                string.IsNullOrEmpty(fbxGuid) &&
+                string.IsNullOrEmpty(fbxName) &&
+                string.IsNullOrEmpty(assetPath))
+            {
+                return false;
+            }
+
+            signature = new FaceMeshSignature(meshId, prefabGuid, prefabName, fbxGuid, fbxName, assetPath);
             return true;
         }
 
@@ -321,7 +435,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (_faceMeshCacheLoaded) return;
             _faceMeshCacheLoaded = true;
-            LoadFaceMeshCacheFromEditorUserSettings();
+            LoadFaceMeshCacheFromLibrary();
         }
 
         private static void MarkFaceMeshCacheDirty()
@@ -329,11 +443,14 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             _faceMeshCacheDirty = true;
         }
 
-        private static void LoadFaceMeshCacheFromEditorUserSettings()
+        private static void LoadFaceMeshCacheFromLibrary()
         {
             try
             {
-                var json = EditorUserSettings.GetConfigValue(FaceMeshCacheConfigKey);
+                var cachePath = GetFaceMeshCacheFilePath();
+                if (!File.Exists(cachePath)) return;
+
+                var json = File.ReadAllText(cachePath);
                 if (string.IsNullOrEmpty(json)) return;
 
                 var cacheFile = JsonUtility.FromJson<FaceMeshCacheFile>(json);
@@ -349,7 +466,14 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     if (!TryParseHash128(entry.DependencyHash, out var hash)) continue;
 
                     var meshId = new MeshId(entry.FaceMeshGuid ?? string.Empty, entry.FaceMeshLocalId, entry.HasLocalId);
-                    CachedFaceMeshByPrefab[entry.PrefabPath] = new CachedFaceMesh(hash, meshId, entry.HasFaceMesh);
+                    var signature = new FaceMeshSignature(
+                        meshId,
+                        entry.PrefabGuid ?? string.Empty,
+                        entry.PrefabName ?? string.Empty,
+                        entry.FbxGuid ?? string.Empty,
+                        entry.FbxName ?? string.Empty,
+                        entry.FaceMeshAssetPath ?? string.Empty);
+                    CachedFaceMeshByPrefab[entry.PrefabPath] = new CachedFaceMesh(hash, signature, entry.HasFaceMesh);
                 }
             }
             catch (Exception e)
@@ -358,7 +482,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
         }
 
-        private static void SaveFaceMeshCacheToEditorUserSettings()
+        private static void SaveFaceMeshCacheToLibrary()
         {
             if (!_faceMeshCacheDirty) return;
 
@@ -372,21 +496,34 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     {
                         PrefabPath = pair.Key,
                         DependencyHash = cached.DependencyHash.ToString(),
-                        FaceMeshGuid = cached.FaceMeshId.Guid,
-                        FaceMeshLocalId = cached.FaceMeshId.LocalId,
-                        HasLocalId = cached.FaceMeshId.HasLocalId,
+                        FaceMeshGuid = cached.FaceMeshSignature.MeshId.Guid,
+                        FaceMeshLocalId = cached.FaceMeshSignature.MeshId.LocalId,
+                        HasLocalId = cached.FaceMeshSignature.MeshId.HasLocalId,
+                        PrefabGuid = cached.FaceMeshSignature.PrefabGuid,
+                        PrefabName = cached.FaceMeshSignature.PrefabName,
+                        FbxGuid = cached.FaceMeshSignature.FbxGuid,
+                        FbxName = cached.FaceMeshSignature.FbxName,
+                        FaceMeshAssetPath = cached.FaceMeshSignature.FaceMeshAssetPath,
                         HasFaceMesh = cached.HasFaceMesh
                     });
                 }
 
                 var json = JsonUtility.ToJson(cacheFile, true);
-                EditorUserSettings.SetConfigValue(FaceMeshCacheConfigKey, json);
+                var cachePath = GetFaceMeshCacheFilePath();
+                Directory.CreateDirectory(Path.GetDirectoryName(cachePath) ?? string.Empty);
+                File.WriteAllText(cachePath, json);
                 _faceMeshCacheDirty = false;
             }
             catch (Exception e)
             {
                 Debug.LogWarning($"[CreateChibi] フェイスメッシュキャッシュの保存に失敗しました: {e.Message}");
             }
+        }
+
+        private static string GetFaceMeshCacheFilePath()
+        {
+            var projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
+            return Path.Combine(projectRoot, "Library", "Aramaa", "CreateChibi", FaceMeshCacheFileName);
         }
 
         private static bool TryParseHash128(string value, out Hash128 hash)
@@ -423,6 +560,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             public long FaceMeshLocalId;
             public bool HasLocalId;
             public bool HasFaceMesh;
+            public string PrefabGuid;
+            public string PrefabName;
+            public string FbxGuid;
+            public string FbxName;
+            public string FaceMeshAssetPath;
         }
 
         /// <summary>
@@ -443,19 +585,61 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         }
 
         /// <summary>
+        /// 顔メッシュの識別情報（GUID/LocalId + Prefab/FBX 識別子）です。
+        /// </summary>
+        private readonly struct FaceMeshSignature
+        {
+            public FaceMeshSignature(
+                MeshId meshId,
+                string prefabGuid,
+                string prefabName,
+                string fbxGuid,
+                string fbxName,
+                string faceMeshAssetPath)
+            {
+                MeshId = meshId;
+                PrefabGuid = prefabGuid;
+                PrefabName = prefabName;
+                FbxGuid = fbxGuid;
+                FbxName = fbxName;
+                FaceMeshAssetPath = faceMeshAssetPath;
+            }
+
+            public MeshId MeshId { get; }
+            public string PrefabGuid { get; }
+            public string PrefabName { get; }
+            public string FbxGuid { get; }
+            public string FbxName { get; }
+            public string FaceMeshAssetPath { get; }
+
+            public bool HasAnyIdentity =>
+                !string.IsNullOrEmpty(MeshId.Guid) ||
+                !string.IsNullOrEmpty(PrefabGuid) ||
+                !string.IsNullOrEmpty(PrefabName) ||
+                !string.IsNullOrEmpty(FbxGuid) ||
+                !string.IsNullOrEmpty(FbxName) ||
+                !string.IsNullOrEmpty(FaceMeshAssetPath);
+
+            public FaceMeshSignature WithPrefabInfo(string prefabGuid, string prefabName)
+            {
+                return new FaceMeshSignature(MeshId, prefabGuid, prefabName, FbxGuid, FbxName, FaceMeshAssetPath);
+            }
+        }
+
+        /// <summary>
         /// Prefab の依存ハッシュと顔メッシュIDをまとめたキャッシュ情報です。
         /// </summary>
         private readonly struct CachedFaceMesh
         {
-            public CachedFaceMesh(Hash128 dependencyHash, MeshId faceMeshId, bool hasFaceMesh)
+            public CachedFaceMesh(Hash128 dependencyHash, FaceMeshSignature faceMeshSignature, bool hasFaceMesh)
             {
                 DependencyHash = dependencyHash;
-                FaceMeshId = faceMeshId;
+                FaceMeshSignature = faceMeshSignature;
                 HasFaceMesh = hasFaceMesh;
             }
 
             public Hash128 DependencyHash { get; }
-            public MeshId FaceMeshId { get; }
+            public FaceMeshSignature FaceMeshSignature { get; }
             public bool HasFaceMesh { get; }
         }
     }
