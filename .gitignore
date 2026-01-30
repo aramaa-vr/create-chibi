@@ -1,0 +1,63 @@
+# =========================
+# Ignore everything by default
+# =========================
+*
+
+# =========================
+# Keep the VPM package sources (and their meta files)
+# =========================
+!Assets/
+!Assets.meta
+
+!Assets/Aramaa/
+!Assets/Aramaa.meta
+
+!Assets/Aramaa/CreateChibi/
+!Assets/Aramaa/CreateChibi.meta
+!Assets/Aramaa/CreateChibi/**
+
+# =========================
+# Also keep top-level repo files you likely want
+# =========================
+!.gitignore
+!.editorconfig
+!README.md
+!CHANGELOG.md
+!RELEASE_PROCESS.md
+!third-party-notices.md
+!LICENSE*
+!CHANGELOG*
+!Tools/
+!Tools/**
+
+# =========================
+# Cache
+# =========================
+Assets/Aramaa/CreateChibi/Editor/Cache.meta
+Assets/Aramaa/CreateChibi/Editor/Cache/ChibiFaceMeshCache.json
+Assets/Aramaa/CreateChibi/Editor/Cache/ChibiFaceMeshCache.json.meta
+
+# =========================
+# Explicitly ignore Unity generated / project folders (redundant but clear)
+# =========================
+Library/
+Temp/
+Logs/
+ProjectSettings/
+Packages/
+UserSettings/
+
+# IDE generated
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.user
+*.suo
+.vsconfig
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

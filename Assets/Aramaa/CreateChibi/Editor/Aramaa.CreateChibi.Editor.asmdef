@@ -1,0 +1,19 @@
+{
+  "name": "Aramaa.CreateChibi.Editor",
+  "rootNamespace": "Aramaa.CreateChibi",
+  "references": [
+    "nadena.dev.modular-avatar.core",
+    "VRC.SDK3A"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
