@@ -30,9 +30,17 @@ def ensure_file_exists(path: Path) -> None:
         raise FileNotFoundError(f"Required file not found: {path}")
 
 
+def read_text(path: Path) -> str:
+    return path.read_bytes().decode("utf-8")
+
+
+def write_text(path: Path, content: str) -> None:
+    path.write_bytes(content.encode("utf-8"))
+
+
 def update_csharp_constants(version: str, dry_run: bool) -> None:
     ensure_file_exists(CS_CONSTANTS)
-    content = CS_CONSTANTS.read_text(encoding="utf-8")
+    content = read_text(CS_CONSTANTS)
     new_content, count = re.subn(
         r'(public const string ToolVersion = ")([^"]+)(";)',
         rf"\g<1>{version}\g<3>",
@@ -41,12 +49,12 @@ def update_csharp_constants(version: str, dry_run: bool) -> None:
     if count != 1:
         raise ValueError(f"ToolVersion not updated (matches: {count}) in {CS_CONSTANTS}")
     if not dry_run:
-        CS_CONSTANTS.write_text(new_content, encoding="utf-8")
+        write_text(CS_CONSTANTS, new_content)
 
 
 def update_package_json(version: str, dry_run: bool) -> None:
     ensure_file_exists(PACKAGE_JSON)
-    content = PACKAGE_JSON.read_text(encoding="utf-8")
+    content = read_text(PACKAGE_JSON)
     version_content, version_count = re.subn(
         r'("version"\s*:\s*")([^"]+)(")',
         rf"\g<1>{version}\g<3>",
@@ -71,12 +79,12 @@ def update_package_json(version: str, dry_run: bool) -> None:
         )
 
     if not dry_run:
-        PACKAGE_JSON.write_text(new_content, encoding="utf-8")
+        write_text(PACKAGE_JSON, new_content)
 
 
 def update_vpm_script(version: str, dry_run: bool) -> None:
     ensure_file_exists(VPM_SCRIPT)
-    content = VPM_SCRIPT.read_text(encoding="utf-8")
+    content = read_text(VPM_SCRIPT)
     new_content, count = re.subn(
         r'(readonly DEFAULT_VERSION=")([^"]+)(")',
         rf"\g<1>{version}\g<3>",
@@ -85,7 +93,7 @@ def update_vpm_script(version: str, dry_run: bool) -> None:
     if count != 1:
         raise ValueError(f"DEFAULT_VERSION not updated (matches: {count}) in {VPM_SCRIPT}")
     if not dry_run:
-        VPM_SCRIPT.write_text(new_content, encoding="utf-8")
+        write_text(VPM_SCRIPT, new_content)
 
 
 def main() -> None:
