@@ -475,7 +475,7 @@
     },
     {
       "key": "Toggle.MaboneProxy",
-      "value": "MA Bone Proxyで髪・小物がずれる場合はON"
+      "value": "MA Bone Proxyで設定している髪・小物がずれる場合に合わせる"
     },
     {
       "key": "Toggle.ShowLogs",

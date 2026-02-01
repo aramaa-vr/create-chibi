@@ -475,7 +475,7 @@
     },
     {
       "key": "Toggle.MaboneProxy",
-      "value": "Turn on if hair/accessories shift with MA Bone Proxy"
+      "value": "Align when hair/accessories set via MA Bone Proxy are misaligned"
     },
     {
       "key": "Toggle.ShowLogs",
