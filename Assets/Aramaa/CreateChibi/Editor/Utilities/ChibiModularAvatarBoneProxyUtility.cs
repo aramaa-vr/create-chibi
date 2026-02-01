@@ -38,11 +38,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             var proxies = avatarRoot.GetComponentsInChildren<ModularAvatarBoneProxy>(true);
             if (proxies == null || proxies.Length == 0)
             {
-                logs?.Add("MABoneProxy: 対象なし");
+                logs?.Add(ChibiLocalization.Get("Log.MaboneProxyNone"));
                 return;
             }
 
-            logs?.Add($"MABoneProxy: 対象数={proxies.Length}");
+            logs?.Add(ChibiLocalization.Format("Log.MaboneProxyCount", proxies.Length));
 
             var unpackedPrefabRoots = new HashSet<GameObject>();
 
@@ -117,11 +117,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     proxyTransform.localRotation = Quaternion.identity;
                 }
 
-                logs?.Add($" - 処理済み: {ChibiChansConversionLogUtility.GetHierarchyPath(proxyTransform)}");
+                logs?.Add(ChibiLocalization.Format("Log.MaboneProxyProcessed", ChibiChansConversionLogUtility.GetHierarchyPath(proxyTransform)));
             }
             else
             {
-                logs?.Add($" - スキップ: {ChibiChansConversionLogUtility.GetHierarchyPath(proxy.transform)} ({validation})");
+                logs?.Add(ChibiLocalization.Format("Log.MaboneProxySkipDetail", ChibiChansConversionLogUtility.GetHierarchyPath(proxy.transform), validation));
             }
 
             Object.DestroyImmediate(proxy);
@@ -178,7 +178,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            logs?.Add($" - Prefabアンパック: {ChibiChansConversionLogUtility.GetHierarchyPath(instanceRoot.transform)}");
+            logs?.Add(ChibiLocalization.Format("Log.MaboneProxyPrefabUnpacked", ChibiChansConversionLogUtility.GetHierarchyPath(instanceRoot.transform)));
             PrefabUtility.UnpackPrefabInstance(instanceRoot, PrefabUnpackMode.Completely, InteractionMode.UserAction);
         }
     }

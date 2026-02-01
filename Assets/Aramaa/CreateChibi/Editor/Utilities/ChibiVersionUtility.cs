@@ -30,7 +30,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                onComplete?.Invoke(ChibiVersionFetchResult.Failure("最新バージョン取得先が未設定です。"));
+                onComplete?.Invoke(ChibiVersionFetchResult.Failure(ChibiLocalization.Get("Version.ErrorMissingUrl")));
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     var latestVersion = ExtractVersionFromResponse(request.downloadHandler.text);
                     if (string.IsNullOrWhiteSpace(latestVersion))
                     {
-                        onComplete?.Invoke(ChibiVersionFetchResult.Failure("レスポンスからバージョンを取得できませんでした。"));
+                        onComplete?.Invoke(ChibiVersionFetchResult.Failure(ChibiLocalization.Get("Version.ExtractFailed")));
                         return;
                     }
 

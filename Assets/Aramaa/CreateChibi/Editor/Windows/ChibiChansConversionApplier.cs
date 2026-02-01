@@ -44,10 +44,10 @@ namespace Aramaa.CreateChibi.Editor
         private const string ToolVersion = ChibiEditorConstants.ToolVersion;
         private const string LatestVersionUrl = ChibiEditorConstants.LatestVersionUrl;
         private const string SupportDiscordUrl = ChibiEditorConstants.SupportDiscordUrl;
-        private const string ToolWindowTitle = ChibiEditorConstants.ToolName;
         private const string ToolsMenuPath = ChibiEditorConstants.ToolsMenuPath;
         private const string GameObjectMenuPath = ChibiEditorConstants.GameObjectMenuPath;
-        private const string LogWindowTitle = ChibiEditorConstants.LogWindowTitle;
+        private static string ToolWindowTitle => ChibiLocalization.Get("Tool.Name");
+        private static string LogWindowTitle => ChibiLocalization.Get("Tool.LogWindowTitle");
 
         // ------------------------------------------------------------
         // MenuItem（入口）
@@ -157,7 +157,7 @@ namespace Aramaa.CreateChibi.Editor
                 }
 
                 // なければ作成
-                var titleWithVersion = $"{ToolWindowTitle} v{ToolVersion}";
+                var titleWithVersion = ChibiLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
                 var w = GetWindow<ChibiConversionSourcePrefabWindow>(utility: true, title: titleWithVersion, focus: true);
                 _opened = w;
 
@@ -196,6 +196,8 @@ namespace Aramaa.CreateChibi.Editor
 
             private void OnGUI()
             {
+                UpdateWindowTitle();
+
                 // ------------------------------------------------------------
                 // このウィンドウは「元のアバター」と「おちびちゃんズ側 Prefab アセット」を指定し、
                 // 「実行」ボタンで変換を行うツールです。
@@ -210,12 +212,13 @@ namespace Aramaa.CreateChibi.Editor
 
                 // タイトル
                 EditorGUILayout.LabelField(ToolWindowTitle, EditorStyles.boldLabel);
-                EditorGUILayout.LabelField($"Version: {ToolVersion}", EditorStyles.miniLabel);
+                EditorGUILayout.LabelField(ChibiLocalization.Format("Window.VersionLabel", ToolVersion), EditorStyles.miniLabel);
                 EnsureVersionCheck();
                 DrawVersionStatus();
 
                 // 目的（1行で）
-                EditorGUILayout.LabelField("元のアバターはそのまま。コピーを作って「おちびちゃんズ化」します。", EditorStyles.wordWrappedLabel);
+                DrawLanguageSelector();
+                EditorGUILayout.LabelField(ChibiLocalization.Get("Window.Description"), EditorStyles.wordWrappedLabel);
 
                 // ------------------------------------------------------------
                 // 入力欄（参照指定）
@@ -249,6 +252,29 @@ namespace Aramaa.CreateChibi.Editor
                 }
             }
 
+            private void UpdateWindowTitle()
+            {
+                var titleWithVersion = ChibiLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
+                if (titleContent == null || titleContent.text != titleWithVersion)
+                {
+                    titleContent = new GUIContent(titleWithVersion);
+                }
+            }
+
+            private void DrawLanguageSelector()
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(ChibiLocalization.Get("Language.Label"), GUILayout.Width(140));
+                    var currentIndex = ChibiLocalization.GetLanguageIndex();
+                    var nextIndex = EditorGUILayout.Popup(currentIndex, ChibiLocalization.GetLanguageDisplayNames());
+                    if (nextIndex != currentIndex)
+                    {
+                        ChibiLocalization.SetLanguage(ChibiLocalization.GetLanguageCodeFromIndex(nextIndex));
+                    }
+                }
+            }
+
             private void EnsureVersionCheck()
             {
                 if (_versionCheckRequested)
@@ -260,7 +286,7 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (string.IsNullOrWhiteSpace(LatestVersionUrl))
                 {
-                    _versionError = "最新バージョン取得先が未設定です。";
+                    _versionError = ChibiLocalization.Get("Version.ErrorMissingUrl");
                     _versionStatus = ChibiVersionStatus.Unknown;
                     return;
                 }
@@ -290,35 +316,35 @@ namespace Aramaa.CreateChibi.Editor
                 if (_versionCheckInProgress)
                 {
                     color = SelectStatusColor(new Color(0.2f, 0.6f, 1f), new Color(0.1f, 0.3f, 0.8f));
-                    return "最新バージョンを確認中です...";
+                    return ChibiLocalization.Get("Version.Checking");
                 }
 
                 if (!string.IsNullOrWhiteSpace(_versionError))
                 {
                     color = SelectStatusColor(new Color(0.95f, 0.35f, 0.35f), new Color(0.7f, 0.15f, 0.15f));
-                    return $"最新バージョンの確認に失敗しました: {_versionError}";
+                    return ChibiLocalization.Format("Version.CheckFailed", _versionError);
                 }
 
                 if (string.IsNullOrWhiteSpace(_latestVersion))
                 {
                     color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                    return "最新バージョン情報を取得できませんでした。";
+                    return ChibiLocalization.Get("Version.NoInfo");
                 }
 
                 switch (_versionStatus)
                 {
                     case ChibiVersionStatus.UpdateAvailable:
                         color = SelectStatusColor(new Color(1f, 0.65f, 0.2f), new Color(0.8f, 0.45f, 0.1f));
-                        return $"最新バージョン {_latestVersion} が利用可能です。";
+                        return ChibiLocalization.Format("Version.Available", _latestVersion);
                     case ChibiVersionStatus.Ahead:
                         color = SelectStatusColor(new Color(0.4f, 0.75f, 1f), new Color(0.15f, 0.5f, 0.8f));
-                        return "開発版を使用中です。";
+                        return ChibiLocalization.Get("Version.Ahead");
                     case ChibiVersionStatus.UpToDate:
                         color = SelectStatusColor(new Color(0.35f, 0.8f, 0.4f), new Color(0.15f, 0.55f, 0.2f));
-                        return "最新バージョンです。";
+                        return ChibiLocalization.Get("Version.UpToDate");
                     default:
                         color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                        return "バージョン情報を取得できませんでした。";
+                        return ChibiLocalization.Get("Version.Unknown");
                 }
             }
 
@@ -340,7 +366,7 @@ namespace Aramaa.CreateChibi.Editor
             /// </summary>
             private void DrawTargetObjectField()
             {
-                EditorGUILayout.LabelField("① 変換元アバター（左のHierarchyで選択）", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(ChibiLocalization.Get("Section.SourceAvatarLabel"), EditorStyles.boldLabel);
 
                 EditorGUI.BeginChangeCheck();
                 var nextTarget = (GameObject)EditorGUILayout.ObjectField(_sourceTarget, typeof(GameObject), allowSceneObjects: true);
@@ -353,14 +379,14 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_sourceTarget == null)
                 {
-                    EditorGUILayout.HelpBox("左のHierarchyで、元のアバターをクリックしてください。", MessageType.Warning);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectSourceAvatar"), MessageType.Warning);
                     return;
                 }
 
                 // Project 上のアセットを入れてしまった場合は対象外（実行条件を明確化）
                 if (EditorUtility.IsPersistent(_sourceTarget))
                 {
-                    EditorGUILayout.HelpBox("Project のアセットは対象外です。Hierarchy のシーン上アバターを選んでください。", MessageType.Error);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SourceAvatarAssetInvalid"), MessageType.Error);
                     _sourceTarget = null;
                     _prefabDropdownCache.MarkNeedsRefresh();
                 }
@@ -371,7 +397,7 @@ namespace Aramaa.CreateChibi.Editor
             /// </summary>
             private void DrawSourcePrefabObjectField()
             {
-                EditorGUILayout.LabelField("② 変換先おちびちゃんズ（下のプルダウンから選択）", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(ChibiLocalization.Get("Section.TargetPrefabLabel"), EditorStyles.boldLabel);
 
                 _prefabDropdownCache.RefreshIfNeeded(_sourceTarget);
 
@@ -379,9 +405,9 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (!hasCandidates)
                 {
-                    EditorGUILayout.HelpBox("対応するおちびちゃんズ Prefab が見つかりません。手動で選んでください。", MessageType.Info);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NoPrefabCandidates"), MessageType.Info);
 
-                    EditorGUILayout.LabelField("おちびちゃんズ Prefab（Project からドラッグ＆ドロップ）", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(ChibiLocalization.Get("Section.ManualPrefabLabel"), EditorStyles.boldLabel);
                     EditorGUI.BeginChangeCheck();
                     var manualPrefab = (GameObject)EditorGUILayout.ObjectField(_sourcePrefabAsset, typeof(GameObject), allowSceneObjects: false);
                     if (EditorGUI.EndChangeCheck())
@@ -391,22 +417,22 @@ namespace Aramaa.CreateChibi.Editor
 
                     if (_sourcePrefabAsset == null)
                     {
-                        EditorGUILayout.HelpBox("Project からおちびちゃんズの Prefab を選んでください。", MessageType.Info);
+                        EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
                         return;
                     }
 
                     if (!IsPrefabAsset(_sourcePrefabAsset))
                     {
-                        EditorGUILayout.HelpBox("Prefab ではないものが選ばれています。Project の Prefab を指定してください。", MessageType.Error);
+                        EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
                         return;
                     }
 
-                    EditorGUILayout.HelpBox("手動で選んだ Prefab が元アバターに合っているか確認してから実行してください。", MessageType.Warning);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.ManualPrefabWarning"), MessageType.Warning);
                     return;
                 }
 
                 var currentIndex = _prefabDropdownCache.SelectedIndex;
-                var nextIndex = EditorGUILayout.Popup("候補一覧（自動検出）", currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
+                var nextIndex = EditorGUILayout.Popup(ChibiLocalization.Get("Label.CandidateList"), currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
                 if (nextIndex != currentIndex)
                 {
                     _prefabDropdownCache.ApplySelection(nextIndex);
@@ -420,13 +446,13 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_sourcePrefabAsset == null)
                 {
-                    EditorGUILayout.HelpBox("Project からおちびちゃんズの Prefab を選んでください。", MessageType.Info);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
                     return;
                 }
 
                 if (!IsPrefabAsset(_sourcePrefabAsset))
                 {
-                    EditorGUILayout.HelpBox("Prefab ではないものが選ばれています。Project の Prefab を指定してください。", MessageType.Error);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
                 }
             }
 
@@ -444,7 +470,7 @@ namespace Aramaa.CreateChibi.Editor
 
                 using (new EditorGUI.DisabledScope(!canExecute))
                 {
-                    if (GUILayout.Button("③ 実行（コピー→変換）", GUILayout.Height(32)))
+                    if (GUILayout.Button(ChibiLocalization.Get("Button.Execute"), GUILayout.Height(32)))
                     {
                         QueueApplyFromFields();
                     }
@@ -452,13 +478,13 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_applyQueued)
                 {
-                    EditorGUILayout.HelpBox("実行を予約しました。処理が完了するまで少し待ってください。", MessageType.Info);
+                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.ExecuteQueued"), MessageType.Info);
                 }
             }
 
             private void DrawLogToggle()
             {
-                _showLogs = EditorGUILayout.ToggleLeft("ログを表示する", _showLogs);
+                _showLogs = EditorGUILayout.ToggleLeft(ChibiLocalization.Get("Toggle.ShowLogs"), _showLogs);
             }
 
             private void OpenDiscord()
@@ -476,7 +502,7 @@ namespace Aramaa.CreateChibi.Editor
                             wordWrap = true
                         };
 
-                        if (GUILayout.Button("困ったらDiscordへ（不具合報告・質問）→", linkStyle))
+                        if (GUILayout.Button(ChibiLocalization.Get("Button.DiscordHelp"), linkStyle))
                         {
                             Application.OpenURL(SupportDiscordUrl);
                         }
@@ -486,8 +512,8 @@ namespace Aramaa.CreateChibi.Editor
 
             private void DrawMaboneProxyToggle()
             {
-                _applyMaboneProxyProcessing = EditorGUILayout.ToggleLeft("MA Bone Proxyで髪・小物がずれる場合はON", _applyMaboneProxyProcessing);
-                EditorGUILayout.HelpBox("ONにすると、複製後にMA Bone Proxyの処理を行い、ずれを軽減します。", MessageType.Info);
+                _applyMaboneProxyProcessing = EditorGUILayout.ToggleLeft(ChibiLocalization.Get("Toggle.MaboneProxy"), _applyMaboneProxyProcessing);
+                EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.MaboneProxy"), MessageType.Info);
             }
 
             /// <summary>
@@ -504,9 +530,9 @@ namespace Aramaa.CreateChibi.Editor
                 if (_sourceTarget == null || EditorUtility.IsPersistent(_sourceTarget))
                 {
                     EditorUtility.DisplayDialog(
-                        "おちびちゃんズ化ツール",
-                        "Hierarchy で元のアバターを 1 つ選んでください。",
-                        "OK"
+                        ChibiLocalization.Get("Dialog.ToolTitle"),
+                        ChibiLocalization.Get("Dialog.SelectSourceAvatar"),
+                        ChibiLocalization.Get("Dialog.Ok")
                     );
                     return;
                 }
@@ -514,9 +540,9 @@ namespace Aramaa.CreateChibi.Editor
                 if (_sourcePrefabAsset == null || !IsPrefabAsset(_sourcePrefabAsset))
                 {
                     EditorUtility.DisplayDialog(
-                        "おちびちゃんズ化ツール",
-                        "Project でおちびちゃんズの Prefab を 1 つ選んでください。",
-                        "OK"
+                        ChibiLocalization.Get("Dialog.ToolTitle"),
+                        ChibiLocalization.Get("Dialog.SelectSourcePrefab"),
+                        ChibiLocalization.Get("Dialog.Ok")
                     );
                     return;
                 }
@@ -527,7 +553,7 @@ namespace Aramaa.CreateChibi.Editor
                 var capturedTargets = new[] { _sourceTarget };
                 var capturedApplyMaboneProxyProcessing = _applyMaboneProxyProcessing;
 
-                Debug.Log($"[CreateChibi] Queued apply: target='{capturedTargets[0].name}', sourcePrefab='{capturedSourcePrefab.name}'");
+                Debug.Log(ChibiLocalization.Format("Log.QueuedApply", capturedTargets[0].name, capturedSourcePrefab.name));
 
                 // ウィンドウは閉じず、次の Editor ループで実行（OnGUI中の変更を避ける）
                 // 次の Editor ループで実行（Ctrl+D 相当の複製もここで行う）
@@ -546,7 +572,7 @@ namespace Aramaa.CreateChibi.Editor
                     }
                     catch (Exception e)
                     {
-                        logs.Add("[ERROR] 例外が発生しました。詳細はConsoleを確認してください。");
+                        logs.Add(ChibiLocalization.Get("Log.Error.ExceptionOccurred"));
                         Debug.LogException(e);
                     }
                     finally

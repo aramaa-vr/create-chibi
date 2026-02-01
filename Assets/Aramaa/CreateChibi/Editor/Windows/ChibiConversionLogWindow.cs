@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using Aramaa.CreateChibi.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -70,7 +71,7 @@ namespace Aramaa.CreateChibi.Editor
                 _logs.AddRange(logs);
             }
 
-            _cachedText = _logs.Count > 0 ? string.Join("\n", _logs) : "(ログはありません)";
+            _cachedText = _logs.Count > 0 ? string.Join("\n", _logs) : ChibiLocalization.Get("LogWindow.NoLogs");
             _scroll = Vector2.zero;
             Repaint();
         }
@@ -81,14 +82,14 @@ namespace Aramaa.CreateChibi.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("ログをクリップボードにコピー", GUILayout.Height(24)))
+                    if (GUILayout.Button(ChibiLocalization.Get("LogWindow.CopyButton"), GUILayout.Height(24)))
                     {
                         EditorGUIUtility.systemCopyBuffer = _cachedText ?? string.Empty;
                     }
 
                     GUILayout.FlexibleSpace();
 
-                    if (GUILayout.Button("閉じる", GUILayout.Width(80), GUILayout.Height(24)))
+                    if (GUILayout.Button(ChibiLocalization.Get("LogWindow.CloseButton"), GUILayout.Width(80), GUILayout.Height(24)))
                     {
                         Close();
                         GUIUtility.ExitGUI();
