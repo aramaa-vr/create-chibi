@@ -27,6 +27,9 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+#if VRC_SDK_VRCSDK3
+using VRC.SDK3.Avatars.Components;
+#endif
 
 namespace Aramaa.CreateChibi.Editor.Utilities
 {
@@ -409,7 +412,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
 #if VRC_SDK_VRCSDK3
         private static bool TryGetVisemeRendererFromDescriptor(
-            VRC.SDK3.Avatars.Components.VRCAvatarDescriptor descriptor,
+            VRCAvatarDescriptor descriptor,
             out SkinnedMeshRenderer renderer)
         {
             renderer = null;

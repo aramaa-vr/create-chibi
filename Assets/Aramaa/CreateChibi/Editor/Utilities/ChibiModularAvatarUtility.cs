@@ -29,6 +29,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+#if CHIBI_MODULAR_AVATAR
+using nadena.dev.modular_avatar.core;
+#endif
 
 namespace Aramaa.CreateChibi.Editor.Utilities
 {
@@ -39,27 +42,10 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     {
         private const float ScaleEpsilon = 0.0001f;
 
-        private const string MaMeshSettingsTypeName = "nadena.dev.modular_avatar.core.ModularAvatarMeshSettings";
-        private static Type _cachedMaMeshSettingsType;
-
-        /// <summary>
-        /// Modular Avatar の Mesh Settings 型を取得します（反射 + キャッシュ）。
-        /// </summary>
-        private static Type GetMaMeshSettingsType()
-        {
-            if (_cachedMaMeshSettingsType != null)
-            {
-                return _cachedMaMeshSettingsType;
-            }
-
-            _cachedMaMeshSettingsType = ChibiEditorUtility.FindTypeInLoadedAssemblies(MaMeshSettingsTypeName);
-            return _cachedMaMeshSettingsType;
-        }
-
         /// <summary>
         /// dstRoot 配下で “MA Mesh Settings が付いた衣装ルート” を探し、衣装スケール調整を実行します。
         /// </summary>
-        public static void AdjustCostumeScalesForModularAvatarMeshSettings(
+        public static bool AdjustCostumeScalesForModularAvatarMeshSettings(
             GameObject dstRoot,
             GameObject basePrefabRoot,
             List<string> logs = null
@@ -67,14 +53,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (dstRoot == null || basePrefabRoot == null)
             {
-                return;
-            }
-
-            var maMeshSettingsType = GetMaMeshSettingsType();
-            if (maMeshSettingsType == null)
-            {
-                // Modular Avatar が入っていない環境では何もしない
-                return;
+                return false;
             }
 
             // アバター（変換先）側の Armature を基準に “スケール差分のあるボーン一覧” を作る
@@ -82,7 +61,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             if (dstArmature == null)
             {
-                return;
+                return false;
             }
 
             var baseArmaturePaths = BuildBaseArmatureTransformPaths(basePrefabRoot, logs);
@@ -91,20 +70,27 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             if (avatarBoneScaleModifiers.Count == 0)
             {
-                return;
+                return true;
             }
 
             // 衣装ルート候補：MA Mesh Settings を持つ GameObject を抽出
             // 衣装のみ処理を行うため、親のArmature（dstRoot自身）を処理対象から除外する
-            var costumeRoots = dstRoot.GetComponentsInChildren(maMeshSettingsType, true)
-                .Select(c => (c as Component)?.transform)
+            List<Transform> costumeRoots;
+#if CHIBI_MODULAR_AVATAR
+            costumeRoots = dstRoot.GetComponentsInChildren<ModularAvatarMeshSettings>(true)
+                .Select(c => c != null ? c.transform : null)
                 .Where(t => t != null && t.gameObject != dstRoot)
                 .Distinct()
                 .ToList();
+#else
+            // Modular Avatar が入っていない環境では安全にスキップ
+            logs?.Add("[WARN] Modular Avatar が未導入のため衣装スケール調整はスキップしました。");
+            return true;
+#endif
 
             if (costumeRoots.Count == 0)
             {
-                return;
+                return true;
             }
 
             logs?.Add("=== 衣装スケール調整（MA Mesh Settings） ===");
@@ -117,6 +103,8 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 AdjustOneCostume(costumeRoot, avatarBoneScaleModifiers, logs);
                 InspectAndSyncBlendShapesUnderCostumeRoot(costumeRoot, baseBlendShapeWeights, logs);
             }
+
+            return true;
         }
 
         /// <summary>

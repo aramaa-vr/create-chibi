@@ -12,7 +12,6 @@
 // ============================================================================
 // - Runtime（実行時）で使うコードはここに置きません（Editor 専用）
 // - 参照リマップは PrefabContents → Scene の付け替えで重要です（誤るとリンク切れになります）
-// - Type 探索（反射）はコストがあるためキャッシュしています
 //
 // ============================================================================
 // チーム開発向けルール
@@ -25,7 +24,6 @@
 // ============================================================================
 
 using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,10 +34,6 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     /// </summary>
     internal static class ChibiEditorUtility
     {
-        // Type 検索はツール実行中に何度も呼ばれるため、結果をキャッシュします。
-        // （同一 Unity セッション中は Type の解決結果が安定する想定）
-        private static readonly Dictionary<string, Type> TypeCache = new Dictionary<string, Type>(StringComparer.Ordinal);
-
         // --------------------------------------------------------------------
         // Ctrl+D 相当（Edit/Duplicate）
         // --------------------------------------------------------------------
@@ -198,50 +192,6 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
 
             return current == root ? last : null;
-        }
-
-        // --------------------------------------------------------------------
-        // 反射：Type 検索
-        // --------------------------------------------------------------------
-
-        /// <summary>
-        /// ロード済みアセンブリから型名（完全修飾名）で Type を探します。
-        /// VRChat SDK の参照有無によりコンパイル可否が変わる箇所を、反射 + SerializedObject で扱うために使用します。
-        /// </summary>
-        public static Type FindTypeInLoadedAssemblies(string fullTypeName)
-        {
-            if (string.IsNullOrEmpty(fullTypeName))
-            {
-                return null;
-            }
-
-            // 既に検索済みなら即返す
-            if (TypeCache.TryGetValue(fullTypeName, out var cached))
-            {
-                return cached;
-            }
-
-            Type found = null;
-
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                try
-                {
-                    found = asm.GetType(fullTypeName, throwOnError: false);
-                    if (found != null)
-                    {
-                        break;
-                    }
-                }
-                catch
-                {
-                    // 動的 asm などで例外が出ることがあるため握りつぶす
-                }
-            }
-
-            // 見つからなかった場合も null をキャッシュして、無駄な走査を避ける
-            TypeCache[fullTypeName] = found;
-            return found;
         }
 
         // --------------------------------------------------------------------
