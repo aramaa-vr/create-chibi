@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && CHIBI_MODULAR_AVATAR
 // Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiModularAvatarBoneProxyUtility.cs
 //
 // ============================================================================

@@ -28,6 +28,9 @@ using System.Reflection;
 using Aramaa.CreateChibi.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
+#if VRC_SDK_VRCSDK3
+using VRC.SDK3.Avatars.Components;
+#endif
 
 namespace Aramaa.CreateChibi.Editor
 {
@@ -140,11 +143,15 @@ namespace Aramaa.CreateChibi.Editor
                 if (applyMaboneProxyProcessing)
                 {
                     logs.Add("=== MABoneProxy処理（複製物のみ） ===");
+#if CHIBI_MODULAR_AVATAR
                     foreach (var duplicated in duplicatedTargets.Where(x => x != null))
                     {
                         logs.Add($"対象: {ChibiChansConversionLogUtility.GetHierarchyPath(duplicated.transform)}");
                         ChibiModularAvatarBoneProxyUtility.ProcessBoneProxies(duplicated, logs);
                     }
+#else
+                    logs.Add("Modular Avatar が未導入のため MABoneProxy 処理はスキップしました。");
+#endif
 
                     logs.Add("");
                 }
@@ -295,7 +302,11 @@ namespace Aramaa.CreateChibi.Editor
                     }
 
                     // 服のスケール調整（Modular Avatar が入っている場合のみ）
-                    ChibiModularAvatarUtility.AdjustCostumeScalesForModularAvatarMeshSettings(dstRoot, basePrefabRoot, logs);
+                    if (!ChibiModularAvatarUtility.AdjustCostumeScalesForModularAvatarMeshSettings(dstRoot, basePrefabRoot, logs))
+                    {
+                        logs.Add("[ERROR] 衣装スケール調整に失敗したため処理を中断しました。");
+                        return;
+                    }
 
                     // 実行後の参照（FX / Menu / Parameters）
                     ChibiVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromAvatar(dstRoot, out var fxAfter);
@@ -352,16 +363,14 @@ namespace Aramaa.CreateChibi.Editor
 
         private static string GetVrcSdkVersionInfo()
         {
-            var descriptorType = ChibiEditorUtility.FindTypeInLoadedAssemblies("VRC.SDK3.Avatars.Components.VRCAvatarDescriptor");
-            if (descriptorType == null)
-            {
-                return "not found";
-            }
-
-            var assembly = descriptorType.Assembly;
+#if VRC_SDK_VRCSDK3
+            var assembly = typeof(VRCAvatarDescriptor).Assembly;
             var info = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             var version = info?.InformationalVersion ?? assembly.GetName().Version?.ToString() ?? "unknown";
             return $"{assembly.GetName().Name} {version}";
+#else
+            return "not found";
+#endif
         }
 
         /// <summary>
