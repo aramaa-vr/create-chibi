@@ -11,15 +11,15 @@
     },
     {
       "key": "Dialog.ConversionTitle",
-      "value": "Create Chibi"
+      "value": "Ochibi-chans"
     },
     {
       "key": "Dialog.InvalidSourcePrefab",
-      "value": "sourceChibiPrefab (the source chibi prefab) is missing or not a prefab asset.\n\nPlease select a prefab from the Project."
+      "value": "sourceChibiPrefab (the source Ochibi-chans prefab) is missing or not a prefab asset.\n\nPlease select a prefab from the Project."
     },
     {
       "key": "Dialog.InvalidSourcePrefabApply",
-      "value": "sourceChibiPrefab (the source chibi prefab) is missing or not a prefab asset.\n\nPlease select a prefab asset from the Project."
+      "value": "sourceChibiPrefab (the source Ochibi-chans prefab) is missing or not a prefab asset.\n\nPlease select a prefab asset from the Project."
     },
     {
       "key": "Dialog.InvalidTargets",
@@ -35,7 +35,7 @@
     },
     {
       "key": "Dialog.SelectSourcePrefab",
-      "value": "Select one chibi prefab in the Project."
+      "value": "Select one Ochibi-chans prefab in the Project."
     },
     {
       "key": "Dialog.TargetsNotFound",
@@ -43,15 +43,15 @@
     },
     {
       "key": "Dialog.ToolTitle",
-      "value": "Create Chibi Tool"
+      "value": "Ochibi-chans Tool"
     },
     {
       "key": "Error.DuplicateFailed",
-      "value": "[CreateChibi] Failed to duplicate (Ctrl+D equivalent). Conversion will not run."
+      "value": "[Ochibi-chans] Failed to duplicate (Ctrl+D equivalent). Conversion will not run."
     },
     {
       "key": "Error.SourcePrefabPathMissing",
-      "value": "[CreateChibi] Failed to get the asset path for sourceChibiPrefab."
+      "value": "[Ochibi-chans] Failed to get the asset path for sourceChibiPrefab."
     },
     {
       "key": "Help.ExecuteQueued",
@@ -67,7 +67,7 @@
     },
     {
       "key": "Help.NoPrefabCandidates",
-      "value": "No matching chibi prefabs were found. Please select manually."
+      "value": "No matching Ochibi-chans prefabs were found. Please select manually."
     },
     {
       "key": "Help.NotPrefabSelected",
@@ -75,7 +75,7 @@
     },
     {
       "key": "Help.SelectPrefabFromProject",
-      "value": "Select a chibi prefab from the Project."
+      "value": "Select an Ochibi-chans prefab from the Project."
     },
     {
       "key": "Help.SelectSourceAvatar",
@@ -303,7 +303,7 @@
     },
     {
       "key": "Log.Header.Main",
-      "value": "=== Create Chibi (Duplicate → Apply) Log ==="
+      "value": "=== Ochibi-chans (Duplicate → Apply) Log ==="
     },
     {
       "key": "Log.MaboneProxyCount",
@@ -403,7 +403,7 @@
     },
     {
       "key": "Log.QueuedApply",
-      "value": "[CreateChibi] Queued apply: target='{0}', sourcePrefab='{1}'"
+      "value": "[Ochibi-chans] Queued apply: target='{0}', sourcePrefab='{1}'"
     },
     {
       "key": "Log.RootScaleApplied",
@@ -463,7 +463,7 @@
     },
     {
       "key": "Section.ManualPrefabLabel",
-      "value": "Chibi prefab (drag & drop from Project)"
+      "value": "Ochibi-chans prefab (drag & drop from Project)"
     },
     {
       "key": "Section.SourceAvatarLabel",
@@ -471,7 +471,7 @@
     },
     {
       "key": "Section.TargetPrefabLabel",
-      "value": "2) Target chibi prefab (select from the dropdown below)"
+      "value": "2) Target Ochibi-chans prefab (select from the dropdown below)"
     },
     {
       "key": "Toggle.MaboneProxy",
@@ -483,11 +483,11 @@
     },
     {
       "key": "Tool.LogWindowTitle",
-      "value": "Create Chibi Log"
+      "value": "Ochibi-chans Log"
     },
     {
       "key": "Tool.Name",
-      "value": "Create Chibi Tool"
+      "value": "Ochibi-chans Tool"
     },
     {
       "key": "Undo.AddExPrefab",
@@ -507,11 +507,11 @@
     },
     {
       "key": "Undo.CreateChibiSyncBlendShapes",
-      "value": "CreateChibi Sync BlendShapes"
+      "value": "Ochibi-chans Sync BlendShapes"
     },
     {
       "key": "Undo.DuplicateApply",
-      "value": "Create Chibi (Duplicate → Apply)"
+      "value": "Ochibi-chans (Duplicate → Apply)"
     },
     {
       "key": "Undo.SetExpressionsReferences",
@@ -571,23 +571,23 @@
     },
     {
       "key": "Warning.AddMenuPrefabMissing",
-      "value": "[CreateChibi] No nested prefab reference to ...chibichans_Addmenu was found in sourceChibiPrefab. Skipping add-menu attachment."
+      "value": "[Ochibi-chans] No nested prefab reference to ...chibichans_Addmenu was found in sourceChibiPrefab. Skipping add-menu attachment."
     },
     {
       "key": "Warning.BlendshapeCopyFailed",
-      "value": "[ChibiApply] Blendshape copy failed for SMR on {0}: {1}"
+      "value": "[Ochibi-chans] Blendshape copy failed for SMR on {0}: {1}"
     },
     {
       "key": "Warning.FaceMeshCacheLoadFailed",
-      "value": "[CreateChibi] Failed to load face mesh cache: {0}"
+      "value": "[Ochibi-chans] Failed to load face mesh cache: {0}"
     },
     {
       "key": "Warning.FaceMeshCacheSaveFailed",
-      "value": "[CreateChibi] Failed to save face mesh cache: {0}"
+      "value": "[Ochibi-chans] Failed to save face mesh cache: {0}"
     },
     {
       "key": "Warning.SerializedBlendshapeCopyFailed",
-      "value": "[ChibiApply] Serialized blendshape copy failed for SMR on {0}: {1}"
+      "value": "[Ochibi-chans] Serialized blendshape copy failed for SMR on {0}: {1}"
     },
     {
       "key": "Window.Description",
