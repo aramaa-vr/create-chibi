@@ -222,7 +222,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(descriptor, "Set FX Playable Layer");
+            Undo.RecordObject(descriptor, ChibiLocalization.Get("Undo.SetFxPlayableLayer"));
 
             descriptor.customizeAnimationLayers = true;
 
@@ -288,7 +288,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(descriptor, "Set Expressions References");
+            Undo.RecordObject(descriptor, ChibiLocalization.Get("Undo.SetExpressionsReferences"));
 
             if (menu != null)
             {
@@ -328,7 +328,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             var viewPos = srcDesc.ViewPosition;
 
-            Undo.RecordObject(dstDesc, "Copy View Position");
+            Undo.RecordObject(dstDesc, ChibiLocalization.Get("Undo.CopyViewPosition"));
             dstDesc.ViewPosition = viewPos;
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(dstDesc);
@@ -354,22 +354,22 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             {
                 // ルートに無い場合は「複製対象として想定外」としてスキップします。
                 // （必要なら別途、ルート構成を見直すのが安全です）
-                logs?.Add("BlueprintIDクリア: スキップ（ルートにPipelineManagerが見つかりません）");
+                logs?.Add(ChibiLocalization.Get("Log.BlueprintClearSkippedMissing"));
                 return false;
             }
             if (string.IsNullOrEmpty(pipelineManager.blueprintId))
             {
-                logs?.Add("BlueprintIDクリア: スキップ（既に空です）");
+                logs?.Add(ChibiLocalization.Get("Log.BlueprintClearSkippedEmpty"));
                 return false;
             }
 
-            Undo.RecordObject(pipelineManager, "Clear BlueprintId");
+            Undo.RecordObject(pipelineManager, ChibiLocalization.Get("Undo.ClearBlueprintId"));
             pipelineManager.blueprintId = string.Empty;
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(pipelineManager);
             EditorUtility.SetDirty(pipelineManager);
 
-            logs?.Add("BlueprintIDクリア: 実行（複製物のIDを空にしました）");
+            logs?.Add(ChibiLocalization.Get("Log.BlueprintClearApplied"));
             return true;
         }
     }

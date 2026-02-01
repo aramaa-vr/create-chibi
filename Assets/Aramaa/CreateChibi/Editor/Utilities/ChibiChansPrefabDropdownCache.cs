@@ -481,7 +481,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"[CreateChibi] フェイスメッシュキャッシュの読み込みに失敗しました: {e.Message}");
+                Debug.LogWarning(ChibiLocalization.Format("Warning.FaceMeshCacheLoadFailed", e.Message));
             }
         }
 
@@ -519,7 +519,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"[CreateChibi] フェイスメッシュキャッシュの保存に失敗しました: {e.Message}");
+                Debug.LogWarning(ChibiLocalization.Format("Warning.FaceMeshCacheSaveFailed", e.Message));
             }
         }
 

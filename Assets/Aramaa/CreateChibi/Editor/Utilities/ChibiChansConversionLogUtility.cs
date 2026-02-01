@@ -39,7 +39,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (t == null)
             {
-                return "(null)";
+                return ChibiLocalization.Get("Log.NullValue");
             }
 
             var names = new List<string>(32);
@@ -61,7 +61,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (obj == null)
             {
-                return "(none)";
+                return ChibiLocalization.Get("Log.NoneValue");
             }
 
             string path = AssetDatabase.GetAssetPath(obj);

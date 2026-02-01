@@ -16,13 +16,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     /// </summary>
     internal static class ChibiEditorConstants
     {
-        public const string ToolName = "おちびちゃんズ化ツール";
         public const string ToolVersion = "0.3.1";
         public const string LatestVersionUrl = "https://aramaa-vr.github.io/create-chibi/Assets/Aramaa/CreateChibi/package.json";
         public const string SupportDiscordUrl = "https://discord.gg/BJ3BpVnMna";
         public const string ToolsMenuPath = "Tools/Aramaa/おちびちゃんズ化ツール";
         public const string GameObjectMenuPath = "GameObject/Aramaa/おちびちゃんズ化ツール";
-        public const string LogWindowTitle = "おちびちゃんズ化ログ";
         public const string FaceMeshCacheFileName = "ChibiFaceMeshCache.json";
         public const string BaseFolder = "Assets/夕時茶屋";
         public const string AddMenuPrefabFileName = "Ochibichans_Addmenu.prefab";

@@ -213,7 +213,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(dstSmr, "Sync BlendShapes");
+            Undo.RecordObject(dstSmr, ChibiLocalization.Get("Undo.SyncBlendShapes"));
 
             // まずは SerializedObject で m_BlendShapeWeights を直接編集
             try
@@ -261,7 +261,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"[ChibiApply] Serialized blendshape copy failed for SMR on {dstNameForLog}: {ex.Message}");
+                Debug.LogWarning(ChibiLocalization.Format("Warning.SerializedBlendshapeCopyFailed", dstNameForLog, ex.Message));
             }
 
             // フォールバック：SetBlendShapeWeight を使う
@@ -289,7 +289,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"[ChibiApply] Blendshape copy failed for SMR on {dstNameForLog}: {ex.Message}");
+                Debug.LogWarning(ChibiLocalization.Format("Warning.BlendshapeCopyFailed", dstNameForLog, ex.Message));
             }
         }
 
@@ -309,11 +309,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             var stats = CollectBlendShapeNameStats(srcRoot, dstRoot);
 
-            logs.Add($"BlendShape 同期: 対象SMR数={stats.RendererPairs}, 対象BlendShape名数={stats.TotalBlendShapeNames}（値は非表示）");
+            logs.Add(ChibiLocalization.Format("Log.BlendshapeSyncSummary", stats.RendererPairs, stats.TotalBlendShapeNames));
 
             if (stats.Items == null || stats.Items.Count == 0)
             {
-                logs.Add(" - 対象となる SkinnedMeshRenderer が見つかりませんでした。");
+                logs.Add(ChibiLocalization.Get("Log.BlendshapeNoRenderer"));
                 return;
             }
 
@@ -321,12 +321,12 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             {
                 if (item.BlendShapeNames == null || item.BlendShapeNames.Count == 0)
                 {
-                    logs.Add($" - {item.RendererPath}: 0");
+                    logs.Add(ChibiLocalization.Format("Log.BlendshapeRendererZero", item.RendererPath));
                     continue;
                 }
 
                 // ここでは “名前だけ” を表示（値は表示しない）
-                logs.Add($" - {item.RendererPath}: {item.BlendShapeNames.Count} / {string.Join(", ", item.BlendShapeNames)}");
+                logs.Add(ChibiLocalization.Format("Log.BlendshapeRendererDetail", item.RendererPath, item.BlendShapeNames.Count, string.Join(", ", item.BlendShapeNames)));
             }
         }
 
