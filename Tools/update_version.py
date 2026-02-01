@@ -15,7 +15,6 @@ Updates:
 from __future__ import annotations
 
 import argparse
-import json
 import re
 from pathlib import Path
 
@@ -47,18 +46,32 @@ def update_csharp_constants(version: str, dry_run: bool) -> None:
 
 def update_package_json(version: str, dry_run: bool) -> None:
     ensure_file_exists(PACKAGE_JSON)
-    data = json.loads(PACKAGE_JSON.read_text(encoding="utf-8"))
-    if "version" not in data or "url" not in data:
-        raise KeyError("package.json missing required keys: version and/or url")
-    data["version"] = version
-    data["url"] = (
+    content = PACKAGE_JSON.read_text(encoding="utf-8")
+    version_content, version_count = re.subn(
+        r'("version"\s*:\s*")([^"]+)(")',
+        rf"\g<1>{version}\g<3>",
+        content,
+    )
+    if version_count != 1:
+        raise ValueError(
+            f"package.json version not updated (matches: {version_count}) in {PACKAGE_JSON}"
+        )
+    url = (
         "https://github.com/aramaa-vr/create-chibi/releases/download/"
         f"{version}/jp.aramaa.create-chibi-{version}.zip"
     )
-    formatted = json.dumps(data, ensure_ascii=False, indent=4) + "\n"
+    new_content, url_count = re.subn(
+        r'("url"\s*:\s*")([^"]+)(")',
+        rf"\g<1>{url}\g<3>",
+        version_content,
+    )
+    if url_count != 1:
+        raise ValueError(
+            f"package.json url not updated (matches: {url_count}) in {PACKAGE_JSON}"
+        )
 
     if not dry_run:
-        PACKAGE_JSON.write_text(formatted, encoding="utf-8")
+        PACKAGE_JSON.write_text(new_content, encoding="utf-8")
 
 
 def update_vpm_script(version: str, dry_run: bool) -> None:
