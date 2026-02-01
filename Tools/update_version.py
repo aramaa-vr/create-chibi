@@ -35,7 +35,8 @@ def read_text(path: Path) -> str:
 
 
 def write_text(path: Path, content: str) -> None:
-    path.write_bytes(content.encode("utf-8"))
+    normalized = content.replace("\r\n", "\n").replace("\r", "\n")
+    path.write_bytes(normalized.encode("utf-8"))
 
 
 def update_csharp_constants(version: str, dry_run: bool) -> None:
