@@ -9,7 +9,7 @@ Usage:
 Updates:
   - Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorConstants.cs (ToolVersion)
   - Assets/Aramaa/CreateChibi/package.json (version, url)
-  - Tools/create_vpm_zip.sh (DEFAULT_VERSION)
+  - Tools/create_vpm_zip.py (DEFAULT_VERSION)
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CS_CONSTANTS = ROOT / "Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorConstants.cs"
 PACKAGE_JSON = ROOT / "Assets/Aramaa/CreateChibi/package.json"
-VPM_SCRIPT = ROOT / "Tools/create_vpm_zip.sh"
+VPM_SCRIPT = ROOT / "Tools/create_vpm_zip.py"
 
 
 def ensure_file_exists(path: Path) -> None:
@@ -88,7 +88,7 @@ def update_vpm_script(version: str, dry_run: bool) -> None:
     ensure_file_exists(VPM_SCRIPT)
     content = read_text(VPM_SCRIPT)
     new_content, count = re.subn(
-        r'(readonly DEFAULT_VERSION=")([^"]+)(")',
+        r'(DEFAULT_VERSION\s*=\s*")([^"]+)(")',
         rf"\g<1>{version}\g<3>",
         content,
     )
