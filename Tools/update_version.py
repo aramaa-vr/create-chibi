@@ -31,7 +31,8 @@ def ensure_file_exists(path: Path) -> None:
 
 
 def read_text(path: Path) -> str:
-    return path.read_bytes().decode("utf-8")
+    content = path.read_bytes().decode("utf-8")
+    return content.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def write_text(path: Path, content: str) -> None:
