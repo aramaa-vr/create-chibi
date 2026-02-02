@@ -201,56 +201,43 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
         private static string GetLocalizationRootPath()
         {
+            var candidates = new List<string>();
             var packageInfo = PackageInfo.FindForAssembly(typeof(ChibiLocalization).Assembly);
             if (packageInfo != null && !string.IsNullOrEmpty(packageInfo.resolvedPath))
             {
-                var packageRoot = Path.Combine(
+                candidates.Add(Path.Combine(
                     packageInfo.resolvedPath,
                     "Editor",
                     "Localization",
-                    LocalizationSubdirectory);
-                if (Directory.Exists(packageRoot))
-                {
-                    return packageRoot;
-                }
-
-                var legacyPackageRoot = Path.Combine(packageInfo.resolvedPath, "Editor", "Localization");
-                if (Directory.Exists(legacyPackageRoot))
-                {
-                    return legacyPackageRoot;
-                }
+                    LocalizationSubdirectory));
             }
 
             var projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
-            var embeddedPackageRoot = Path.Combine(
+            candidates.Add(Path.Combine(
                 projectRoot,
                 "Packages",
                 "jp.aramaa.create-chibi",
                 "Editor",
                 "Localization",
-                LocalizationSubdirectory);
-            if (Directory.Exists(embeddedPackageRoot))
-            {
-                return embeddedPackageRoot;
-            }
+                LocalizationSubdirectory));
 
-            var legacyEmbeddedPackageRoot = Path.Combine(
-                projectRoot,
-                "Packages",
-                "jp.aramaa.create-chibi",
-                "Editor",
-                "Localization");
-            if (Directory.Exists(legacyEmbeddedPackageRoot))
-            {
-                return legacyEmbeddedPackageRoot;
-            }
-
-            return Path.Combine(
+            candidates.Add(Path.Combine(
                 Application.dataPath,
                 "Aramaa",
                 "CreateChibi",
                 "Editor",
-                "Localization");
+                "Localization",
+                LocalizationSubdirectory));
+
+            foreach (var candidate in candidates)
+            {
+                if (Directory.Exists(candidate))
+                {
+                    return candidate;
+                }
+            }
+
+            return candidates[candidates.Count - 1];
         }
 
         private static string GetSystemLanguageCode()
