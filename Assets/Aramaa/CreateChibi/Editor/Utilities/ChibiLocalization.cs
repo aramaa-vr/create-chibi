@@ -24,7 +24,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         private const string LanguageEnglish = "en";
         private const string LanguageChineseSimplified = "zh-Hans";
         private const string LanguageChineseTraditional = "zh-Hant";
-        private const string LanguageKorean = "o-KR";
+        private const string LanguageKorean = "ko-KR";
 
         private static readonly string[] LanguageCodes =
         {
