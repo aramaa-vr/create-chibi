@@ -81,40 +81,44 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 var proxyTransform = proxy.transform;
                 proxy.gameObject.name += suffix;
 
-                proxyTransform.SetParent(target, worldPositionStays: true);
+                // ------------------------------------------------------------
+                // 重要：
+                // - attachmentMode ごとに “どの要素をワールドで保持するか” が異なります。
+                // - SetParent(worldPositionStays=true) はローカルスケールに補正が入りやすく、
+                //   その後に Armature のスケールを変更する処理と組み合わさると破綻しやすいです。
+                //
+                // ここでは、KeepWorldPose のみ worldPositionStays=true を使い、
+                // KeepPosition / KeepRotation / AtRoot は worldPositionStays=false + 必要な要素のみ復元します。
+                // ------------------------------------------------------------
+                var worldPos = proxyTransform.position;
+                var worldRot = proxyTransform.rotation;
 
-                bool keepPos;
-                bool keepRot;
                 switch (proxy.attachmentMode)
                 {
                     default:
                     case BoneProxyAttachmentMode.Unset:
                     case BoneProxyAttachmentMode.AsChildAtRoot:
-                        keepPos = false;
-                        keepRot = false;
+                        // ローカルを基準に “親の原点” へ
+                        proxyTransform.SetParent(target, worldPositionStays: false);
+                        proxyTransform.localPosition = Vector3.zero;
+                        proxyTransform.localRotation = Quaternion.identity;
                         break;
                     case BoneProxyAttachmentMode.AsChildKeepWorldPose:
-                        keepPos = true;
-                        keepRot = true;
+                        // ワールド姿勢（位置・回転・スケール）を維持
+                        proxyTransform.SetParent(target, worldPositionStays: true);
                         break;
                     case BoneProxyAttachmentMode.AsChildKeepPosition:
-                        keepPos = true;
-                        keepRot = false;
+                        // ワールド位置は維持、回転は親基準
+                        proxyTransform.SetParent(target, worldPositionStays: false);
+                        proxyTransform.position = worldPos;
+                        proxyTransform.localRotation = Quaternion.identity;
                         break;
                     case BoneProxyAttachmentMode.AsChildKeepRotation:
-                        keepPos = false;
-                        keepRot = true;
+                        // ワールド回転は維持、位置は親の原点
+                        proxyTransform.SetParent(target, worldPositionStays: false);
+                        proxyTransform.localPosition = Vector3.zero;
+                        proxyTransform.rotation = worldRot;
                         break;
-                }
-
-                if (!keepPos)
-                {
-                    proxyTransform.localPosition = Vector3.zero;
-                }
-
-                if (!keepRot)
-                {
-                    proxyTransform.localRotation = Quaternion.identity;
                 }
 
                 logs?.Add(ChibiLocalization.Format("Log.MaboneProxyProcessed", ChibiChansConversionLogUtility.GetHierarchyPath(proxyTransform)));

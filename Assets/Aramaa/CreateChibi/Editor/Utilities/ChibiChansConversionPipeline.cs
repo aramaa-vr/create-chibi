@@ -139,25 +139,6 @@ namespace Aramaa.CreateChibi.Editor
                 logs.Add("");
 
                 // --------------------------------------------------------
-                // 複製物に対して MABoneProxy 処理を行う（任意）
-                // --------------------------------------------------------
-                if (applyMaboneProxyProcessing)
-                {
-                    logs.Add(L("Log.MaboneProxyHeader"));
-#if CHIBI_MODULAR_AVATAR
-                    foreach (var duplicated in duplicatedTargets.Where(x => x != null))
-                    {
-                        logs.Add(F("Log.TargetEntry", ChibiChansConversionLogUtility.GetHierarchyPath(duplicated.transform)));
-                        ChibiModularAvatarBoneProxyUtility.ProcessBoneProxies(duplicated, logs);
-                    }
-#else
-                    logs.Add(L("Log.MaboneProxySkipped"));
-#endif
-
-                    logs.Add("");
-                }
-
-                // --------------------------------------------------------
                 // 複製物の BlueprintID を空にする（元アバターのIDを引き継がない）
                 // --------------------------------------------------------
                 logs.Add(L("Log.BlueprintClearHeader"));
@@ -170,7 +151,7 @@ namespace Aramaa.CreateChibi.Editor
                 // --------------------------------------------------------
                 // 複製物へ変換を適用
                 // --------------------------------------------------------
-                ApplyToTargets(sourceChibiPrefab, duplicatedTargets, manageUndoGroup: false, logs: logs);
+                ApplyToTargets(sourceChibiPrefab, duplicatedTargets, applyMaboneProxyProcessing, manageUndoGroup: false, logs: logs);
             }
             finally
             {
@@ -183,7 +164,7 @@ namespace Aramaa.CreateChibi.Editor
         /// ここでは参照の妥当性チェックと、ベースプレハブの LoadPrefabContents を行い、
         /// 各ターゲット（複製物）へ処理を適用します。
         /// </summary>
-        private static void ApplyToTargets(GameObject sourceChibiPrefab, GameObject[] targets, bool manageUndoGroup, List<string> logs)
+        private static void ApplyToTargets(GameObject sourceChibiPrefab, GameObject[] targets, bool applyMaboneProxyProcessing, bool manageUndoGroup, List<string> logs)
         {
             logs ??= new List<string>();
             if (sourceChibiPrefab == null || !EditorUtility.IsPersistent(sourceChibiPrefab))
@@ -265,6 +246,22 @@ namespace Aramaa.CreateChibi.Editor
 
                     // 1)～4) の基本反映（ルートスケール / Armature 下 / Transform / BlendShape）
                     ApplyCore_1to4(basePrefabRoot, dstRoot, logs);
+
+                    // --------------------------------------------------------
+                    // 変換後（スケール適用後）に MABoneProxy 処理を行う（任意）
+                    // - 先に Armature の Transform/Scale を同期してから BoneProxy を適用することで、
+                    //   KeepWorldPose 由来のローカルスケール補正が「最終スケール」を基準に計算されます。
+                    // --------------------------------------------------------
+                    if (applyMaboneProxyProcessing)
+                    {
+                        logs.Add(L("Log.MaboneProxyHeader"));
+#if CHIBI_MODULAR_AVATAR
+                        ChibiModularAvatarBoneProxyUtility.ProcessBoneProxies(dstRoot, logs);
+#else
+                        logs.Add(L("Log.MaboneProxySkipped"));
+#endif
+                        logs.Add("");
+                    }
 
                     // 追加メニュー Prefab を子として追加（既にあるなら追加しない）
                     if (exAddMenuPlacement.PrefabAsset != null)
@@ -610,8 +607,11 @@ namespace Aramaa.CreateChibi.Editor
             logs ??= new List<string>();
             logs.Add(L("Log.ArmatureTransformApplied"));
 
+            // 先に「対応する Armature Transform のペア」を集めて、
+            // その集合を “dstArmature の骨” として扱います。
+            // （骨の子にぶら下がっているアクセサリ等を誤って除外しないため）
             var srcAll = srcArmature.GetComponentsInChildren<Transform>(true);
-            int updated = 0;
+            var pairs = new List<(Transform src, Transform dst)>();
 
             foreach (var srcT in srcAll)
             {
@@ -629,12 +629,42 @@ namespace Aramaa.CreateChibi.Editor
                     continue;
                 }
 
+                pairs.Add((srcT, dstT));
+            }
+
+            var dstBones = new HashSet<Transform>();
+            foreach (var p in pairs)
+            {
+                if (p.dst != null)
+                {
+                    dstBones.Add(p.dst);
+                }
+            }
+
+            int updated = 0;
+
+            foreach (var (srcT, dstT) in pairs)
+            {
+                if (srcT == null || dstT == null)
+                {
+                    continue;
+                }
+
+                // 重要：Bone 側のスケールを上書きする前に「旧スケール」を保持します。
+                // NailSetupTool の通常モード等で SetParent(worldPositionStays=true) により
+                // “旧スケールを打ち消す localScale” が入っている場合、
+                // 旧スケールを掛け戻して localScale を正規化します（最終スケールに追従させる）。
+                var oldParentScale = dstT.localScale;
+
                 Undo.RecordObject(dstT, L("Undo.SyncArmatureTransform"));
                 dstT.localPosition = srcT.localPosition;
                 dstT.localRotation = srcT.localRotation;
                 dstT.localScale = srcT.localScale;
 
                 EditorUtility.SetDirty(dstT);
+
+                // 旧スケール打ち消し（補正）を疑う直接子を検出して、正規化します。
+                FixInverseScaledDirectChildren(dstT, oldParentScale, dstBones);
 
                 updated++;
                 // パスだけを出す（値は出さない）
@@ -643,6 +673,83 @@ namespace Aramaa.CreateChibi.Editor
 
             logs.Add(F("Log.ArmatureTransformUpdated", updated));
             logs.Add("");
+        }
+
+        /// <summary>
+        /// “親の旧スケールを打ち消す localScale” が入っている直接子（アクセサリ等）を正規化します。
+        /// - NailSetupTool の通常モードは SetParent(親)（= worldPositionStays が既定で true）になり、
+        ///   親スケールを打ち消す localScale が子に入ることがあります。
+        /// - 変換処理で親ボーンのスケールを上書きすると、この補正が崩れてスケールが二重にかかるため、
+        ///   旧スケールを掛け戻して localScale を “補正前” に戻します。
+        /// </summary>
+        private static void FixInverseScaledDirectChildren(Transform parentBone, Vector3 oldParentScale, HashSet<Transform> dstArmatureBones)
+        {
+            if (parentBone == null || dstArmatureBones == null)
+            {
+                return;
+            }
+
+            // 旧スケールがほぼ 1 の場合は補正の必要がありません。
+            if (IsApproximatelyOne(oldParentScale))
+            {
+                return;
+            }
+
+            const float eps = 1e-3f;
+
+            int childCount = parentBone.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = parentBone.GetChild(i);
+                if (child == null)
+                {
+                    continue;
+                }
+
+                // “骨そのもの” は対象外（姿勢同期で上書き済み/これから上書きされるため）
+                if (dstArmatureBones.Contains(child))
+                {
+                    continue;
+                }
+
+                var childScale = child.localScale;
+
+                // childScale * oldParentScale ≒ 1 なら「打ち消し補正」とみなす
+                if (!IsApproximatelyInverse(childScale, oldParentScale, eps))
+                {
+                    continue;
+                }
+
+                Undo.RecordObject(child, L("Undo.SyncArmatureTransform"));
+
+                child.localScale = new Vector3(
+                    childScale.x * oldParentScale.x,
+                    childScale.y * oldParentScale.y,
+                    childScale.z * oldParentScale.z
+                );
+
+                EditorUtility.SetDirty(child);
+            }
+        }
+
+        private static bool IsApproximatelyOne(Vector3 scale, float eps = 1e-4f)
+        {
+            return Mathf.Abs(scale.x - 1f) < eps &&
+                   Mathf.Abs(scale.y - 1f) < eps &&
+                   Mathf.Abs(scale.z - 1f) < eps;
+        }
+
+        private static bool IsApproximatelyInverse(Vector3 childScale, Vector3 parentScale, float eps)
+        {
+            // 0 近傍（ゼロスケール）では判定しない
+            if (Mathf.Abs(parentScale.x) < eps || Mathf.Abs(parentScale.y) < eps || Mathf.Abs(parentScale.z) < eps)
+            {
+                return false;
+            }
+
+            return Mathf.Abs(childScale.x * parentScale.x - 1f) < eps &&
+                   Mathf.Abs(childScale.y * parentScale.y - 1f) < eps &&
+                   Mathf.Abs(childScale.z * parentScale.z - 1f) < eps;
         }
 
         private static void AddMissingComponentsUnderArmature(
