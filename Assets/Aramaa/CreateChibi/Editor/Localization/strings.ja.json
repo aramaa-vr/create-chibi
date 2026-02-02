@@ -547,19 +547,19 @@
     },
     {
       "key": "Version.Ahead",
-      "value": "開発版を使用中です。"
+      "value": "現在のバージョン {0}（最新 {1} より新しい開発版）を使用中です。"
     },
     {
       "key": "Version.Available",
-      "value": "最新バージョン {0} が利用可能です。"
+      "value": "現在のバージョン {0} です。最新バージョン {1} が利用可能です。"
     },
     {
       "key": "Version.CheckFailed",
-      "value": "最新バージョンの確認に失敗しました: {0}"
+      "value": "現在のバージョン {0} の最新確認に失敗しました: {1}"
     },
     {
       "key": "Version.Checking",
-      "value": "最新バージョンを確認中です..."
+      "value": "現在のバージョン {0} の最新情報を確認中です..."
     },
     {
       "key": "Version.ErrorMissingUrl",
@@ -571,15 +571,15 @@
     },
     {
       "key": "Version.NoInfo",
-      "value": "最新バージョン情報を取得できませんでした。"
+      "value": "現在のバージョン {0} の最新情報を取得できませんでした。"
     },
     {
       "key": "Version.Unknown",
-      "value": "バージョン情報を取得できませんでした。"
+      "value": "現在のバージョン {0} の情報を取得できませんでした。"
     },
     {
       "key": "Version.UpToDate",
-      "value": "最新バージョンです。"
+      "value": "現在のバージョン {0} は最新バージョン {1} です。"
     },
     {
       "key": "Warning.AddMenuPrefabMissing",
@@ -608,10 +608,6 @@
     {
       "key": "Window.TitleWithVersion",
       "value": "{0} v{1}"
-    },
-    {
-      "key": "Window.VersionLabel",
-      "value": "バージョン：{0}"
     }
   ]
 }

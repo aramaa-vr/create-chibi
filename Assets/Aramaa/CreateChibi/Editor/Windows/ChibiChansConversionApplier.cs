@@ -210,14 +210,13 @@ namespace Aramaa.CreateChibi.Editor
                 _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
                 EditorGUILayout.Space(8);
 
-                // タイトル
-                EditorGUILayout.LabelField(ToolWindowTitle, EditorStyles.boldLabel);
-                EditorGUILayout.LabelField(ChibiLocalization.Format("Window.VersionLabel", ToolVersion), EditorStyles.miniLabel);
+                // 言語
+                DrawLanguageSelector();
+
+                // バージョン
                 EnsureVersionCheck();
                 DrawVersionStatus();
 
-                // 目的（1行で）
-                DrawLanguageSelector();
                 EditorGUILayout.LabelField(ChibiLocalization.Get("Window.Description"), EditorStyles.wordWrappedLabel);
 
                 // ------------------------------------------------------------
@@ -316,35 +315,35 @@ namespace Aramaa.CreateChibi.Editor
                 if (_versionCheckInProgress)
                 {
                     color = SelectStatusColor(new Color(0.2f, 0.6f, 1f), new Color(0.1f, 0.3f, 0.8f));
-                    return ChibiLocalization.Get("Version.Checking");
+                    return ChibiLocalization.Format("Version.Checking", ToolVersion);
                 }
 
                 if (!string.IsNullOrWhiteSpace(_versionError))
                 {
                     color = SelectStatusColor(new Color(0.95f, 0.35f, 0.35f), new Color(0.7f, 0.15f, 0.15f));
-                    return ChibiLocalization.Format("Version.CheckFailed", _versionError);
+                    return ChibiLocalization.Format("Version.CheckFailed", ToolVersion, _versionError);
                 }
 
                 if (string.IsNullOrWhiteSpace(_latestVersion))
                 {
                     color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                    return ChibiLocalization.Get("Version.NoInfo");
+                    return ChibiLocalization.Format("Version.NoInfo", ToolVersion);
                 }
 
                 switch (_versionStatus)
                 {
                     case ChibiVersionStatus.UpdateAvailable:
                         color = SelectStatusColor(new Color(1f, 0.65f, 0.2f), new Color(0.8f, 0.45f, 0.1f));
-                        return ChibiLocalization.Format("Version.Available", _latestVersion);
+                        return ChibiLocalization.Format("Version.Available", ToolVersion, _latestVersion);
                     case ChibiVersionStatus.Ahead:
                         color = SelectStatusColor(new Color(0.4f, 0.75f, 1f), new Color(0.15f, 0.5f, 0.8f));
-                        return ChibiLocalization.Get("Version.Ahead");
+                        return ChibiLocalization.Format("Version.Ahead", ToolVersion, _latestVersion);
                     case ChibiVersionStatus.UpToDate:
                         color = SelectStatusColor(new Color(0.35f, 0.8f, 0.4f), new Color(0.15f, 0.55f, 0.2f));
-                        return ChibiLocalization.Get("Version.UpToDate");
+                        return ChibiLocalization.Format("Version.UpToDate", ToolVersion, _latestVersion);
                     default:
                         color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                        return ChibiLocalization.Get("Version.Unknown");
+                        return ChibiLocalization.Format("Version.Unknown", ToolVersion);
                 }
             }
 

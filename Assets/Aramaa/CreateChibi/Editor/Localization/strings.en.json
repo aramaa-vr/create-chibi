@@ -547,19 +547,19 @@
     },
     {
       "key": "Version.Ahead",
-      "value": "You are using a development build."
+      "value": "You are using version {0} (ahead of the latest {1})."
     },
     {
       "key": "Version.Available",
-      "value": "Latest version {0} is available."
+      "value": "You are on version {0}. Latest version {1} is available."
     },
     {
       "key": "Version.CheckFailed",
-      "value": "Failed to check the latest version: {0}"
+      "value": "Failed to check the latest version for {0}: {1}"
     },
     {
       "key": "Version.Checking",
-      "value": "Checking for the latest version..."
+      "value": "Checking for the latest version of {0}..."
     },
     {
       "key": "Version.ErrorMissingUrl",
@@ -571,15 +571,15 @@
     },
     {
       "key": "Version.NoInfo",
-      "value": "Could not retrieve the latest version info."
+      "value": "Could not retrieve the latest version info for {0}."
     },
     {
       "key": "Version.Unknown",
-      "value": "Could not retrieve version information."
+      "value": "Could not retrieve version information for {0}."
     },
     {
       "key": "Version.UpToDate",
-      "value": "You are on the latest version."
+      "value": "You are on version {0}, which is the latest {1}."
     },
     {
       "key": "Warning.AddMenuPrefabMissing",
@@ -608,10 +608,6 @@
     {
       "key": "Window.TitleWithVersion",
       "value": "{0} v{1}"
-    },
-    {
-      "key": "Window.VersionLabel",
-      "value": "Version: {0}"
     }
   ]
 }

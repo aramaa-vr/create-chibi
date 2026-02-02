@@ -547,19 +547,19 @@
     },
     {
       "key": "Version.Ahead",
-      "value": "你正在使用開發版本。"
+      "value": "你正在使用版本 {0}（高於最新 {1}）。"
     },
     {
       "key": "Version.Available",
-      "value": "最新版本 {0} 可用。"
+      "value": "你目前使用版本 {0}，最新版本 {1} 可用。"
     },
     {
       "key": "Version.CheckFailed",
-      "value": "檢查最新版本失敗：{0}"
+      "value": "檢查版本 {0} 的最新版本失敗：{1}"
     },
     {
       "key": "Version.Checking",
-      "value": "正在檢查最新版本..."
+      "value": "正在檢查版本 {0} 的最新版本..."
     },
     {
       "key": "Version.ErrorMissingUrl",
@@ -571,15 +571,15 @@
     },
     {
       "key": "Version.NoInfo",
-      "value": "無法取得最新版本資訊。"
+      "value": "無法取得版本 {0} 的最新版本資訊。"
     },
     {
       "key": "Version.Unknown",
-      "value": "無法取得版本資訊。"
+      "value": "無法取得版本 {0} 的版本資訊。"
     },
     {
       "key": "Version.UpToDate",
-      "value": "你已是最新版本。"
+      "value": "你使用的版本 {0} 是最新版本 {1}。"
     },
     {
       "key": "Warning.AddMenuPrefabMissing",
@@ -608,10 +608,6 @@
     {
       "key": "Window.TitleWithVersion",
       "value": "{0} v{1}"
-    },
-    {
-      "key": "Window.VersionLabel",
-      "value": "版本：{0}"
     }
   ]
 }
