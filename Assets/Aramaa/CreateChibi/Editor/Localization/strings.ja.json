@@ -91,11 +91,11 @@
     },
     {
       "key": "Language.Label",
-      "value": "Language"
+      "value": "言語"
     },
     {
       "key": "Language.OptionEnglish",
-      "value": "English"
+      "value": "英語"
     },
     {
       "key": "Language.OptionChineseSimplified",
@@ -227,7 +227,7 @@
     },
     {
       "key": "Log.CostumeSmrMeshMissing",
-      "value": "[Costume] SMR: {0} / Mesh=(null) -> skip"
+      "value": "[Costume] SMR: {0} / Mesh=(null) -> スキップ"
     },
     {
       "key": "Log.CostumeSmrSummary",
@@ -347,15 +347,15 @@
     },
     {
       "key": "Log.MatchArmature",
-      "value": "Armature"
+      "value": "アーマチュア"
     },
     {
       "key": "Log.MatchContains",
-      "value": "Contains"
+      "value": "含む"
     },
     {
       "key": "Log.MatchExact",
-      "value": "Exact"
+      "value": "完全一致"
     },
     {
       "key": "Log.MenuAfter",
@@ -383,11 +383,11 @@
     },
     {
       "key": "Log.NotFound",
-      "value": "not found"
+      "value": "見つかりません"
     },
     {
       "key": "Log.NullValue",
-      "value": "(null)"
+      "value": "（null）"
     },
     {
       "key": "Log.ParametersAfter",
@@ -439,15 +439,15 @@
     },
     {
       "key": "Log.ToolVersion",
-      "value": "{0}: v{1}"
+      "value": "{0}：v{1}"
     },
     {
       "key": "Log.UnityVersion",
-      "value": "Unity: {0}"
+      "value": "Unity：{0}"
     },
     {
       "key": "Log.UnknownVersion",
-      "value": "unknown"
+      "value": "不明"
     },
     {
       "key": "Log.ViewPositionApplied",
@@ -459,7 +459,7 @@
     },
     {
       "key": "Log.VrcSdkVersion",
-      "value": "VRC SDK: {0}"
+      "value": "VRC SDK：{0}"
     },
     {
       "key": "LogWindow.CloseButton",
@@ -503,19 +503,19 @@
     },
     {
       "key": "Undo.AddExPrefab",
-      "value": "Add EX Prefab"
+      "value": "EX Prefab を追加"
     },
     {
       "key": "Undo.AdjustCostumeScales",
-      "value": "Adjust Costume Scales"
+      "value": "衣装スケール調整"
     },
     {
       "key": "Undo.ClearBlueprintId",
-      "value": "Clear BlueprintId"
+      "value": "BlueprintId をクリア"
     },
     {
       "key": "Undo.CopyViewPosition",
-      "value": "Copy View Position"
+      "value": "View Position をコピー"
     },
     {
       "key": "Undo.CreateChibiSyncBlendShapes",
@@ -527,23 +527,23 @@
     },
     {
       "key": "Undo.SetExpressionsReferences",
-      "value": "Set Expressions References"
+      "value": "Expressions 参照を設定"
     },
     {
       "key": "Undo.SetFxPlayableLayer",
-      "value": "Set FX Playable Layer"
+      "value": "FX Playable Layer を設定"
     },
     {
       "key": "Undo.SyncArmatureTransform",
-      "value": "Sync Armature Transform"
+      "value": "Armature Transform を同期"
     },
     {
       "key": "Undo.SyncBlendShapes",
-      "value": "Sync BlendShapes"
+      "value": "BlendShapes を同期"
     },
     {
       "key": "Undo.SyncRootScale",
-      "value": "Sync Root Scale"
+      "value": "ルートスケールを同期"
     },
     {
       "key": "Version.Ahead",
@@ -611,7 +611,7 @@
     },
     {
       "key": "Window.VersionLabel",
-      "value": "Version: {0}"
+      "value": "バージョン：{0}"
     }
   ]
 }
