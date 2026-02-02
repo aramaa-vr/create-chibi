@@ -1,5 +1,5 @@
 {
-  "language": "en",
+  "language": "zh-Hans",
   "entries": [
     {
       "key": "Button.DiscordHelp",
@@ -91,7 +91,7 @@
     },
     {
       "key": "Language.Label",
-      "value": "Language"
+      "value": "语言"
     },
     {
       "key": "Language.OptionEnglish",
@@ -111,7 +111,7 @@
     },
     {
       "key": "Language.OptionJapanese",
-      "value": "Japanese"
+      "value": "日本語"
     },
     {
       "key": "Log.AddMissingComponents",

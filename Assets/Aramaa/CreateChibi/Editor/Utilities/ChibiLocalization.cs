@@ -22,6 +22,18 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         private const string EditorPrefsKey = "Aramaa.CreateChibi.Language";
         private const string LanguageJapanese = "ja";
         private const string LanguageEnglish = "en";
+        private const string LanguageChineseSimplified = "zh-Hans";
+        private const string LanguageChineseTraditional = "zh-Hant";
+        private const string LanguageKorean = "ko-KR";
+
+        private static readonly string[] LanguageCodes =
+        {
+            LanguageJapanese,
+            LanguageEnglish,
+            LanguageChineseSimplified,
+            LanguageChineseTraditional,
+            LanguageKorean
+        };
 
         private static string _currentLanguageCode;
         private static string _loadedLanguageCode;
@@ -54,12 +66,26 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
         public static int GetLanguageIndex()
         {
-            return CurrentLanguageCode == LanguageJapanese ? 0 : 1;
+            var current = CurrentLanguageCode;
+            for (var i = 0; i < LanguageCodes.Length; i++)
+            {
+                if (string.Equals(LanguageCodes[i], current, StringComparison.OrdinalIgnoreCase))
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         public static string GetLanguageCodeFromIndex(int index)
         {
-            return index == 0 ? LanguageJapanese : LanguageEnglish;
+            if (index < 0 || index >= LanguageCodes.Length)
+            {
+                return LanguageEnglish;
+            }
+
+            return LanguageCodes[index];
         }
 
         public static string[] GetLanguageDisplayNames()
@@ -71,7 +97,10 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 _cachedDisplayNames = new[]
                 {
                     Get("Language.OptionJapanese"),
-                    Get("Language.OptionEnglish")
+                    Get("Language.OptionEnglish"),
+                    Get("Language.OptionChineseSimplified"),
+                    Get("Language.OptionChineseTraditional"),
+                    Get("Language.OptionKorean")
                 };
             }
 
@@ -175,14 +204,57 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
         private static string GetSystemLanguageCode()
         {
-            return Application.systemLanguage == SystemLanguage.Japanese ? LanguageJapanese : LanguageEnglish;
+            switch (Application.systemLanguage)
+            {
+                case SystemLanguage.Japanese:
+                    return LanguageJapanese;
+                case SystemLanguage.ChineseSimplified:
+                    return LanguageChineseSimplified;
+                case SystemLanguage.ChineseTraditional:
+                    return LanguageChineseTraditional;
+                case SystemLanguage.Korean:
+                    return LanguageKorean;
+                default:
+                    return LanguageEnglish;
+            }
         }
 
         private static string NormalizeLanguage(string languageCode)
         {
-            return string.Equals(languageCode, LanguageJapanese, StringComparison.OrdinalIgnoreCase)
-                ? LanguageJapanese
-                : LanguageEnglish;
+            if (string.IsNullOrEmpty(languageCode))
+            {
+                return LanguageEnglish;
+            }
+
+            if (string.Equals(languageCode, LanguageJapanese, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "ja", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "ja-JP", StringComparison.OrdinalIgnoreCase))
+            {
+                return LanguageJapanese;
+            }
+
+            if (string.Equals(languageCode, LanguageChineseSimplified, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "zh-CN", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "zh", StringComparison.OrdinalIgnoreCase))
+            {
+                return LanguageChineseSimplified;
+            }
+
+            if (string.Equals(languageCode, LanguageChineseTraditional, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "zh-TW", StringComparison.OrdinalIgnoreCase))
+            {
+                return LanguageChineseTraditional;
+            }
+
+            if (string.Equals(languageCode, LanguageKorean, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "ko", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "ko-KR", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(languageCode, "o-KR", StringComparison.OrdinalIgnoreCase))
+            {
+                return LanguageKorean;
+            }
+
+            return LanguageEnglish;
         }
 
         [Serializable]

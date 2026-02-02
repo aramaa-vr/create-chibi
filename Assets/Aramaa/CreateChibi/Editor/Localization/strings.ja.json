@@ -91,11 +91,23 @@
     },
     {
       "key": "Language.Label",
-      "value": "言語"
+      "value": "Language"
     },
     {
       "key": "Language.OptionEnglish",
       "value": "English"
+    },
+    {
+      "key": "Language.OptionChineseSimplified",
+      "value": "简体中文"
+    },
+    {
+      "key": "Language.OptionChineseTraditional",
+      "value": "繁體中文"
+    },
+    {
+      "key": "Language.OptionKorean",
+      "value": "한국어"
     },
     {
       "key": "Language.OptionJapanese",
