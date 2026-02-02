@@ -21,6 +21,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
     internal static class ChibiLocalization
     {
         private const string EditorPrefsKey = "Aramaa.CreateChibi.Language";
+        private const string LocalizationSubdirectory = "CreateChibi";
         private const string LanguageJapanese = "ja";
         private const string LanguageEnglish = "en";
         private const string LanguageChineseSimplified = "zh-Hans";
@@ -203,10 +204,20 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             var packageInfo = PackageInfo.FindForAssembly(typeof(ChibiLocalization).Assembly);
             if (packageInfo != null && !string.IsNullOrEmpty(packageInfo.resolvedPath))
             {
-                var packageRoot = Path.Combine(packageInfo.resolvedPath, "Editor", "Localization");
+                var packageRoot = Path.Combine(
+                    packageInfo.resolvedPath,
+                    "Editor",
+                    "Localization",
+                    LocalizationSubdirectory);
                 if (Directory.Exists(packageRoot))
                 {
                     return packageRoot;
+                }
+
+                var legacyPackageRoot = Path.Combine(packageInfo.resolvedPath, "Editor", "Localization");
+                if (Directory.Exists(legacyPackageRoot))
+                {
+                    return legacyPackageRoot;
                 }
             }
 
@@ -216,10 +227,22 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 "Packages",
                 "jp.aramaa.create-chibi",
                 "Editor",
-                "Localization");
+                "Localization",
+                LocalizationSubdirectory);
             if (Directory.Exists(embeddedPackageRoot))
             {
                 return embeddedPackageRoot;
+            }
+
+            var legacyEmbeddedPackageRoot = Path.Combine(
+                projectRoot,
+                "Packages",
+                "jp.aramaa.create-chibi",
+                "Editor",
+                "Localization");
+            if (Directory.Exists(legacyEmbeddedPackageRoot))
+            {
+                return legacyEmbeddedPackageRoot;
             }
 
             return Path.Combine(
