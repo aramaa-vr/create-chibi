@@ -1,9 +1,9 @@
 ---
-title: 利用規約・公式リンク
+title: 利用規約・リンク
 nav_order: 7
 ---
 
-# 利用規約・公式リンク
+# 利用規約・リンク
 
 ---
 
@@ -20,6 +20,12 @@ nav_order: 7
 - [BOOTH配布ページ](https://aramaa.booth.pm/items/7906711)
 - [Add to VCC](https://aramaa-vr.github.io/vpm-repos/redirect.html)
 - [Discordサポート](https://discord.gg/BJ3BpVnMna)
+
+---
+
+## 最新バージョン確認URL（ツール内定数）
+
+https://raw.githubusercontent.com/aramaa-vr/create-chibi/master/Assets/Aramaa/CreateChibi/package.json
 
 ---
 
