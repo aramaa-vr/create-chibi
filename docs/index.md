@@ -25,11 +25,14 @@ Unity初心者でも迷わず操作できるよう、最短ルートと必要な
 - **依存パッケージの自動導入**：Modular Avatar / lilToon などは自動で追加されます。
 - **Unity初心者でも安心**：迷いやすいポイントを先回りして説明します。
 
+![変換フロー]({{ site.baseurl }}/assets/img/flow.svg)
+
 ---
 
 ## 迷ったときの地図
 
 - [対応アバター / 対応おちびちゃんズ](support.md)
+- [トラブルシューティング](troubleshooting.md)
 - [利用規約・公式リンク](about.md)
 
 ---
