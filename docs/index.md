@@ -2,6 +2,7 @@
 layout: home
 title: おちびちゃんズ化ツール Ochibi-chans Tool
 nav_order: 1
+nav_enabled: false
 ---
 
 # おちびちゃんズ化ツール Ochibi-chans Tool
