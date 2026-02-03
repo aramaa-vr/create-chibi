@@ -25,9 +25,9 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
 
 詳しい手順は以下のページにまとめています。
 
-1. [導入ガイド（最初にやること）]({% link install.md %})
-2. [使い方（ワンクリック変換）]({% link usage.md %})
-3. [よくある質問・トラブル]({% link faq.md %})
+1. [導入ガイド（最初にやること）]({{ site.baseurl }}{% link install.md %})
+2. [使い方（ワンクリック変換）]({{ site.baseurl }}{% link usage.md %})
+3. [よくある質問・トラブル]({{ site.baseurl }}{% link faq.md %})
 
 ---
 
@@ -52,17 +52,17 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
 
 ## 迷ったときの地図
 
-- [対応アバター / 対応おちびちゃんズ]({% link support.md %})
-- [トラブルシューティング]({% link troubleshooting.md %})
-- [利用規約・公式リンク]({% link about.md %})
+- [対応アバター / 対応おちびちゃんズ]({{ site.baseurl }}{% link support.md %})
+- [トラブルシューティング]({{ site.baseurl }}{% link troubleshooting.md %})
+- [利用規約・公式リンク]({{ site.baseurl }}{% link about.md %})
 
 ---
 
 ## よくあるつまずき（先に回避）
 
-- **VCCにリポジトリを追加していない** → [導入ガイド]({% link install.md %})の手順1へ
-- **メニューが見つからない** → [FAQ]({% link faq.md %})の「メニューに表示されません」を確認
-- **変換後の見た目が違う** → [FAQ]({% link faq.md %})の「マテリアルが変わる」を確認
+- **VCCにリポジトリを追加していない** → [導入ガイド]({{ site.baseurl }}{% link install.md %})の手順1へ
+- **メニューが見つからない** → [FAQ]({{ site.baseurl }}{% link faq.md %})の「メニューに表示されません」を確認
+- **変換後の見た目が違う** → [FAQ]({{ site.baseurl }}{% link faq.md %})の「マテリアルが変わる」を確認
 
 ---
 

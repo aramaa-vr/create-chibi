@@ -64,5 +64,5 @@ nav_order: 6
 
 ## 次に読む
 
-- [使い方（ワンクリック変換）]({% link usage.md %})
-- [利用規約・公式リンク]({% link about.md %})
+- [使い方（ワンクリック変換）]({{ site.baseurl }}{% link usage.md %})
+- [利用規約・公式リンク]({{ site.baseurl }}{% link about.md %})

@@ -40,5 +40,5 @@ nav_order: 3
 
 ## 次に読む
 
-- [よくある質問・トラブル]({% link faq.md %})
-- [対応アバター / 対応おちびちゃんズ]({% link support.md %})
+- [よくある質問・トラブル]({{ site.baseurl }}{% link faq.md %})
+- [対応アバター / 対応おちびちゃんズ]({{ site.baseurl }}{% link support.md %})
