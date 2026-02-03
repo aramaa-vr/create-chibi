@@ -6,11 +6,11 @@ nav_order: 1
 
 # おちびちゃんズ化ツール Ochibi-chans Tool
 
-VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張です。必要なパッケージと設定をまとめて整え、短い手順で変換できます。
+VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張です。
 
 <div class="landing-hero">
   <h2>迷わず始めるアバター変換</h2>
-  <p>導入 → 変換 → 確認までを、最短で進めるための情報だけを掲載しています。</p>
+  <p>導入 → 変換 → 確認までを、必要な手順に絞って掲載しています。</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="https://aramaa-vr.github.io/vpm-repos/redirect.html">🚀 Add to VCC（リポジトリ追加）</a>
     <a class="btn" href="{{ site.baseurl }}{% link install.md %}">📘 導入ガイドを開く</a>
