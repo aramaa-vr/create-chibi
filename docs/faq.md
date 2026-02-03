@@ -3,31 +3,33 @@ title: よくある質問・トラブル
 nav_order: 4
 ---
 
-# よくある質問・トラブル
+# よくある質問（FAQ）
+
+短い答えだけまとめています。具体的な手順が必要な場合は [トラブルシューティング]({% link troubleshooting.md %}) を確認してください。
 
 ---
 
 ## ツールがメニューに表示されません
 
-**まず確認すること:** VCCでCreateChibiがインストール済みか / Unity再起動
+**短い答え:** CreateChibiがインストール済みか確認し、Unityを再起動します。
 
 ---
 
 ## 変換後にマテリアルが変わったように見えます
 
-**まず確認すること:** lilToon / Modular Avatar の設定読み込み
+**短い答え:** lilToon / Modular Avatar の設定が正しく読み込まれているか確認します。
 
 ---
 
 ## アップロードしてもVRChatで表示が崩れます
 
-**まず確認すること:** Build & Test / Consoleエラーの解消
+**短い答え:** Build & TestでConsoleエラーを解消してからアップロードします。
 
 ---
 
 ## 変換後のアバターが重い / FPSが下がります
 
-**まず確認すること:** 不要オブジェクト / Modular Avatarの統合
+**短い答え:** 不要オブジェクトの整理やModular Avatarの統合を見直します。
 
 ---
 
@@ -39,6 +41,6 @@ nav_order: 4
 
 ## 次に読む
 
-- より詳しい対処は [トラブルシューティング]({% link troubleshooting.md %}) を確認してください。
+- 具体的な手順は [トラブルシューティング]({% link troubleshooting.md %}) へ。
 - [導入ガイド（最初にやること）]({% link install.md %})
 - [使い方（ワンクリック変換）]({% link usage.md %})
