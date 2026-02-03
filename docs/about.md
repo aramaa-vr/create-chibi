@@ -31,5 +31,5 @@ https://raw.githubusercontent.com/aramaa-vr/create-chibi/master/Assets/Aramaa/Cr
 
 ## 次に読む
 
-- [導入ガイド（最初にやること）]({% link install.md %})
-- [対応アバター / 対応おちびちゃんズ]({% link support.md %})
+- [導入ガイド（最初にやること）]({{ site.baseurl }}{% link install.md %})
+- [対応アバター / 対応おちびちゃんズ]({{ site.baseurl }}{% link support.md %})

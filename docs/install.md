@@ -52,5 +52,5 @@ nav_order: 2
 
 ## 次に読む
 
-- [使い方（ワンクリック変換）]({% link usage.md %})
-- [よくある質問・トラブル]({% link faq.md %})
+- [使い方（ワンクリック変換）]({{ site.baseurl }}{% link usage.md %})
+- [よくある質問・トラブル]({{ site.baseurl }}{% link faq.md %})

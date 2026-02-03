@@ -5,7 +5,7 @@ nav_order: 4
 
 # よくある質問（FAQ）
 
-短い答えだけまとめています。具体的な手順が必要な場合は [トラブルシューティング]({% link troubleshooting.md %}) を確認してください。
+短い答えだけまとめています。具体的な手順が必要な場合は [トラブルシューティング]({{ site.baseurl }}{% link troubleshooting.md %}) を確認してください。
 
 ---
 
@@ -35,12 +35,12 @@ nav_order: 4
 
 ## どのアバターが対応しているかわかりません
 
-- [対応アバター / 対応おちびちゃんズ]({% link support.md %})で一覧を確認できます。
+- [対応アバター / 対応おちびちゃんズ]({{ site.baseurl }}{% link support.md %})で一覧を確認できます。
 
 ---
 
 ## 次に読む
 
-- 具体的な手順は [トラブルシューティング]({% link troubleshooting.md %}) へ。
-- [導入ガイド（最初にやること）]({% link install.md %})
-- [使い方（ワンクリック変換）]({% link usage.md %})
+- 具体的な手順は [トラブルシューティング]({{ site.baseurl }}{% link troubleshooting.md %}) へ。
+- [導入ガイド（最初にやること）]({{ site.baseurl }}{% link install.md %})
+- [使い方（ワンクリック変換）]({{ site.baseurl }}{% link usage.md %})
