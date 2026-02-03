@@ -9,6 +9,10 @@ plugins:
 
 search_enabled: true
 
+just_the_docs:
+  custom_css:
+    - assets/css/custom.css
+
 aux_links:
   Docs Repo: "https://github.com/aramaa-vr/create-chibi"
   Tool Repo: "https://github.com/aramaa-vr/create-chibi"

@@ -1,0 +1,112 @@
+.landing-hero {
+  background: linear-gradient(135deg, #fff1f8 0%, #f5f4ff 45%, #effcff 100%);
+  border: 2px solid rgba(255, 182, 215, 0.55);
+  border-radius: 24px;
+  padding: 2.6rem 2.3rem;
+  margin: 1.5rem 0 2rem;
+  box-shadow: 0 20px 45px rgba(255, 186, 213, 0.28);
+}
+
+.landing-hero h1 {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  margin-bottom: 0.6rem;
+}
+
+.landing-hero p {
+  font-size: 1.08rem;
+  color: #475169;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+}
+
+.hero-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.info-grid {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 1.5rem 0 2rem;
+}
+
+.info-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fff7fb 100%);
+  border-radius: 16px;
+  padding: 1.3rem 1.4rem;
+  border: 1.5px solid rgba(255, 184, 214, 0.4);
+  box-shadow: 0 15px 28px rgba(255, 186, 213, 0.2);
+}
+
+.info-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+}
+
+.info-card p {
+  margin: 0;
+  color: #505872;
+}
+
+.step-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.step-item {
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fefcff 0%, #f4f7ff 100%);
+  padding: 1.05rem 1.25rem;
+  border: 1.5px solid rgba(165, 198, 255, 0.45);
+}
+
+.step-item strong {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.quick-links {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 1rem 0 2.5rem;
+}
+
+.quick-link {
+  border-radius: 16px;
+  border: 1.5px solid rgba(255, 192, 214, 0.45);
+  padding: 1.15rem 1.25rem;
+  background: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quick-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(255, 186, 213, 0.25);
+}
+
+.quick-link a {
+  font-weight: 600;
+}
+
+.notice-callout {
+  background: linear-gradient(135deg, #fff7e7 0%, #fff0f9 100%);
+  border-radius: 14px;
+  padding: 1.1rem 1.3rem;
+  border: 1.5px solid rgba(255, 198, 140, 0.55);
+  margin: 1rem 0 2rem;
+}
+
+.notice-callout strong {
+  display: block;
+  margin-bottom: 0.4rem;
+}
