@@ -1,7 +1,7 @@
 title: CreateChibi - おちびちゃんズ化ツール
 description: VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張の説明書
 url: "https://aramaa-vr.github.io"
-baseurl: "/create-chibi-webpage-docs"
+baseurl: "/create-chibi"
 
 remote_theme: just-the-docs/just-the-docs
 plugins:
@@ -10,7 +10,7 @@ plugins:
 search_enabled: true
 
 aux_links:
-  Docs Repo: "https://github.com/aramaa-vr/create-chibi-webpage-docs"
+  Docs Repo: "https://github.com/aramaa-vr/create-chibi"
   Tool Repo: "https://github.com/aramaa-vr/create-chibi"
   Booth: "https://aramaa.booth.pm/items/7906711"
   Discord: "https://discord.gg/BJ3BpVnMna"
