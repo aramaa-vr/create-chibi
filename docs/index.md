@@ -74,36 +74,6 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
   Unity 2022.3 / VCC / 変換元アバター / おちびちゃんズ Prefab
 </div>
 
-## もっと詳しく知りたいとき
-
-<div class="info-grid">
-  <div class="info-card">
-    <h3>📘 導入ガイド</h3>
-    <p>必要な環境やインストール手順を確認できます。</p>
-    <a class="btn" href="{{ site.baseurl }}{% link install.md %}">導入ガイドへ</a>
-  </div>
-  <div class="info-card">
-    <h3>✨ 使い方</h3>
-    <p>実際の操作手順や変換の流れをまとめています。</p>
-    <a class="btn" href="{{ site.baseurl }}{% link usage.md %}">使い方へ</a>
-  </div>
-  <div class="info-card">
-    <h3>❓ サポート</h3>
-    <p>トラブル時の確認先やよくある質問を案内します。</p>
-    <a class="btn" href="{{ site.baseurl }}{% link support.md %}">サポートへ</a>
-  </div>
-  <div class="info-card">
-    <h3>🧩 FAQ</h3>
-    <p>よくある質問を素早く確認できます。</p>
-    <a class="btn" href="{{ site.baseurl }}{% link faq.md %}">FAQへ</a>
-  </div>
-  <div class="info-card">
-    <h3>🛠️ トラブルシューティング</h3>
-    <p>エラーや導入時の問題を解決する手順です。</p>
-    <a class="btn" href="{{ site.baseurl }}{% link troubleshooting.md %}">解決手順へ</a>
-  </div>
-</div>
-
 ## 変換フロー
 
 ![変換フロー]({{ site.baseurl }}/assets/img/flow.svg)
