@@ -58,15 +58,6 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
 
 ---
 
-## 公式リンク
-
-- [Docs Repo](https://github.com/aramaa-vr/create-chibi)
-- [Tool Repo](https://github.com/aramaa-vr/create-chibi)
-- [Booth](https://aramaa.booth.pm/items/7906711)
-- [Discord](https://discord.gg/BJ3BpVnMna)
-
----
-
 ## よくあるつまずき（先に回避）
 
 - **VCCにリポジトリを追加していない** → [導入ガイド]({% link install.md %})の手順1へ
