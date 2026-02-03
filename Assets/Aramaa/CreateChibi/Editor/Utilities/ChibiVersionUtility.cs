@@ -34,7 +34,8 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            var request = UnityWebRequest.Get(url);
+            var requestUrl = AppendCacheBuster(url);
+            var request = UnityWebRequest.Get(requestUrl);
             request.timeout = 10;
 
             var operation = request.SendWebRequest();
@@ -188,6 +189,13 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
 
             return trimmed;
+        }
+
+        private static string AppendCacheBuster(string url)
+        {
+            var separator = url.Contains("?") ? "&" : "?";
+            var cacheBuster = DateTime.UtcNow.Ticks;
+            return $"{url}{separator}t={cacheBuster}";
         }
 
         private readonly struct VersionParts
