@@ -25,5 +25,5 @@ nav_order: 7
 
 ## 次に読む
 
-- [導入ガイド（最初にやること）](install.md)
-- [対応アバター / 対応おちびちゃんズ](support.md)
+- [導入ガイド（最初にやること）]({% link install.md %})
+- [対応アバター / 対応おちびちゃんズ]({% link support.md %})
