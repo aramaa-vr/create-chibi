@@ -30,6 +30,8 @@
 !KNOWN_ISSUES*
 !Tools/
 !Tools/**
+!docs/
+!docs/**
 
 # =========================
 # Cache
