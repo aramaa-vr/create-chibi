@@ -115,10 +115,15 @@
   display: none;
 }
 
+.home .nav-toggle,
+.home .side-bar-toggle {
+  display: none;
+}
+
 .home .main {
   margin-left: 0;
 }
 
 .home .main-content {
-  max-width: 100%;
+  max-width: 1200px;
 }
