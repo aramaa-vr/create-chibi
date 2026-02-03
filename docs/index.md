@@ -9,28 +9,12 @@ nav_order: 1
 VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張です。
 
 <div class="landing-hero">
-  <h2>VRChatアバター変換ツール</h2>
+  <h2>迷わず始めるアバター変換</h2>
+  <p>導入 → 変換 → 確認の流れをまとめています。</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="https://aramaa-vr.github.io/vpm-repos/redirect.html">🚀 Add to VCC（リポジトリ追加）</a>
     <a class="btn" href="{{ site.baseurl }}{% link install.md %}">📘 導入ガイドを開く</a>
     <a class="btn" href="{{ site.baseurl }}{% link usage.md %}">✨ 使い方を見る</a>
-  </div>
-</div>
-
-## できること（特長）
-
-<div class="info-grid">
-  <div class="info-card">
-    <h3>🧩 ワンクリック変換</h3>
-    <p>Hierarchyでアバターを右クリックするだけ。複雑な設定は不要です。</p>
-  </div>
-  <div class="info-card">
-    <h3>📦 依存パッケージ自動導入</h3>
-    <p>Modular Avatar / lilToon など必要なものを自動で揃えます。</p>
-  </div>
-  <div class="info-card">
-    <h3>🧪 安心の複製変換</h3>
-    <p>元アバターは残り、コピー側にだけ変換が適用されます。</p>
   </div>
 </div>
 
@@ -52,8 +36,8 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
 </div>
 
 <div class="notice-callout">
-  <strong>💡 まず確認しておくと安心</strong>
-  Unity 2022.3 / VCC / 変換元アバター / おちびちゃんズ Prefab が必要です。
+  <strong>✅ 事前に揃えるもの</strong>
+  Unity 2022.3 / VCC / 変換元アバター / おちびちゃんズ Prefab
 </div>
 
 ## 変換フロー

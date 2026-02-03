@@ -110,3 +110,20 @@
   display: block;
   margin-bottom: 0.4rem;
 }
+
+.home .side-bar {
+  display: none;
+}
+
+.home .nav-toggle,
+.home .side-bar-toggle {
+  display: none;
+}
+
+.home .main {
+  margin-left: 0;
+}
+
+.home .main-content {
+  max-width: 1200px;
+}
