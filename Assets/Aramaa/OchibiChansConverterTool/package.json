@@ -12,8 +12,11 @@
     "license": "Custom",
     "legacyFolders": {
         "Assets\\Aramaa\\CreateChibi": "8dc75c6781b7d8f448e588df13d4acf2",
-        "Assets\\Aramaa\\OchibiChansConverterTool": "8dc75c6781b7d8f448e588df13d4acf2"
+        "Assets\\Aramaa\\OchibiChansConverterTool": "fd5f8d663fa54724c944a861b3d6f9c2"
     },
+    "legacyPackages": [
+        "jp.aramaa.create-chibi"
+    ],
     "author": {
         "name": "あらまあ素敵なショップ"
     },
