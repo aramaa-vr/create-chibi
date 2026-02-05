@@ -11,6 +11,7 @@
     "licensesUrl": "https://github.com/aramaa-vr/ochibi-chans-converter-tool/blob/master/LICENSE",
     "license": "Custom",
     "legacyFolders": {
+        "Assets\\Aramaa\\CreateChibi": "8dc75c6781b7d8f448e588df13d4acf2",
         "Assets\\Aramaa\\OchibiChansConverterTool": "8dc75c6781b7d8f448e588df13d4acf2"
     },
     "author": {
