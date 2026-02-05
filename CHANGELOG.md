@@ -8,7 +8,7 @@
 - FaceMeshSignature の一致判定を追加（MeshId一致に加え、Prefab GUID/Name・FBX GUID/Name・AssetPath でも一致判定できる）
 
 ### Changed
-- Prefab検索キャッシュの保存先を **EditorUserSettings** から **Library/Aramaa/CreateChibi/FaceMeshCache.v7.json** に変更（VCS非対象のローカルキャッシュ）
+- Prefab検索キャッシュの保存先を **EditorUserSettings** から **Library/Aramaa/OchibiChansConverterTool/FaceMeshCache.v7.json** に変更（VCS非対象のローカルキャッシュ）
 - キャッシュ互換バージョンを **v1 → v7** に更新（保存項目に PrefabGuid/PrefabName/FbxGuid/FbxName/FaceMeshAssetPath を追加）
 - 顔メッシュ取得処理を MeshId ベースから Signature ベースへ変更（TryGetFaceMeshId → TryGetFaceMeshSignature）
 

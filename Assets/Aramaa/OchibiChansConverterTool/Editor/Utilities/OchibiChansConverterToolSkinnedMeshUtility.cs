@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiSkinnedMeshUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolSkinnedMeshUtility.cs
 //
 // ============================================================================
 // 概要
@@ -29,12 +29,12 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// SkinnedMeshRenderer の BlendShape ウェイトのみを安全に同期するユーティリティです。
     /// </summary>
-    internal static class ChibiSkinnedMeshUtility
+    internal static class OchibiChansConverterToolSkinnedMeshUtility
     {
         /// <summary>
         /// ベース（srcRoot）内の SkinnedMeshRenderer を走査し、
@@ -213,7 +213,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(dstSmr, ChibiLocalization.Get("Undo.SyncBlendShapes"));
+            Undo.RecordObject(dstSmr, OchibiChansConverterToolLocalization.Get("Undo.SyncBlendShapes"));
 
             // まずは SerializedObject で m_BlendShapeWeights を直接編集
             try
@@ -261,7 +261,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception ex)
             {
-                Debug.LogWarning(ChibiLocalization.Format("Warning.SerializedBlendshapeCopyFailed", dstNameForLog, ex.Message));
+                Debug.LogWarning(OchibiChansConverterToolLocalization.Format("Warning.SerializedBlendshapeCopyFailed", dstNameForLog, ex.Message));
             }
 
             // フォールバック：SetBlendShapeWeight を使う
@@ -289,7 +289,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception ex)
             {
-                Debug.LogWarning(ChibiLocalization.Format("Warning.BlendshapeCopyFailed", dstNameForLog, ex.Message));
+                Debug.LogWarning(OchibiChansConverterToolLocalization.Format("Warning.BlendshapeCopyFailed", dstNameForLog, ex.Message));
             }
         }
 
@@ -309,11 +309,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             var stats = CollectBlendShapeNameStats(srcRoot, dstRoot);
 
-            logs.Add(ChibiLocalization.Format("Log.BlendshapeSyncSummary", stats.RendererPairs, stats.TotalBlendShapeNames));
+            logs.Add(OchibiChansConverterToolLocalization.Format("Log.BlendshapeSyncSummary", stats.RendererPairs, stats.TotalBlendShapeNames));
 
             if (stats.Items == null || stats.Items.Count == 0)
             {
-                logs.Add(ChibiLocalization.Get("Log.BlendshapeNoRenderer"));
+                logs.Add(OchibiChansConverterToolLocalization.Get("Log.BlendshapeNoRenderer"));
                 return;
             }
 
@@ -321,12 +321,12 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             {
                 if (item.BlendShapeNames == null || item.BlendShapeNames.Count == 0)
                 {
-                    logs.Add(ChibiLocalization.Format("Log.BlendshapeRendererZero", item.RendererPath));
+                    logs.Add(OchibiChansConverterToolLocalization.Format("Log.BlendshapeRendererZero", item.RendererPath));
                     continue;
                 }
 
                 // ここでは “名前だけ” を表示（値は表示しない）
-                logs.Add(ChibiLocalization.Format("Log.BlendshapeRendererDetail", item.RendererPath, item.BlendShapeNames.Count, string.Join(", ", item.BlendShapeNames)));
+                logs.Add(OchibiChansConverterToolLocalization.Format("Log.BlendshapeRendererDetail", item.RendererPath, item.BlendShapeNames.Count, string.Join(", ", item.BlendShapeNames)));
             }
         }
 

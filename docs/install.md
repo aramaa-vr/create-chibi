@@ -24,7 +24,7 @@ nav_order: 2
 
 1. **[Add to VCC](https://aramaa-vr.github.io/vpm-repos/redirect.html)** をクリックして、VCCへリポジトリを追加します。
 2. VCCの **Settings → Packages → Installed Repositories** で「aramaa」が有効になっていることを確認します。
-3. アバタープロジェクトの **Manage Project** から「おちびちゃんズ化ツール create-chibi」をインストールします。
+3. アバタープロジェクトの **Manage Project** から「おちびちゃんズ化ツール ochibi-chans-converter-tool」をインストールします。
 
 > ⚠️ 依存パッケージは自動で入るので、基本的に追加作業は不要です。
 

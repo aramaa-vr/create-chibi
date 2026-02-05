@@ -1,17 +1,18 @@
 {
-    "name": "jp.aramaa.create-chibi",
+    "name": "jp.aramaa.ochibi-chans-converter-tool",
     "version": "0.3.4",
-    "url": "https://github.com/aramaa-vr/create-chibi/releases/download/0.3.4/jp.aramaa.create-chibi-0.3.4.zip",
+    "url": "https://github.com/aramaa-vr/ochibi-chans-converter-tool/releases/download/0.3.4/jp.aramaa.ochibi-chans-converter-tool-0.3.4.zip",
     "displayName": "Ochibi-chans おちびちゃんズ化ツール",
     "description": "VRChatアバター向けのおちびちゃんズ化ツール（Unity Editor拡張）。Hierarchyで元のアバターを選択し、「Aramaa > Ochibi-chans おちびちゃんズ化ツール」から変換先のおちびちゃんズを選んで実行します（初回起動時はロードあり）。",
     "unity": "2022.3",
     "unityRelease": "22f1",
-    "documentationUrl": "https://github.com/aramaa-vr/create-chibi/blob/master/README.md",
-    "changelogUrl": "https://github.com/aramaa-vr/create-chibi/blob/master/CHANGELOG.md",
-    "licensesUrl": "https://github.com/aramaa-vr/create-chibi/blob/master/LICENSE",
+    "documentationUrl": "https://github.com/aramaa-vr/ochibi-chans-converter-tool/blob/master/README.md",
+    "changelogUrl": "https://github.com/aramaa-vr/ochibi-chans-converter-tool/blob/master/CHANGELOG.md",
+    "licensesUrl": "https://github.com/aramaa-vr/ochibi-chans-converter-tool/blob/master/LICENSE",
     "license": "Custom",
     "legacyFolders": {
-        "Assets\\Aramaa\\CreateChibi": "8dc75c6781b7d8f448e588df13d4acf2"
+        "Assets\\Aramaa\\CreateChibi": "8dc75c6781b7d8f448e588df13d4acf2",
+        "Assets\\Aramaa\\OchibiChansConverterTool": "8dc75c6781b7d8f448e588df13d4acf2"
     },
     "author": {
         "name": "あらまあ素敵なショップ"
@@ -32,6 +33,6 @@
         "Editor",
         "おちびちゃんズ",
         "変換",
-        "CreateChibi"
+        "OchibiChansConverterTool"
     ]
 }

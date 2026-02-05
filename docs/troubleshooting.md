@@ -12,7 +12,7 @@ nav_order: 5
 
 ## まず確認すること（共通）
 
-- VCCで CreateChibi が **Installed** になっているか
+- VCCで OchibiChansConverterTool が **Installed** になっているか
 - UnityのConsoleにエラーが出ていないか
 - Scene上のアバターを選んでいるか（Project上のPrefabではない）
 
@@ -43,7 +43,7 @@ nav_order: 5
 
 3) キャッシュが古い / 壊れている  
 → Unityを閉じて、次のキャッシュファイルを削除してから開き直してください。  
-`Library/Aramaa/CreateChibi/FaceMeshCache.v7.json`
+`Library/Aramaa/OchibiChansConverterTool/FaceMeshCache.v7.json`
 
 ---
 
@@ -57,5 +57,5 @@ nav_order: 5
 
 ## それでも直らないとき
 
-Discordで状況を共有してください（Unityバージョン / CreateChibiバージョン / 対象アバター / Consoleログ）。  
+Discordで状況を共有してください（Unityバージョン / OchibiChansConverterToolバージョン / 対象アバター / Consoleログ）。  
 https://discord.gg/BJ3BpVnMna

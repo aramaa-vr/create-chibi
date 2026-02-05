@@ -27,7 +27,7 @@ VRChatアバターを「おちびちゃんズ」向けに変換するUnity Edito
     Add to VCCボタンから登録します。
   </div>
   <div class="step-item">
-    <strong>2. CreateChibiをインストール</strong>
+    <strong>2. OchibiChansConverterToolをインストール</strong>
     追加したリポジトリからパッケージを導入。
   </div>
   <div class="step-item">

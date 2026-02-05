@@ -10,8 +10,8 @@
 ## 2. バージョン情報の更新
 
 * package.json の 「"version": "x.y.z",」 を変更
-* package.json の 「"url": ".../x.y.z/jp.aramaa.create-chibi-x.y.z.zip?」 パスを変更
-* ChibiEditorConstants.csの 「ToolVersion = "x.y.z"」 を変更
+* package.json の 「"url": ".../x.y.z/jp.aramaa.ochibi-chans-converter-tool-x.y.z.zip?」 パスを変更
+* OchibiChansConverterToolEditorConstants.csの 「ToolVersion = "x.y.z"」 を変更
 * Tools/create_vpm_zip.shの「readonly DEFAULT_VERSION="x.y.z"」を変更
 
 ## 3. コミットとプッシュ

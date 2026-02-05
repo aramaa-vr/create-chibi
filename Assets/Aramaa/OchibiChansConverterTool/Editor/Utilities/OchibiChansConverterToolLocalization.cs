@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiLocalization.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolLocalization.cs
 //
 // =====================================================================
 // 概要
 // =====================================================================
-// - CreateChibi Editor 拡張の文字列を JSON から読み込むローカライザです。
+// - OchibiChansConverterTool Editor 拡張の文字列を JSON から読み込むローカライザです。
 // - OS 言語を初期値にしつつ、EditorPrefs で上書きできます。
 //
 // =====================================================================
@@ -16,12 +16,12 @@ using UnityEditor;
 using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
-    internal static class ChibiLocalization
+    internal static class OchibiChansConverterToolLocalization
     {
-        private const string EditorPrefsKey = "Aramaa.CreateChibi.Language";
-        private const string LocalizationSubdirectory = "CreateChibi";
+        private const string EditorPrefsKey = "Aramaa.OchibiChansConverterTool.Language";
+        private const string LocalizationSubdirectory = "OchibiChansConverterTool";
         private const string LanguageJapanese = "ja";
         private const string LanguageEnglish = "en";
         private const string LanguageChineseSimplified = "zh-Hans";
@@ -168,7 +168,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             if (!File.Exists(jsonPath))
             {
-                Debug.LogWarning($"[CreateChibi] Localization file missing: {jsonPath}");
+                Debug.LogWarning($"[OchibiChansConverterTool] Localization file missing: {jsonPath}");
                 if (!string.Equals(languageCode, LanguageEnglish, StringComparison.OrdinalIgnoreCase))
                 {
                     LoadStringsFromLanguage(LanguageEnglish);
@@ -202,7 +202,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         private static string GetLocalizationRootPath()
         {
             var candidates = new List<string>();
-            var packageInfo = PackageInfo.FindForAssembly(typeof(ChibiLocalization).Assembly);
+            var packageInfo = PackageInfo.FindForAssembly(typeof(OchibiChansConverterToolLocalization).Assembly);
             if (packageInfo != null && !string.IsNullOrEmpty(packageInfo.resolvedPath))
             {
                 candidates.Add(Path.Combine(
@@ -216,7 +216,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             candidates.Add(Path.Combine(
                 projectRoot,
                 "Packages",
-                "jp.aramaa.create-chibi",
+                "jp.aramaa.ochibi-chans-converter-tool",
                 "Editor",
                 "Localization",
                 LocalizationSubdirectory));
@@ -224,7 +224,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             candidates.Add(Path.Combine(
                 Application.dataPath,
                 "Aramaa",
-                "CreateChibi",
+                "OchibiChansConverterTool",
                 "Editor",
                 "Localization",
                 LocalizationSubdirectory));

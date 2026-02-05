@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiChansConversionLogUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolConversionLogUtility.cs
 //
 // ============================================================================
 // 概要
@@ -25,12 +25,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// 変換ログのフォーマットを共通化するユーティリティです。
     /// </summary>
-    internal static class ChibiChansConversionLogUtility
+    internal static class OchibiChansConverterToolConversionLogUtility
     {
         /// <summary>
         /// Transform の階層パスを "Root/Child/..." 形式で返します。
@@ -39,7 +39,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (t == null)
             {
-                return ChibiLocalization.Get("Log.NullValue");
+                return OchibiChansConverterToolLocalization.Get("Log.NullValue");
             }
 
             var names = new List<string>(32);
@@ -61,7 +61,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (obj == null)
             {
-                return ChibiLocalization.Get("Log.NoneValue");
+                return OchibiChansConverterToolLocalization.Get("Log.NoneValue");
             }
 
             string path = AssetDatabase.GetAssetPath(obj);

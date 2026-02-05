@@ -1,6 +1,6 @@
 {
-  "name": "Aramaa.CreateChibi.Editor",
-  "rootNamespace": "Aramaa.CreateChibi",
+  "name": "Aramaa.OchibiChansConverterTool.Editor",
+  "rootNamespace": "Aramaa.OchibiChansConverterTool",
   "references": [
     "nadena.dev.modular-avatar.core",
     "VRC.SDK3A"

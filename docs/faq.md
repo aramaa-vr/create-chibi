@@ -11,7 +11,7 @@ nav_order: 4
 
 ## ツールがメニューに表示されません
 
-**短い答え:** CreateChibiがインストール済みか確認し、Unityを再起動します。
+**短い答え:** OchibiChansConverterToolがインストール済みか確認し、Unityを再起動します。
 
 ---
 

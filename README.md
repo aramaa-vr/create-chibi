@@ -1,4 +1,4 @@
-# 🍼 おちびちゃんズ化ツール create-chibi
+# 🍼 おちびちゃんズ化ツール ochibi-chans-converter-tool
 
 Hierarchyで選択した改変済みアバターを、ワンクリックでおちびちゃんズ化するツールです。
 
@@ -12,7 +12,7 @@ https://aramaa.booth.pm/items/7906711
 ## 📦 インストール (VCC)
 1. **[Add to VCC](https://aramaa-vr.github.io/vpm-repos/redirect.html)** を押し、VCCにインストールします。
 2. VCCで「`Settings → Packages → Installed Repositories`」の一覧中で「`aramaa`」にチェックが付いていることを確認します。
-3. アバタープロジェクトの「Manage Project」から「おちびちゃんズ化ツール create-chibi」をインストールします。
+3. アバタープロジェクトの「Manage Project」から「おちびちゃんズ化ツール ochibi-chans-converter-tool」をインストールします。
 * ⚠️ 依存パッケージ（MA, lilToon等）は自動でインストールされます。
 
 ## 🚀 使い方

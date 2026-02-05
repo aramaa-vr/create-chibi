@@ -47,11 +47,11 @@
     },
     {
       "key": "Error.DuplicateFailed",
-      "value": "[CreateChibi] Ctrl+D 相当の複製に失敗しました。変換は実行しません。"
+      "value": "[OchibiChansConverterTool] Ctrl+D 相当の複製に失敗しました。変換は実行しません。"
     },
     {
       "key": "Error.SourcePrefabPathMissing",
-      "value": "[CreateChibi] sourceChibiPrefab のアセットパス取得に失敗しました。"
+      "value": "[OchibiChansConverterTool] sourceChibiPrefab のアセットパス取得に失敗しました。"
     },
     {
       "key": "Help.ExecuteQueued",
@@ -415,7 +415,7 @@
     },
     {
       "key": "Log.QueuedApply",
-      "value": "[CreateChibi] Queued apply: target='{0}', sourcePrefab='{1}'"
+      "value": "[OchibiChansConverterTool] Queued apply: target='{0}', sourcePrefab='{1}'"
     },
     {
       "key": "Log.RootScaleApplied",
@@ -518,8 +518,8 @@
       "value": "View Position をコピー"
     },
     {
-      "key": "Undo.CreateChibiSyncBlendShapes",
-      "value": "CreateChibi Sync BlendShapes"
+      "key": "Undo.OchibiChansConverterToolSyncBlendShapes",
+      "value": "OchibiChansConverterTool Sync BlendShapes"
     },
     {
       "key": "Undo.DuplicateApply",
@@ -583,23 +583,23 @@
     },
     {
       "key": "Warning.AddMenuPrefabMissing",
-      "value": "[CreateChibi] sourceChibiPrefab 内に...chibichans_Addmenu のネストPrefab参照が見つかりませんでした。追加メニューの付与はスキップします。"
+      "value": "[OchibiChansConverterTool] sourceChibiPrefab 内に...chibichans_Addmenu のネストPrefab参照が見つかりませんでした。追加メニューの付与はスキップします。"
     },
     {
       "key": "Warning.BlendshapeCopyFailed",
-      "value": "[ChibiApply] Blendshape copy failed for SMR on {0}: {1}"
+      "value": "[OchibiChansConverterTool] Blendshape copy failed for SMR on {0}: {1}"
     },
     {
       "key": "Warning.FaceMeshCacheLoadFailed",
-      "value": "[CreateChibi] フェイスメッシュキャッシュの読み込みに失敗しました: {0}"
+      "value": "[OchibiChansConverterTool] フェイスメッシュキャッシュの読み込みに失敗しました: {0}"
     },
     {
       "key": "Warning.FaceMeshCacheSaveFailed",
-      "value": "[CreateChibi] フェイスメッシュキャッシュの保存に失敗しました: {0}"
+      "value": "[OchibiChansConverterTool] フェイスメッシュキャッシュの保存に失敗しました: {0}"
     },
     {
       "key": "Warning.SerializedBlendshapeCopyFailed",
-      "value": "[ChibiApply] Serialized blendshape copy failed for SMR on {0}: {1}"
+      "value": "[OchibiChansConverterTool] Serialized blendshape copy failed for SMR on {0}: {1}"
     },
     {
       "key": "Window.Description",

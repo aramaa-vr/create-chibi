@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiVersionUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolVersionUtility.cs
 //
 // ============================================================================
 // 概要
@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
-    internal enum ChibiVersionStatus
+    internal enum OchibiChansConverterToolVersionStatus
     {
         Unknown,
         UpToDate,
@@ -24,13 +24,13 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         Ahead
     }
 
-    internal static class ChibiVersionUtility
+    internal static class OchibiChansConverterToolVersionUtility
     {
-        public static void FetchLatestVersionAsync(string url, Action<ChibiVersionFetchResult> onComplete)
+        public static void FetchLatestVersionAsync(string url, Action<OchibiChansConverterToolVersionFetchResult> onComplete)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                onComplete?.Invoke(ChibiVersionFetchResult.Failure(ChibiLocalization.Get("Version.ErrorMissingUrl")));
+                onComplete?.Invoke(OchibiChansConverterToolVersionFetchResult.Failure(OchibiChansConverterToolLocalization.Get("Version.ErrorMissingUrl")));
                 return;
             }
 
@@ -45,18 +45,18 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 {
                     if (request.result != UnityWebRequest.Result.Success)
                     {
-                        onComplete?.Invoke(ChibiVersionFetchResult.Failure(request.error));
+                        onComplete?.Invoke(OchibiChansConverterToolVersionFetchResult.Failure(request.error));
                         return;
                     }
 
                     var latestVersion = ExtractVersionFromResponse(request.downloadHandler.text);
                     if (string.IsNullOrWhiteSpace(latestVersion))
                     {
-                        onComplete?.Invoke(ChibiVersionFetchResult.Failure(ChibiLocalization.Get("Version.ExtractFailed")));
+                        onComplete?.Invoke(OchibiChansConverterToolVersionFetchResult.Failure(OchibiChansConverterToolLocalization.Get("Version.ExtractFailed")));
                         return;
                     }
 
-                    onComplete?.Invoke(ChibiVersionFetchResult.Success(latestVersion));
+                    onComplete?.Invoke(OchibiChansConverterToolVersionFetchResult.Success(latestVersion));
                 }
                 finally
                 {
@@ -65,20 +65,20 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             };
         }
 
-        public static ChibiVersionStatus GetVersionStatus(string currentVersion, string latestVersion)
+        public static OchibiChansConverterToolVersionStatus GetVersionStatus(string currentVersion, string latestVersion)
         {
             if (string.IsNullOrWhiteSpace(currentVersion) || string.IsNullOrWhiteSpace(latestVersion))
             {
-                return ChibiVersionStatus.Unknown;
+                return OchibiChansConverterToolVersionStatus.Unknown;
             }
 
             var comparison = CompareVersions(currentVersion, latestVersion);
             if (comparison == 0)
             {
-                return ChibiVersionStatus.UpToDate;
+                return OchibiChansConverterToolVersionStatus.UpToDate;
             }
 
-            return comparison < 0 ? ChibiVersionStatus.UpdateAvailable : ChibiVersionStatus.Ahead;
+            return comparison < 0 ? OchibiChansConverterToolVersionStatus.UpdateAvailable : OchibiChansConverterToolVersionStatus.Ahead;
         }
 
         private static int CompareVersions(string currentVersion, string latestVersion)
@@ -217,9 +217,9 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         }
     }
 
-    internal readonly struct ChibiVersionFetchResult
+    internal readonly struct OchibiChansConverterToolVersionFetchResult
     {
-        private ChibiVersionFetchResult(string latestVersion, string error)
+        private OchibiChansConverterToolVersionFetchResult(string latestVersion, string error)
         {
             LatestVersion = latestVersion;
             Error = error;
@@ -229,14 +229,14 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         public string Error { get; }
         public bool Succeeded => string.IsNullOrWhiteSpace(Error);
 
-        public static ChibiVersionFetchResult Success(string latestVersion)
+        public static OchibiChansConverterToolVersionFetchResult Success(string latestVersion)
         {
-            return new ChibiVersionFetchResult(latestVersion, null);
+            return new OchibiChansConverterToolVersionFetchResult(latestVersion, null);
         }
 
-        public static ChibiVersionFetchResult Failure(string error)
+        public static OchibiChansConverterToolVersionFetchResult Failure(string error)
         {
-            return new ChibiVersionFetchResult(null, error);
+            return new OchibiChansConverterToolVersionFetchResult(null, error);
         }
     }
 }

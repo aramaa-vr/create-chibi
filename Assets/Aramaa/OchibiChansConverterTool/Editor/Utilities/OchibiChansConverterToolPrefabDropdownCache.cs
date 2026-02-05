@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiChansPrefabDropdownCache.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolPrefabDropdownCache.cs
 //
 // ============================================================================
 // 概要
@@ -31,14 +31,14 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 #endif
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// アバターの顔メッシュ情報を基に、候補となるおちびちゃんズ Prefab の一覧を作るキャッシュです。
     /// </summary>
-    internal sealed class ChibiChansPrefabDropdownCache
+    internal sealed class OchibiChansConverterToolPrefabDropdownCache
     {
-        private const string BaseFolder = ChibiEditorConstants.BaseFolder;
+        private const string BaseFolder = OchibiChansConverterToolEditorConstants.BaseFolder;
 
         // Library に保存するファイル名（プロジェクト単位・ユーザー単位）。
         // 末尾の v7 は「キャッシュ互換性（このキャッシュを再利用して良いか）」のバージョン。
@@ -481,7 +481,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception e)
             {
-                Debug.LogWarning(ChibiLocalization.Format("Warning.FaceMeshCacheLoadFailed", e.Message));
+                Debug.LogWarning(OchibiChansConverterToolLocalization.Format("Warning.FaceMeshCacheLoadFailed", e.Message));
             }
         }
 
@@ -519,14 +519,14 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
             catch (Exception e)
             {
-                Debug.LogWarning(ChibiLocalization.Format("Warning.FaceMeshCacheSaveFailed", e.Message));
+                Debug.LogWarning(OchibiChansConverterToolLocalization.Format("Warning.FaceMeshCacheSaveFailed", e.Message));
             }
         }
 
         private static string GetFaceMeshCacheFilePath()
         {
             var projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
-            return Path.Combine(projectRoot, "Library", "Aramaa", "CreateChibi", FaceMeshCacheFileName);
+            return Path.Combine(projectRoot, "Library", "Aramaa", "OchibiChansConverterTool", FaceMeshCacheFileName);
         }
 
         private static bool TryParseHash128(string value, out Hash128 hash)
