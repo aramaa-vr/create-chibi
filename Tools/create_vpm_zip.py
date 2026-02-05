@@ -14,11 +14,11 @@ import sys
 import zipfile
 from pathlib import Path
 
-ZIP_NAME_PREFIX = "jp.aramaa.create-chibi"
+ZIP_NAME_PREFIX = "jp.aramaa.ochibi-chans-converter-tool"
 ROOT_DIR = Path(__file__).resolve().parents[1]
-SOURCE_DIR = ROOT_DIR / "Assets/Aramaa/CreateChibi"
+SOURCE_DIR = ROOT_DIR / "Assets/Aramaa/OchibiChansConverterTool"
 BUILD_DIR = ROOT_DIR / "Build"
-PACKAGE_JSON = ROOT_DIR / "Assets/Aramaa/CreateChibi/package.json"
+PACKAGE_JSON = ROOT_DIR / "Assets/Aramaa/OchibiChansConverterTool/package.json"
 
 
 def parse_args() -> argparse.Namespace:

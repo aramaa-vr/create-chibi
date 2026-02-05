@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/DuplicateLikeCtrlD.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/DuplicateLikeCtrlD.cs
 //
 // ============================================================================
 // 概要
@@ -29,7 +29,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// Edit/Duplicate と同じ挙動で Scene 上の GameObject を複製します。

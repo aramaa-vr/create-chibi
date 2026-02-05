@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Windows/ChibiChansConversionApplier.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Windows/OchibiChansConverterToolConversionApplier.cs
 //
 // ============================================================================
 // 概要
@@ -29,25 +29,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Aramaa.CreateChibi.Editor.Utilities;
+using Aramaa.OchibiChansConverterTool.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Aramaa.CreateChibi.Editor
+namespace Aramaa.OchibiChansConverterTool.Editor
 {
     /// <summary>
     /// 選択中アバターを Ctrl+D 相当で複製し、変換元 Prefab の設定を複製先に同期するエディターツールです。
     /// </summary>
-    public static class ChibiChansConversionApplier
+    public static class OchibiChansConverterToolConversionApplier
     {
-        private const string ToolVersion = ChibiEditorConstants.ToolVersion;
-        private const string LatestVersionUrl = ChibiEditorConstants.LatestVersionUrl;
-        private const string SupportDiscordUrl = ChibiEditorConstants.SupportDiscordUrl;
-        private const string ToolsMenuPath = ChibiEditorConstants.ToolsMenuPath;
-        private const string GameObjectMenuPath = ChibiEditorConstants.GameObjectMenuPath;
-        private static string ToolWindowTitle => ChibiLocalization.Get("Tool.Name");
-        private static string LogWindowTitle => ChibiLocalization.Get("Tool.LogWindowTitle");
+        private const string ToolVersion = OchibiChansConverterToolEditorConstants.ToolVersion;
+        private const string LatestVersionUrl = OchibiChansConverterToolEditorConstants.LatestVersionUrl;
+        private const string SupportDiscordUrl = OchibiChansConverterToolEditorConstants.SupportDiscordUrl;
+        private const string ToolsMenuPath = OchibiChansConverterToolEditorConstants.ToolsMenuPath;
+        private const string GameObjectMenuPath = OchibiChansConverterToolEditorConstants.GameObjectMenuPath;
+        private static string ToolWindowTitle => OchibiChansConverterToolLocalization.Get("Tool.Name");
+        private static string LogWindowTitle => OchibiChansConverterToolLocalization.Get("Tool.LogWindowTitle");
 
         // ------------------------------------------------------------
         // MenuItem（入口）
@@ -64,11 +64,11 @@ namespace Aramaa.CreateChibi.Editor
             var selected = Selection.activeGameObject;
             if (selected != null && !EditorUtility.IsPersistent(selected) && selected.scene.IsValid() && selected.scene.isLoaded)
             {
-                ChibiConversionSourcePrefabWindow.Show(selected);
+                OchibiChansConverterToolConversionSourcePrefabWindow.Show(selected);
                 return;
             }
 
-            ChibiConversionSourcePrefabWindow.Show(null);
+            OchibiChansConverterToolConversionSourcePrefabWindow.Show(null);
         }
 
         [MenuItem(ToolsMenuPath, validate = true)]
@@ -83,7 +83,7 @@ namespace Aramaa.CreateChibi.Editor
         {
             // GameObject メニューは “選択オブジェクト” を対象として起動する。
             var selected = Selection.activeGameObject;
-            ChibiConversionSourcePrefabWindow.Show(selected);
+            OchibiChansConverterToolConversionSourcePrefabWindow.Show(selected);
         }
 
         [MenuItem(GameObjectMenuPath, validate = true)]
@@ -107,7 +107,7 @@ namespace Aramaa.CreateChibi.Editor
         /// - Ochibichans_Addmenu は sourceChibiPrefab の内部にある想定のため、
         ///   Prefab 内のネストされた Prefab インスタンスから該当アセットを探索して追加します。
         /// </summary>
-        private sealed class ChibiConversionSourcePrefabWindow : EditorWindow
+        private sealed class OchibiChansConverterToolConversionSourcePrefabWindow : EditorWindow
         {
             // ------------------------------------------------------------
             // 見た目（ウィンドウサイズ）
@@ -116,7 +116,7 @@ namespace Aramaa.CreateChibi.Editor
             private static readonly Vector2 WindowMinSize = new Vector2(430, 510);
 
             // 二重起動防止：既に開いているウィンドウがあればそれを使う
-            private static ChibiConversionSourcePrefabWindow _opened;
+            private static OchibiChansConverterToolConversionSourcePrefabWindow _opened;
 
             // 二重実行防止：ボタン連打で複数回の delayCall が積まれるのを防ぐ
             private bool _applyQueued;
@@ -128,14 +128,14 @@ namespace Aramaa.CreateChibi.Editor
             private bool _versionCheckInProgress;
             private string _latestVersion;
             private string _versionError;
-            private ChibiVersionStatus _versionStatus = ChibiVersionStatus.Unknown;
+            private OchibiChansConverterToolVersionStatus _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
 
             // 変換対象（Hierarchy で選択されているアバター）
             private GameObject _sourceTarget;
 
             // 変換元（おちびちゃんズ側）Prefab アセット（Project 上の Prefab）
             private GameObject _sourcePrefabAsset;
-            private readonly ChibiChansPrefabDropdownCache _prefabDropdownCache = new ChibiChansPrefabDropdownCache();
+            private readonly OchibiChansConverterToolPrefabDropdownCache _prefabDropdownCache = new OchibiChansConverterToolPrefabDropdownCache();
 
             /// <summary>
             /// 変換ウィンドウを表示します（既に開いていればフォーカスするだけ）。
@@ -157,8 +157,8 @@ namespace Aramaa.CreateChibi.Editor
                 }
 
                 // なければ作成
-                var titleWithVersion = ChibiLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
-                var w = GetWindow<ChibiConversionSourcePrefabWindow>(utility: true, title: titleWithVersion, focus: true);
+                var titleWithVersion = OchibiChansConverterToolLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
+                var w = GetWindow<OchibiChansConverterToolConversionSourcePrefabWindow>(utility: true, title: titleWithVersion, focus: true);
                 _opened = w;
 
                 w.minSize = WindowMinSize;
@@ -182,7 +182,7 @@ namespace Aramaa.CreateChibi.Editor
                     _opened = null;
                 }
 
-                ChibiChansPrefabDropdownCache.SaveCacheToDisk();
+                OchibiChansConverterToolPrefabDropdownCache.SaveCacheToDisk();
             }
 
             private void OnEnable()
@@ -191,7 +191,7 @@ namespace Aramaa.CreateChibi.Editor
                 _versionCheckInProgress = false;
                 _latestVersion = null;
                 _versionError = null;
-                _versionStatus = ChibiVersionStatus.Unknown;
+                _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
             }
 
             private void OnGUI()
@@ -217,7 +217,7 @@ namespace Aramaa.CreateChibi.Editor
                 EnsureVersionCheck();
                 DrawVersionStatus();
 
-                EditorGUILayout.LabelField(ChibiLocalization.Get("Window.Description"), EditorStyles.wordWrappedLabel);
+                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), EditorStyles.wordWrappedLabel);
 
                 // ------------------------------------------------------------
                 // 入力欄（参照指定）
@@ -253,7 +253,7 @@ namespace Aramaa.CreateChibi.Editor
 
             private void UpdateWindowTitle()
             {
-                var titleWithVersion = ChibiLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
+                var titleWithVersion = OchibiChansConverterToolLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
                 if (titleContent == null || titleContent.text != titleWithVersion)
                 {
                     titleContent = new GUIContent(titleWithVersion);
@@ -264,12 +264,12 @@ namespace Aramaa.CreateChibi.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField(ChibiLocalization.Get("Language.Label"), GUILayout.Width(140));
-                    var currentIndex = ChibiLocalization.GetLanguageIndex();
-                    var nextIndex = EditorGUILayout.Popup(currentIndex, ChibiLocalization.GetLanguageDisplayNames());
+                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Language.Label"), GUILayout.Width(140));
+                    var currentIndex = OchibiChansConverterToolLocalization.GetLanguageIndex();
+                    var nextIndex = EditorGUILayout.Popup(currentIndex, OchibiChansConverterToolLocalization.GetLanguageDisplayNames());
                     if (nextIndex != currentIndex)
                     {
-                        ChibiLocalization.SetLanguage(ChibiLocalization.GetLanguageCodeFromIndex(nextIndex));
+                        OchibiChansConverterToolLocalization.SetLanguage(OchibiChansConverterToolLocalization.GetLanguageCodeFromIndex(nextIndex));
                     }
                 }
             }
@@ -285,28 +285,28 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (string.IsNullOrWhiteSpace(LatestVersionUrl))
                 {
-                    _versionError = ChibiLocalization.Get("Version.ErrorMissingUrl");
-                    _versionStatus = ChibiVersionStatus.Unknown;
+                    _versionError = OchibiChansConverterToolLocalization.Get("Version.ErrorMissingUrl");
+                    _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                     return;
                 }
 
                 _versionCheckInProgress = true;
                 _versionError = null;
                 _latestVersion = null;
-                _versionStatus = ChibiVersionStatus.Unknown;
+                _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
 
-                ChibiVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
+                OchibiChansConverterToolVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
                 {
                     _versionCheckInProgress = false;
                     if (!result.Succeeded)
                     {
                         _versionError = result.Error;
-                        _versionStatus = ChibiVersionStatus.Unknown;
+                        _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                         return;
                     }
 
                     _latestVersion = result.LatestVersion;
-                    _versionStatus = ChibiVersionUtility.GetVersionStatus(ToolVersion, _latestVersion);
+                    _versionStatus = OchibiChansConverterToolVersionUtility.GetVersionStatus(ToolVersion, _latestVersion);
                 });
             }
 
@@ -315,35 +315,35 @@ namespace Aramaa.CreateChibi.Editor
                 if (_versionCheckInProgress)
                 {
                     color = SelectStatusColor(new Color(0.2f, 0.6f, 1f), new Color(0.1f, 0.3f, 0.8f));
-                    return ChibiLocalization.Format("Version.Checking", ToolVersion);
+                    return OchibiChansConverterToolLocalization.Format("Version.Checking", ToolVersion);
                 }
 
                 if (!string.IsNullOrWhiteSpace(_versionError))
                 {
                     color = SelectStatusColor(new Color(0.95f, 0.35f, 0.35f), new Color(0.7f, 0.15f, 0.15f));
-                    return ChibiLocalization.Format("Version.CheckFailed", ToolVersion, _versionError);
+                    return OchibiChansConverterToolLocalization.Format("Version.CheckFailed", ToolVersion, _versionError);
                 }
 
                 if (string.IsNullOrWhiteSpace(_latestVersion))
                 {
                     color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                    return ChibiLocalization.Format("Version.NoInfo", ToolVersion);
+                    return OchibiChansConverterToolLocalization.Format("Version.NoInfo", ToolVersion);
                 }
 
                 switch (_versionStatus)
                 {
-                    case ChibiVersionStatus.UpdateAvailable:
+                    case OchibiChansConverterToolVersionStatus.UpdateAvailable:
                         color = SelectStatusColor(new Color(1f, 0.65f, 0.2f), new Color(0.8f, 0.45f, 0.1f));
-                        return ChibiLocalization.Format("Version.Available", ToolVersion, _latestVersion);
-                    case ChibiVersionStatus.Ahead:
+                        return OchibiChansConverterToolLocalization.Format("Version.Available", ToolVersion, _latestVersion);
+                    case OchibiChansConverterToolVersionStatus.Ahead:
                         color = SelectStatusColor(new Color(0.4f, 0.75f, 1f), new Color(0.15f, 0.5f, 0.8f));
-                        return ChibiLocalization.Format("Version.Ahead", ToolVersion, _latestVersion);
-                    case ChibiVersionStatus.UpToDate:
+                        return OchibiChansConverterToolLocalization.Format("Version.Ahead", ToolVersion, _latestVersion);
+                    case OchibiChansConverterToolVersionStatus.UpToDate:
                         color = SelectStatusColor(new Color(0.35f, 0.8f, 0.4f), new Color(0.15f, 0.55f, 0.2f));
-                        return ChibiLocalization.Format("Version.UpToDate", ToolVersion, _latestVersion);
+                        return OchibiChansConverterToolLocalization.Format("Version.UpToDate", ToolVersion, _latestVersion);
                     default:
                         color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
-                        return ChibiLocalization.Format("Version.Unknown", ToolVersion);
+                        return OchibiChansConverterToolLocalization.Format("Version.Unknown", ToolVersion);
                 }
             }
 
@@ -365,7 +365,7 @@ namespace Aramaa.CreateChibi.Editor
             /// </summary>
             private void DrawTargetObjectField()
             {
-                EditorGUILayout.LabelField(ChibiLocalization.Get("Section.SourceAvatarLabel"), EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Section.SourceAvatarLabel"), EditorStyles.boldLabel);
 
                 EditorGUI.BeginChangeCheck();
                 var nextTarget = (GameObject)EditorGUILayout.ObjectField(_sourceTarget, typeof(GameObject), allowSceneObjects: true);
@@ -378,14 +378,14 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_sourceTarget == null)
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectSourceAvatar"), MessageType.Warning);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SelectSourceAvatar"), MessageType.Warning);
                     return;
                 }
 
                 // Project 上のアセットを入れてしまった場合は対象外（実行条件を明確化）
                 if (EditorUtility.IsPersistent(_sourceTarget))
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SourceAvatarAssetInvalid"), MessageType.Error);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SourceAvatarAssetInvalid"), MessageType.Error);
                     _sourceTarget = null;
                     _prefabDropdownCache.MarkNeedsRefresh();
                 }
@@ -396,7 +396,7 @@ namespace Aramaa.CreateChibi.Editor
             /// </summary>
             private void DrawSourcePrefabObjectField()
             {
-                EditorGUILayout.LabelField(ChibiLocalization.Get("Section.TargetPrefabLabel"), EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Section.TargetPrefabLabel"), EditorStyles.boldLabel);
 
                 _prefabDropdownCache.RefreshIfNeeded(_sourceTarget);
 
@@ -404,9 +404,9 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (!hasCandidates)
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NoPrefabCandidates"), MessageType.Info);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.NoPrefabCandidates"), MessageType.Info);
 
-                    EditorGUILayout.LabelField(ChibiLocalization.Get("Section.ManualPrefabLabel"), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Section.ManualPrefabLabel"), EditorStyles.boldLabel);
                     EditorGUI.BeginChangeCheck();
                     var manualPrefab = (GameObject)EditorGUILayout.ObjectField(_sourcePrefabAsset, typeof(GameObject), allowSceneObjects: false);
                     if (EditorGUI.EndChangeCheck())
@@ -416,22 +416,22 @@ namespace Aramaa.CreateChibi.Editor
 
                     if (_sourcePrefabAsset == null)
                     {
-                        EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
+                        EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
                         return;
                     }
 
                     if (!IsPrefabAsset(_sourcePrefabAsset))
                     {
-                        EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
+                        EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
                         return;
                     }
 
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.ManualPrefabWarning"), MessageType.Warning);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.ManualPrefabWarning"), MessageType.Warning);
                     return;
                 }
 
                 var currentIndex = _prefabDropdownCache.SelectedIndex;
-                var nextIndex = EditorGUILayout.Popup(ChibiLocalization.Get("Label.CandidateList"), currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
+                var nextIndex = EditorGUILayout.Popup(OchibiChansConverterToolLocalization.Get("Label.CandidateList"), currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
                 if (nextIndex != currentIndex)
                 {
                     _prefabDropdownCache.ApplySelection(nextIndex);
@@ -445,13 +445,13 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_sourcePrefabAsset == null)
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
                     return;
                 }
 
                 if (!IsPrefabAsset(_sourcePrefabAsset))
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.NotPrefabSelected"), MessageType.Error);
                 }
             }
 
@@ -469,7 +469,7 @@ namespace Aramaa.CreateChibi.Editor
 
                 using (new EditorGUI.DisabledScope(!canExecute))
                 {
-                    if (GUILayout.Button(ChibiLocalization.Get("Button.Execute"), GUILayout.Height(32)))
+                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), GUILayout.Height(32)))
                     {
                         QueueApplyFromFields();
                     }
@@ -477,13 +477,13 @@ namespace Aramaa.CreateChibi.Editor
 
                 if (_applyQueued)
                 {
-                    EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.ExecuteQueued"), MessageType.Info);
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.ExecuteQueued"), MessageType.Info);
                 }
             }
 
             private void DrawLogToggle()
             {
-                _showLogs = EditorGUILayout.ToggleLeft(ChibiLocalization.Get("Toggle.ShowLogs"), _showLogs);
+                _showLogs = EditorGUILayout.ToggleLeft(OchibiChansConverterToolLocalization.Get("Toggle.ShowLogs"), _showLogs);
             }
 
             private void OpenDiscord()
@@ -501,7 +501,7 @@ namespace Aramaa.CreateChibi.Editor
                             wordWrap = true
                         };
 
-                        if (GUILayout.Button(ChibiLocalization.Get("Button.DiscordHelp"), linkStyle))
+                        if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), linkStyle))
                         {
                             Application.OpenURL(SupportDiscordUrl);
                         }
@@ -511,8 +511,8 @@ namespace Aramaa.CreateChibi.Editor
 
             private void DrawMaboneProxyToggle()
             {
-                _applyMaboneProxyProcessing = EditorGUILayout.ToggleLeft(ChibiLocalization.Get("Toggle.MaboneProxy"), _applyMaboneProxyProcessing);
-                EditorGUILayout.HelpBox(ChibiLocalization.Get("Help.MaboneProxy"), MessageType.Info);
+                _applyMaboneProxyProcessing = EditorGUILayout.ToggleLeft(OchibiChansConverterToolLocalization.Get("Toggle.MaboneProxy"), _applyMaboneProxyProcessing);
+                EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.MaboneProxy"), MessageType.Info);
             }
 
             /// <summary>
@@ -529,9 +529,9 @@ namespace Aramaa.CreateChibi.Editor
                 if (_sourceTarget == null || EditorUtility.IsPersistent(_sourceTarget))
                 {
                     EditorUtility.DisplayDialog(
-                        ChibiLocalization.Get("Dialog.ToolTitle"),
-                        ChibiLocalization.Get("Dialog.SelectSourceAvatar"),
-                        ChibiLocalization.Get("Dialog.Ok")
+                        OchibiChansConverterToolLocalization.Get("Dialog.ToolTitle"),
+                        OchibiChansConverterToolLocalization.Get("Dialog.SelectSourceAvatar"),
+                        OchibiChansConverterToolLocalization.Get("Dialog.Ok")
                     );
                     return;
                 }
@@ -539,9 +539,9 @@ namespace Aramaa.CreateChibi.Editor
                 if (_sourcePrefabAsset == null || !IsPrefabAsset(_sourcePrefabAsset))
                 {
                     EditorUtility.DisplayDialog(
-                        ChibiLocalization.Get("Dialog.ToolTitle"),
-                        ChibiLocalization.Get("Dialog.SelectSourcePrefab"),
-                        ChibiLocalization.Get("Dialog.Ok")
+                        OchibiChansConverterToolLocalization.Get("Dialog.ToolTitle"),
+                        OchibiChansConverterToolLocalization.Get("Dialog.SelectSourcePrefab"),
+                        OchibiChansConverterToolLocalization.Get("Dialog.Ok")
                     );
                     return;
                 }
@@ -552,7 +552,7 @@ namespace Aramaa.CreateChibi.Editor
                 var capturedTargets = new[] { _sourceTarget };
                 var capturedApplyMaboneProxyProcessing = _applyMaboneProxyProcessing;
 
-                Debug.Log(ChibiLocalization.Format("Log.QueuedApply", capturedTargets[0].name, capturedSourcePrefab.name));
+                Debug.Log(OchibiChansConverterToolLocalization.Format("Log.QueuedApply", capturedTargets[0].name, capturedSourcePrefab.name));
 
                 // ウィンドウは閉じず、次の Editor ループで実行（OnGUI中の変更を避ける）
                 // 次の Editor ループで実行（Ctrl+D 相当の複製もここで行う）
@@ -562,7 +562,7 @@ namespace Aramaa.CreateChibi.Editor
 
                     try
                     {
-                        ChibiChansConversionPipeline.DuplicateThenApply(
+                        OchibiChansConverterToolConversionPipeline.DuplicateThenApply(
                             capturedSourcePrefab,
                             capturedTargets,
                             capturedApplyMaboneProxyProcessing,
@@ -571,7 +571,7 @@ namespace Aramaa.CreateChibi.Editor
                     }
                     catch (Exception e)
                     {
-                        logs.Add(ChibiLocalization.Get("Log.Error.ExceptionOccurred"));
+                        logs.Add(OchibiChansConverterToolLocalization.Get("Log.Error.ExceptionOccurred"));
                         Debug.LogException(e);
                     }
                     finally
@@ -582,7 +582,7 @@ namespace Aramaa.CreateChibi.Editor
                         if (_showLogs)
                         {
                             // ログウィンドウを表示（メインウィンドウ内には表示しない）
-                            ChibiConversionLogWindow.ShowLogs(LogWindowTitle, logs);
+                            OchibiChansConverterToolConversionLogWindow.ShowLogs(LogWindowTitle, logs);
                         }
 
                         Repaint();

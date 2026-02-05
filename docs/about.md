@@ -25,7 +25,7 @@ nav_order: 7
 
 ## 最新バージョン確認URL（ツール内定数）
 
-https://raw.githubusercontent.com/aramaa-vr/create-chibi/master/Assets/Aramaa/CreateChibi/package.json
+https://raw.githubusercontent.com/aramaa-vr/ochibi-chans-converter-tool/master/Assets/Aramaa/OchibiChansConverterTool/package.json
 
 ---
 

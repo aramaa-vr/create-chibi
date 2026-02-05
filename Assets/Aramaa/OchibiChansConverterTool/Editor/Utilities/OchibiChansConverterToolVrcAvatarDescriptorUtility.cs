@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiVrcAvatarDescriptorUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolVrcAvatarDescriptorUtility.cs
 //
 // ============================================================================
 // 概要
@@ -28,12 +28,12 @@ using VRC.Core;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// VRCAvatarDescriptor の設定を安全に読み書きするユーティリティです。
     /// </summary>
-    internal static class ChibiVrcAvatarDescriptorUtility
+    internal static class OchibiChansConverterToolVrcAvatarDescriptorUtility
     {
         /// <summary>
         /// VRCAvatarDescriptor から Animator を取得します。
@@ -222,7 +222,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(descriptor, ChibiLocalization.Get("Undo.SetFxPlayableLayer"));
+            Undo.RecordObject(descriptor, OchibiChansConverterToolLocalization.Get("Undo.SetFxPlayableLayer"));
 
             descriptor.customizeAnimationLayers = true;
 
@@ -288,7 +288,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            Undo.RecordObject(descriptor, ChibiLocalization.Get("Undo.SetExpressionsReferences"));
+            Undo.RecordObject(descriptor, OchibiChansConverterToolLocalization.Get("Undo.SetExpressionsReferences"));
 
             if (menu != null)
             {
@@ -328,7 +328,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             var viewPos = srcDesc.ViewPosition;
 
-            Undo.RecordObject(dstDesc, ChibiLocalization.Get("Undo.CopyViewPosition"));
+            Undo.RecordObject(dstDesc, OchibiChansConverterToolLocalization.Get("Undo.CopyViewPosition"));
             dstDesc.ViewPosition = viewPos;
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(dstDesc);
@@ -354,22 +354,22 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             {
                 // ルートに無い場合は「複製対象として想定外」としてスキップします。
                 // （必要なら別途、ルート構成を見直すのが安全です）
-                logs?.Add(ChibiLocalization.Get("Log.BlueprintClearSkippedMissing"));
+                logs?.Add(OchibiChansConverterToolLocalization.Get("Log.BlueprintClearSkippedMissing"));
                 return false;
             }
             if (string.IsNullOrEmpty(pipelineManager.blueprintId))
             {
-                logs?.Add(ChibiLocalization.Get("Log.BlueprintClearSkippedEmpty"));
+                logs?.Add(OchibiChansConverterToolLocalization.Get("Log.BlueprintClearSkippedEmpty"));
                 return false;
             }
 
-            Undo.RecordObject(pipelineManager, ChibiLocalization.Get("Undo.ClearBlueprintId"));
+            Undo.RecordObject(pipelineManager, OchibiChansConverterToolLocalization.Get("Undo.ClearBlueprintId"));
             pipelineManager.blueprintId = string.Empty;
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(pipelineManager);
             EditorUtility.SetDirty(pipelineManager);
 
-            logs?.Add(ChibiLocalization.Get("Log.BlueprintClearApplied"));
+            logs?.Add(OchibiChansConverterToolLocalization.Get("Log.BlueprintClearApplied"));
             return true;
         }
     }

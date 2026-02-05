@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolEditorUtility.cs
 //
 // ============================================================================
 // 概要
@@ -27,12 +27,12 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// Editor 拡張で共有する汎用処理（参照変換や階層探索など）を提供します。
     /// </summary>
-    internal static class ChibiEditorUtility
+    internal static class OchibiChansConverterToolEditorUtility
     {
         // --------------------------------------------------------------------
         // Ctrl+D 相当（Edit/Duplicate）
@@ -117,7 +117,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
 
             Animator animator = null;
-            if (ChibiVrcAvatarDescriptorUtility.TryGetAnimatorFromAvatar(avatarRoot.gameObject, out var vrcAnimator))
+            if (OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetAnimatorFromAvatar(avatarRoot.gameObject, out var vrcAnimator))
             {
                 animator = vrcAnimator;
             }

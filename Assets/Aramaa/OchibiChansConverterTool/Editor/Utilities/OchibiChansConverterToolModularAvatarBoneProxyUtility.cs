@@ -1,5 +1,5 @@
 #if UNITY_EDITOR && CHIBI_MODULAR_AVATAR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiModularAvatarBoneProxyUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolModularAvatarBoneProxyUtility.cs
 //
 // ============================================================================
 // 概要
@@ -14,12 +14,12 @@ using nadena.dev.modular_avatar.core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// Modular Avatar の MABoneProxy を複製物に適用するユーティリティです。
     /// </summary>
-    internal static class ChibiModularAvatarBoneProxyUtility
+    internal static class OchibiChansConverterToolModularAvatarBoneProxyUtility
     {
         private enum ValidationResult
         {
@@ -38,11 +38,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             var proxies = avatarRoot.GetComponentsInChildren<ModularAvatarBoneProxy>(true);
             if (proxies == null || proxies.Length == 0)
             {
-                logs?.Add(ChibiLocalization.Get("Log.MaboneProxyNone"));
+                logs?.Add(OchibiChansConverterToolLocalization.Get("Log.MaboneProxyNone"));
                 return;
             }
 
-            logs?.Add(ChibiLocalization.Format("Log.MaboneProxyCount", proxies.Length));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.MaboneProxyCount", proxies.Length));
 
             var unpackedPrefabRoots = new HashSet<GameObject>();
 
@@ -117,11 +117,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     proxyTransform.localRotation = Quaternion.identity;
                 }
 
-                logs?.Add(ChibiLocalization.Format("Log.MaboneProxyProcessed", ChibiChansConversionLogUtility.GetHierarchyPath(proxyTransform)));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.MaboneProxyProcessed", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(proxyTransform)));
             }
             else
             {
-                logs?.Add(ChibiLocalization.Format("Log.MaboneProxySkipDetail", ChibiChansConversionLogUtility.GetHierarchyPath(proxy.transform), validation));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.MaboneProxySkipDetail", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(proxy.transform), validation));
             }
 
             Object.DestroyImmediate(proxy);
@@ -178,7 +178,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return;
             }
 
-            logs?.Add(ChibiLocalization.Format("Log.MaboneProxyPrefabUnpacked", ChibiChansConversionLogUtility.GetHierarchyPath(instanceRoot.transform)));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.MaboneProxyPrefabUnpacked", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(instanceRoot.transform)));
             PrefabUtility.UnpackPrefabInstance(instanceRoot, PrefabUnpackMode.Completely, InteractionMode.UserAction);
         }
     }

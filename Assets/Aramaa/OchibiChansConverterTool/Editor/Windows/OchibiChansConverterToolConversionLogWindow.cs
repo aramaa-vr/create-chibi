@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Windows/ChibiConversionLogWindow.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Windows/OchibiChansConverterToolConversionLogWindow.cs
 //
 // ============================================================================
 // 概要
 // ============================================================================
-// - CreateChibi の変換処理で「何をどう変更したか」を詳細に表示するログ専用ウィンドウです。
+// - OchibiChansConverterTool の変換処理で「何をどう変更したか」を詳細に表示するログ専用ウィンドウです。
 // - メインウィンドウ（変換UI）にはログを表示せず、別ウィンドウに集約します。
 // - コピーボタンで全文をクリップボードへ送れます。
 //
@@ -15,18 +15,18 @@
 
 using System;
 using System.Collections.Generic;
-using Aramaa.CreateChibi.Editor.Utilities;
+using Aramaa.OchibiChansConverterTool.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aramaa.CreateChibi.Editor
+namespace Aramaa.OchibiChansConverterTool.Editor
 {
     /// <summary>
     /// 変換ログを表示・コピーするための専用ウィンドウです。
     /// </summary>
-    internal sealed class ChibiConversionLogWindow : EditorWindow
+    internal sealed class OchibiChansConverterToolConversionLogWindow : EditorWindow
     {
-        private static ChibiConversionLogWindow _opened;
+        private static OchibiChansConverterToolConversionLogWindow _opened;
 
         private readonly List<string> _logs = new List<string>();
         private string _cachedText = string.Empty;
@@ -41,7 +41,7 @@ namespace Aramaa.CreateChibi.Editor
         {
             if (_opened == null)
             {
-                _opened = CreateInstance<ChibiConversionLogWindow>();
+                _opened = CreateInstance<OchibiChansConverterToolConversionLogWindow>();
                 _opened.minSize = DefaultMinSize;
                 _opened.titleContent = new GUIContent(windowTitle);
                 _opened.ShowUtility(); // “補助ウィンドウ”として表示
@@ -71,7 +71,7 @@ namespace Aramaa.CreateChibi.Editor
                 _logs.AddRange(logs);
             }
 
-            _cachedText = _logs.Count > 0 ? string.Join("\n", _logs) : ChibiLocalization.Get("LogWindow.NoLogs");
+            _cachedText = _logs.Count > 0 ? string.Join("\n", _logs) : OchibiChansConverterToolLocalization.Get("LogWindow.NoLogs");
             _scroll = Vector2.zero;
             Repaint();
         }
@@ -82,14 +82,14 @@ namespace Aramaa.CreateChibi.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button(ChibiLocalization.Get("LogWindow.CopyButton"), GUILayout.Height(24)))
+                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("LogWindow.CopyButton"), GUILayout.Height(24)))
                     {
                         EditorGUIUtility.systemCopyBuffer = _cachedText ?? string.Empty;
                     }
 
                     GUILayout.FlexibleSpace();
 
-                    if (GUILayout.Button(ChibiLocalization.Get("LogWindow.CloseButton"), GUILayout.Width(80), GUILayout.Height(24)))
+                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("LogWindow.CloseButton"), GUILayout.Width(80), GUILayout.Height(24)))
                     {
                         Close();
                         GUIUtility.ExitGUI();

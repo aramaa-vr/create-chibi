@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorConstants.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolEditorConstants.cs
 //
 // =====================================================================
 // 概要
@@ -9,15 +9,15 @@
 //
 // =====================================================================
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
-    /// CreateChibi の Editor 共有定数をまとめます。
+    /// OchibiChansConverterTool の Editor 共有定数をまとめます。
     /// </summary>
-    internal static class ChibiEditorConstants
+    internal static class OchibiChansConverterToolEditorConstants
     {
         public const string ToolVersion = "0.3.4";
-        public const string LatestVersionUrl = "https://raw.githubusercontent.com/aramaa-vr/create-chibi/master/Assets/Aramaa/CreateChibi/package.json";
+        public const string LatestVersionUrl = "https://raw.githubusercontent.com/aramaa-vr/ochibi-chans-converter-tool/master/Assets/Aramaa/OchibiChansConverterTool/package.json";
         public const string SupportDiscordUrl = "https://discord.gg/BJ3BpVnMna";
         public const string ToolsMenuPath = "Tools/Aramaa/Ochibi-chans おちびちゃんズ化ツール";
         public const string GameObjectMenuPath = "GameObject/Aramaa/Ochibi-chans おちびちゃんズ化ツール";

@@ -12,9 +12,9 @@
 !Assets/Aramaa/
 !Assets/Aramaa.meta
 
-!Assets/Aramaa/CreateChibi/
-!Assets/Aramaa/CreateChibi.meta
-!Assets/Aramaa/CreateChibi/**
+!Assets/Aramaa/OchibiChansConverterTool/
+!Assets/Aramaa/OchibiChansConverterTool.meta
+!Assets/Aramaa/OchibiChansConverterTool/**
 
 # =========================
 # Also keep top-level repo files you likely want
@@ -36,9 +36,9 @@
 # =========================
 # Cache
 # =========================
-Assets/Aramaa/CreateChibi/Editor/Cache.meta
-Assets/Aramaa/CreateChibi/Editor/Cache/ChibiFaceMeshCache.json
-Assets/Aramaa/CreateChibi/Editor/Cache/ChibiFaceMeshCache.json.meta
+Assets/Aramaa/OchibiChansConverterTool/Editor/Cache.meta
+Assets/Aramaa/OchibiChansConverterTool/Editor/Cache/ChibiFaceMeshCache.json
+Assets/Aramaa/OchibiChansConverterTool/Editor/Cache/ChibiFaceMeshCache.json.meta
 
 # =========================
 # Explicitly ignore Unity generated / project folders (redundant but clear)

@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiModularAvatarUtility.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolModularAvatarUtility.cs
 //
 // ============================================================================
 // 概要
@@ -33,12 +33,12 @@ using UnityEngine;
 using nadena.dev.modular_avatar.core;
 #endif
 
-namespace Aramaa.CreateChibi.Editor.Utilities
+namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
 {
     /// <summary>
     /// Modular Avatar の Mesh Settings が付いた衣装に対して、スケール・BlendShape を同期します。
     /// </summary>
-    internal static class ChibiModularAvatarUtility
+    internal static class OchibiChansConverterToolModularAvatarUtility
     {
         private const float ScaleEpsilon = 0.0001f;
 
@@ -57,7 +57,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             }
 
             // アバター（変換先）側の Armature を基準に “スケール差分のあるボーン一覧” を作る
-            var dstArmature = ChibiEditorUtility.FindAvatarMainArmature(dstRoot.transform);
+            var dstArmature = OchibiChansConverterToolEditorUtility.FindAvatarMainArmature(dstRoot.transform);
 
             if (dstArmature == null)
             {
@@ -84,7 +84,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 .ToList();
 #else
             // Modular Avatar が入っていない環境では安全にスキップ
-            logs?.Add(ChibiLocalization.Get("Log.ModularAvatarMissing"));
+            logs?.Add(OchibiChansConverterToolLocalization.Get("Log.ModularAvatarMissing"));
             return true;
 #endif
 
@@ -93,8 +93,8 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 return true;
             }
 
-            logs?.Add(ChibiLocalization.Get("Log.CostumeScaleHeader"));
-            logs?.Add(ChibiLocalization.Format("Log.CostumeCount", costumeRoots.Count));
+            logs?.Add(OchibiChansConverterToolLocalization.Get("Log.CostumeScaleHeader"));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeCount", costumeRoots.Count));
 
             var baseBlendShapeWeights = BuildBaseBlendShapeWeightsByMeshAndName(basePrefabRoot, logs);
 
@@ -120,11 +120,11 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             // Base Prefab 側の Armature を基準に「許可する Transform パス」を作ります。
             // これにより、元アバターの Armature 配下に追加したアクセサリ（眼鏡・ヘッドホン等）の
             // “独自Armature” や “拡大縮小した Transform” が、衣装スケール調整に混入する事故を防げます。
-            var baseArmature = ChibiEditorUtility.FindAvatarMainArmature(basePrefabRoot.transform);
+            var baseArmature = OchibiChansConverterToolEditorUtility.FindAvatarMainArmature(basePrefabRoot.transform);
 
             if (baseArmature == null)
             {
-                logs?.Add(ChibiLocalization.Get("Log.BaseArmatureMissing"));
+                logs?.Add(OchibiChansConverterToolLocalization.Get("Log.BaseArmatureMissing"));
                 return null;
             }
 
@@ -140,7 +140,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 paths.Add(GetStableTransformPathWithSiblingIndex(t, baseArmature));
             }
 
-            logs?.Add(ChibiLocalization.Format("Log.BaseArmaturePathCount", paths.Count));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BaseArmaturePathCount", paths.Count));
             return paths;
         }
 
@@ -213,18 +213,18 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             if (allowedArmaturePaths != null)
             {
-                logs?.Add(ChibiLocalization.Format("Log.ArmatureExcludedCount", excludedCount));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.ArmatureExcludedCount", excludedCount));
                 if (excludedPaths.Count > 0)
                 {
-                    logs?.Add(ChibiLocalization.Get("Log.ArmatureExcludedHeader"));
+                    logs?.Add(OchibiChansConverterToolLocalization.Get("Log.ArmatureExcludedHeader"));
                     foreach (var p in excludedPaths)
                     {
-                        logs?.Add(ChibiLocalization.Format("Log.PathEntry", p));
+                        logs?.Add(OchibiChansConverterToolLocalization.Format("Log.PathEntry", p));
                     }
 
                     if (excludedCount > excludedPaths.Count)
                     {
-                        logs?.Add(ChibiLocalization.Get("Log.PathEntryEllipsis"));
+                        logs?.Add(OchibiChansConverterToolLocalization.Get("Log.PathEntryEllipsis"));
                     }
                 }
             }
@@ -259,7 +259,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             // 服（衣装）側の Transform を変更するので、衣装ルートを Undo 対象に登録しておきます。
             // これにより、変換後に Ctrl+Z で元に戻せます。
-            Undo.RegisterFullObjectHierarchyUndo(costumeRoot.gameObject, ChibiLocalization.Get("Undo.AdjustCostumeScales"));
+            Undo.RegisterFullObjectHierarchyUndo(costumeRoot.gameObject, OchibiChansConverterToolLocalization.Get("Undo.AdjustCostumeScales"));
             if (avatarBoneScaleModifiers == null || avatarBoneScaleModifiers.Count == 0)
             {
                 return;
@@ -270,7 +270,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
             // 衣装配下の Transform 一覧（ボーンも含む）
             // Remove しながら回すため List 化します（既存実装の挙動に合わせる）。
             var costumeBones = costumeRoot.GetComponentsInChildren<Transform>(true).ToList();
-            var costumeArmature = ChibiEditorUtility.FindAvatarMainArmature(costumeRoot);
+            var costumeArmature = OchibiChansConverterToolEditorUtility.FindAvatarMainArmature(costumeRoot);
 
             foreach (var modifier in avatarBoneScaleModifiers)
             {
@@ -287,7 +287,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     logs,
                     costumeRoot,
                     modifier.Name,
-                    ChibiLocalization.Get("Log.MatchExact"),
+                    OchibiChansConverterToolLocalization.Get("Log.MatchExact"),
                     ref appliedCount
                 );
 
@@ -299,7 +299,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 // 2) Armature 比較（ヒューマノイドの骨構造比較に近い形でパス一致を見る）
                 if (!string.IsNullOrEmpty(modifier.RelativePath) && costumeArmature != null)
                 {
-                    var normalizedPath = ChibiEditorUtility.NormalizeRelPathFor(costumeArmature, modifier.RelativePath);
+                    var normalizedPath = OchibiChansConverterToolEditorUtility.NormalizeRelPathFor(costumeArmature, modifier.RelativePath);
                     var candidate = string.IsNullOrEmpty(normalizedPath)
                         ? costumeArmature
                         : costumeArmature.Find(normalizedPath);
@@ -315,7 +315,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                             logs,
                             costumeRoot,
                             modifier.Name,
-                            ChibiLocalization.Get("Log.MatchArmature"),
+                            OchibiChansConverterToolLocalization.Get("Log.MatchArmature"),
                             ref appliedCount
                         ))
                     {
@@ -333,12 +333,12 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     logs,
                     costumeRoot,
                     modifier.Name,
-                    ChibiLocalization.Get("Log.MatchContains"),
+                    OchibiChansConverterToolLocalization.Get("Log.MatchContains"),
                     ref appliedCount
                 );
             }
 
-            logs?.Add(ChibiLocalization.Format("Log.CostumeApplied", costumeRoot.name, appliedCount));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeApplied", costumeRoot.name, appliedCount));
         }
 
         private static bool IsNearlyOne(Vector3 s)
@@ -411,9 +411,9 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             if (logs != null)
             {
-                logs.Add(ChibiLocalization.Format(
+                logs.Add(OchibiChansConverterToolLocalization.Format(
                     "Log.CostumeScaleApplied",
-                    costumeRoot?.name ?? ChibiLocalization.Get("Log.NullValue"),
+                    costumeRoot?.name ?? OchibiChansConverterToolLocalization.Get("Log.NullValue"),
                     modifierKey,
                     matchLabel,
                     GetTransformPath(bone, costumeRoot)));
@@ -454,8 +454,8 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 .ThenBy(s => s != null && s.sharedMesh != null ? s.sharedMesh.name : string.Empty)
                 .ToArray();
 
-            logs?.Add(ChibiLocalization.Get("Log.BaseBlendShapeHeader"));
-            logs?.Add(ChibiLocalization.Format("Log.BasePrefabRootSummary", basePrefabRoot.name, smrs.Length));
+            logs?.Add(OchibiChansConverterToolLocalization.Get("Log.BaseBlendShapeHeader"));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BasePrefabRootSummary", basePrefabRoot.name, smrs.Length));
 
             foreach (var smr in smrs)
             {
@@ -477,7 +477,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 }
 
                 var smrPath = GetTransformPath(smr.transform, basePrefabRoot.transform);
-                logs?.Add(ChibiLocalization.Format("Log.BaseSmrSummary", smrPath, mesh.name, count));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BaseSmrSummary", smrPath, mesh.name, count));
 
                 for (int i = 0; i < count; i++)
                 {
@@ -503,7 +503,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                     }
                     else
                     {
-                        logs?.Add(ChibiLocalization.Format("Log.BaseBlendshapeDuplicate", mesh.name, shapeName));
+                        logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BaseBlendshapeDuplicate", mesh.name, shapeName));
                     }
                 }
             }
@@ -524,8 +524,8 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
             var smrs = costumeRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
-            logs?.Add(ChibiLocalization.Format("Log.CostumeBlendshapeHeader", GetTransformPath(costumeRoot, costumeRoot)));
-            logs?.Add(ChibiLocalization.Format("Log.CostumeSmrCount", smrs.Length));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeBlendshapeHeader", GetTransformPath(costumeRoot, costumeRoot)));
+            logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeSmrCount", smrs.Length));
 
             foreach (var smr in smrs)
             {
@@ -539,12 +539,12 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
                 if (mesh == null)
                 {
-                    logs?.Add(ChibiLocalization.Format("Log.CostumeSmrMeshMissing", smrPath));
+                    logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeSmrMeshMissing", smrPath));
                     continue;
                 }
 
                 int count = mesh.blendShapeCount;
-                logs?.Add(ChibiLocalization.Format("Log.CostumeSmrSummary", smrPath, mesh.name, count));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.CostumeSmrSummary", smrPath, mesh.name, count));
 
                 if (count <= 0)
                 {
@@ -558,7 +558,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 for (int i = 0; i < count; i++)
                 {
                     var shapeName = mesh.GetBlendShapeName(i);
-                    logs?.Add(ChibiLocalization.Format("Log.BlendshapeEntry", shapeName));
+                    logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BlendshapeEntry", shapeName));
 
                     if (baseBlendShapeWeights == null)
                     {
@@ -580,7 +580,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
                 }
 
                 // 変更する SMR の Undo を記録（ユーザーが戻せることを最優先）
-                Undo.RecordObject(smr, ChibiLocalization.Get("Undo.CreateChibiSyncBlendShapes"));
+                Undo.RecordObject(smr, OchibiChansConverterToolLocalization.Get("Undo.OchibiChansConverterToolSyncBlendShapes"));
 
                 for (int k = 0; k < toApplyIndices.Count; k++)
                 {
@@ -601,7 +601,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
 
                 // Prefab Instance の差分として残りやすくする（Scene上のオブジェクトのみ）
                 PrefabUtility.RecordPrefabInstancePropertyModifications(smr);
-                logs?.Add(ChibiLocalization.Format("Log.BlendshapeSynced", string.Join(", ", toApplyNames)));
+                logs?.Add(OchibiChansConverterToolLocalization.Format("Log.BlendshapeSynced", string.Join(", ", toApplyNames)));
             }
         }
 
@@ -655,7 +655,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (target == null)
             {
-                return ChibiLocalization.Get("Log.NullValue");
+                return OchibiChansConverterToolLocalization.Get("Log.NullValue");
             }
 
             if (root == null)
@@ -734,7 +734,7 @@ namespace Aramaa.CreateChibi.Editor.Utilities
         {
             if (target == null)
             {
-                return ChibiLocalization.Get("Log.NullValue");
+                return OchibiChansConverterToolLocalization.Get("Log.NullValue");
             }
 
             if (root == null)

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-CreateChibi version update helper.
+OchibiChansConverterTool version update helper.
 
 Usage:
   Tools/update_version.py <version>
   Tools/update_version.py <version> --dry-run
 
 Updates:
-  - Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorConstants.cs (ToolVersion)
-  - Assets/Aramaa/CreateChibi/package.json (version, url)
+  - Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolEditorConstants.cs (ToolVersion)
+  - Assets/Aramaa/OchibiChansConverterTool/package.json (version, url)
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CS_CONSTANTS = ROOT / "Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiEditorConstants.cs"
-PACKAGE_JSON = ROOT / "Assets/Aramaa/CreateChibi/package.json"
+CS_CONSTANTS = ROOT / "Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolEditorConstants.cs"
+PACKAGE_JSON = ROOT / "Assets/Aramaa/OchibiChansConverterTool/package.json"
 
 
 def ensure_file_exists(path: Path) -> None:
@@ -65,8 +65,8 @@ def update_package_json(version: str, dry_run: bool) -> None:
             f"package.json version not updated (matches: {version_count}) in {PACKAGE_JSON}"
         )
     url = (
-        "https://github.com/aramaa-vr/create-chibi/releases/download/"
-        f"{version}/jp.aramaa.create-chibi-{version}.zip"
+        "https://github.com/aramaa-vr/ochibi-chans-converter-tool/releases/download/"
+        f"{version}/jp.aramaa.ochibi-chans-converter-tool-{version}.zip"
     )
     new_content, url_count = re.subn(
         r'("url"\s*:\s*")([^"]+)(")',
@@ -83,7 +83,7 @@ def update_package_json(version: str, dry_run: bool) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Update CreateChibi version references.")
+    parser = argparse.ArgumentParser(description="Update OchibiChansConverterTool version references.")
     parser.add_argument("version", help="New version string (e.g. 0.3.0)")
     parser.add_argument(
         "--dry-run",

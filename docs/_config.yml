@@ -1,7 +1,7 @@
-title: CreateChibi - おちびちゃんズ化ツール
+title: OchibiChansConverterTool - おちびちゃんズ化ツール
 description: VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張の説明書
 url: "https://aramaa-vr.github.io"
-baseurl: "/create-chibi"
+baseurl: "/ochibi-chans-converter-tool"
 
 remote_theme: just-the-docs/just-the-docs
 plugins:
@@ -14,10 +14,10 @@ just_the_docs:
     - assets/css/custom.css
 
 aux_links:
-  Docs Repo: "https://github.com/aramaa-vr/create-chibi"
-  Tool Repo: "https://github.com/aramaa-vr/create-chibi"
+  Docs Repo: "https://github.com/aramaa-vr/ochibi-chans-converter-tool"
+  Tool Repo: "https://github.com/aramaa-vr/ochibi-chans-converter-tool"
   Booth: "https://aramaa.booth.pm/items/7906711"
   Discord: "https://discord.gg/BJ3BpVnMna"
 
 permalink: pretty
-footer_content: "© Aramaa / CreateChibi"
+footer_content: "© Aramaa / OchibiChansConverterTool"

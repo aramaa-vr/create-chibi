@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="320" viewBox="0 0 1024 320" role="img" aria-label="CreateChibi 変換フロー">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="320" viewBox="0 0 1024 320" role="img" aria-label="OchibiChansConverterTool 変換フロー">
   <rect x="0" y="0" width="1024" height="320" fill="#ffffff"/>
   <g font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#111">
-    <text x="40" y="40" font-size="26">CreateChibi 変換フロー（概要）</text>
+    <text x="40" y="40" font-size="26">OchibiChansConverterTool 変換フロー（概要）</text>
     <g>
       <rect x="40" y="90" width="260" height="140" rx="16" fill="#f3f4f6" stroke="#111" stroke-width="2"/>
       <text x="70" y="135" font-size="22">① 変換元アバター</text>

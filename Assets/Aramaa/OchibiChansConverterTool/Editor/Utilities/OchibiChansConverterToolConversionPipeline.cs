@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-// Assets/Aramaa/CreateChibi/Editor/Utilities/ChibiChansConversionPipeline.cs
+// Assets/Aramaa/OchibiChansConverterTool/Editor/Utilities/OchibiChansConverterToolConversionPipeline.cs
 //
 // ============================================================================
 // 概要
@@ -25,22 +25,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Aramaa.CreateChibi.Editor.Utilities;
+using Aramaa.OchibiChansConverterTool.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 #if VRC_SDK_VRCSDK3
 using VRC.SDK3.Avatars.Components;
 #endif
 
-namespace Aramaa.CreateChibi.Editor
+namespace Aramaa.OchibiChansConverterTool.Editor
 {
     /// <summary>
     /// 変換の複製・同期処理をまとめたパイプラインです。
     /// </summary>
-    internal static class ChibiChansConversionPipeline
+    internal static class OchibiChansConverterToolConversionPipeline
     {
-        private static string L(string key) => ChibiLocalization.Get(key);
-        private static string F(string key, params object[] args) => ChibiLocalization.Format(key, args);
+        private static string L(string key) => OchibiChansConverterToolLocalization.Get(key);
+        private static string F(string key, params object[] args) => OchibiChansConverterToolLocalization.Format(key, args);
 
         // --------------------------------------------------------------------
         // 処理の全体像（初心者向け）
@@ -66,7 +66,7 @@ namespace Aramaa.CreateChibi.Editor
             logs ??= new List<string>();
 
             logs.Add(L("Log.Header.Main"));
-            logs.Add(F("Log.ToolVersion", L("Tool.Name"), ChibiEditorConstants.ToolVersion));
+            logs.Add(F("Log.ToolVersion", L("Tool.Name"), OchibiChansConverterToolEditorConstants.ToolVersion));
             logs.Add(F("Log.UnityVersion", Application.unityVersion));
             logs.Add(F("Log.VrcSdkVersion", GetVrcSdkVersionInfo()));
             logs.Add(F("Log.ExecutionTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
@@ -77,7 +77,7 @@ namespace Aramaa.CreateChibi.Editor
             {
                 foreach (var t in sourceTargets.Where(x => x != null))
                 {
-                    logs.Add(F("Log.SourceAvatar", ChibiChansConversionLogUtility.GetHierarchyPath(t.transform)));
+                    logs.Add(F("Log.SourceAvatar", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(t.transform)));
                 }
             }
 
@@ -133,7 +133,7 @@ namespace Aramaa.CreateChibi.Editor
                 logs.Add(L("Log.DuplicateSuccess"));
                 foreach (var d in duplicatedTargets.Where(x => x != null))
                 {
-                    logs.Add(F("Log.DuplicateTarget", ChibiChansConversionLogUtility.GetHierarchyPath(d.transform)));
+                    logs.Add(F("Log.DuplicateTarget", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(d.transform)));
                 }
 
                 logs.Add("");
@@ -147,8 +147,8 @@ namespace Aramaa.CreateChibi.Editor
 #if CHIBI_MODULAR_AVATAR
                     foreach (var duplicated in duplicatedTargets.Where(x => x != null))
                     {
-                        logs.Add(F("Log.TargetEntry", ChibiChansConversionLogUtility.GetHierarchyPath(duplicated.transform)));
-                        ChibiModularAvatarBoneProxyUtility.ProcessBoneProxies(duplicated, logs);
+                        logs.Add(F("Log.TargetEntry", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(duplicated.transform)));
+                        OchibiChansConverterToolModularAvatarBoneProxyUtility.ProcessBoneProxies(duplicated, logs);
                     }
 #else
                     logs.Add(L("Log.MaboneProxySkipped"));
@@ -163,7 +163,7 @@ namespace Aramaa.CreateChibi.Editor
                 logs.Add(L("Log.BlueprintClearHeader"));
                 foreach (var duplicated in duplicatedTargets.Where(x => x != null))
                 {
-                    ChibiVrcAvatarDescriptorUtility.ClearPipelineBlueprintId(duplicated, logs);
+                    OchibiChansConverterToolVrcAvatarDescriptorUtility.ClearPipelineBlueprintId(duplicated, logs);
                 }
                 logs.Add("");
 
@@ -228,12 +228,12 @@ namespace Aramaa.CreateChibi.Editor
                 // --------------------------------------------------------
                 // 変換に必要な参照を sourceChibiPrefab の VRCAvatarDescriptor から抽出
                 // --------------------------------------------------------
-                ChibiVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromBasePrefab(
+                OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromBasePrefab(
                     basePrefabRoot,
                     out var fxController
                 );
 
-                ChibiVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromBasePrefab(
+                OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromBasePrefab(
                     basePrefabRoot,
                     out var expressionsMenu,
                     out var expressionParameters
@@ -248,15 +248,15 @@ namespace Aramaa.CreateChibi.Editor
                 foreach (var dstRoot in targets)
                 {
                     logs.Add(L("Log.Separator"));
-                    logs.Add(F("Log.TargetEntry", ChibiChansConversionLogUtility.GetHierarchyPath(dstRoot.transform)));
+                    logs.Add(F("Log.TargetEntry", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(dstRoot.transform)));
 
                     // 実行前の参照（FX / Menu / Parameters）を取得してログ用に保持（値は出さない）
-                    ChibiVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromAvatar(dstRoot, out var fxBefore);
-                    ChibiVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromAvatar(dstRoot, out var menuBefore, out var paramsBefore);
+                    OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromAvatar(dstRoot, out var fxBefore);
+                    OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromAvatar(dstRoot, out var menuBefore, out var paramsBefore);
 
-                    logs.Add(F("Log.FxBefore", ChibiChansConversionLogUtility.FormatAssetRef(fxBefore)));
-                    logs.Add(F("Log.MenuBefore", ChibiChansConversionLogUtility.FormatAssetRef(menuBefore)));
-                    logs.Add(F("Log.ParametersBefore", ChibiChansConversionLogUtility.FormatAssetRef(paramsBefore)));
+                    logs.Add(F("Log.FxBefore", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(fxBefore)));
+                    logs.Add(F("Log.MenuBefore", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(menuBefore)));
+                    logs.Add(F("Log.ParametersBefore", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(paramsBefore)));
                     logs.Add("");
                     if (dstRoot == null)
                     {
@@ -277,8 +277,8 @@ namespace Aramaa.CreateChibi.Editor
                     // VRCAvatarDescriptor の参照を sourceChibiPrefab 側と同じにする
                     if (fxController != null)
                     {
-                        logs.Add(F("Log.FxApply", ChibiChansConversionLogUtility.FormatAssetRef(fxController)));
-                        ChibiVrcAvatarDescriptorUtility.SetFxPlayableLayerController(dstRoot, fxController);
+                        logs.Add(F("Log.FxApply", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(fxController)));
+                        OchibiChansConverterToolVrcAvatarDescriptorUtility.SetFxPlayableLayerController(dstRoot, fxController);
                     }
                     else
                     {
@@ -287,8 +287,8 @@ namespace Aramaa.CreateChibi.Editor
 
                     if (expressionsMenu != null || expressionParameters != null)
                     {
-                        logs.Add(F("Log.ExpressionsApply", ChibiChansConversionLogUtility.FormatAssetRef(expressionsMenu), ChibiChansConversionLogUtility.FormatAssetRef(expressionParameters)));
-                        ChibiVrcAvatarDescriptorUtility.SetExpressionsMenuAndParameters(dstRoot, expressionsMenu, expressionParameters);
+                        logs.Add(F("Log.ExpressionsApply", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(expressionsMenu), OchibiChansConverterToolConversionLogUtility.FormatAssetRef(expressionParameters)));
+                        OchibiChansConverterToolVrcAvatarDescriptorUtility.SetExpressionsMenuAndParameters(dstRoot, expressionsMenu, expressionParameters);
                     }
                     else
                     {
@@ -297,25 +297,25 @@ namespace Aramaa.CreateChibi.Editor
 
                     // ViewPosition（ビューポイント）も sourceChibiPrefab と同じにする
                     {
-                        var viewOk = ChibiVrcAvatarDescriptorUtility.TryCopyViewPositionFromBasePrefab(dstRoot, basePrefabRoot);
+                        var viewOk = OchibiChansConverterToolVrcAvatarDescriptorUtility.TryCopyViewPositionFromBasePrefab(dstRoot, basePrefabRoot);
                         logs.Add(viewOk ? L("Log.ViewPositionApplied") : L("Log.ViewPositionSkipped"));
                     }
 
                     // 服のスケール調整（Modular Avatar が入っている場合のみ）
-                    if (!ChibiModularAvatarUtility.AdjustCostumeScalesForModularAvatarMeshSettings(dstRoot, basePrefabRoot, logs))
+                    if (!OchibiChansConverterToolModularAvatarUtility.AdjustCostumeScalesForModularAvatarMeshSettings(dstRoot, basePrefabRoot, logs))
                     {
                         logs.Add(L("Log.Error.CostumeScaleFailed"));
                         return;
                     }
 
                     // 実行後の参照（FX / Menu / Parameters）
-                    ChibiVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromAvatar(dstRoot, out var fxAfter);
-                    ChibiVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromAvatar(dstRoot, out var menuAfter, out var paramsAfter);
+                    OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetFxPlayableLayerControllerFromAvatar(dstRoot, out var fxAfter);
+                    OchibiChansConverterToolVrcAvatarDescriptorUtility.TryGetExpressionsMenuAndParametersFromAvatar(dstRoot, out var menuAfter, out var paramsAfter);
 
                     logs.Add("");
-                    logs.Add(F("Log.FxAfter", ChibiChansConversionLogUtility.FormatAssetRef(fxAfter)));
-                    logs.Add(F("Log.MenuAfter", ChibiChansConversionLogUtility.FormatAssetRef(menuAfter)));
-                    logs.Add(F("Log.ParametersAfter", ChibiChansConversionLogUtility.FormatAssetRef(paramsAfter)));
+                    logs.Add(F("Log.FxAfter", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(fxAfter)));
+                    logs.Add(F("Log.MenuAfter", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(menuAfter)));
+                    logs.Add(F("Log.ParametersAfter", OchibiChansConverterToolConversionLogUtility.FormatAssetRef(paramsAfter)));
 
                     // 差分が分かるように補足（値は出さない）
                     if (!ReferenceEquals(fxBefore, fxAfter))
@@ -400,7 +400,7 @@ namespace Aramaa.CreateChibi.Editor
             // ------------------------------------------------------------
 
             // 期待するファイル名（拡張子まで一致）
-            const string targetFileName = ChibiEditorConstants.AddMenuPrefabFileName;
+            const string targetFileName = OchibiChansConverterToolEditorConstants.AddMenuPrefabFileName;
 
             // ------------------------------------------------------------
             // まずは “Prefabアセットパス” から確実に特定します。
@@ -495,7 +495,7 @@ namespace Aramaa.CreateChibi.Editor
                     continue;
                 }
 
-                if (go.name.IndexOf(ChibiEditorConstants.AddMenuNameKeyword, StringComparison.OrdinalIgnoreCase) < 0)
+                if (go.name.IndexOf(OchibiChansConverterToolEditorConstants.AddMenuNameKeyword, StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     continue;
                 }
@@ -583,13 +583,13 @@ namespace Aramaa.CreateChibi.Editor
             dstRoot.transform.localScale = srcRoot.transform.localScale;
             EditorUtility.SetDirty(dstRoot.transform);
 
-            var srcArmature = ChibiEditorUtility.FindAvatarMainArmature(srcRoot.transform);
+            var srcArmature = OchibiChansConverterToolEditorUtility.FindAvatarMainArmature(srcRoot.transform);
             if (srcArmature == null)
             {
                 return;
             }
 
-            var dstArmature = ChibiEditorUtility.FindAvatarMainArmature(dstRoot.transform);
+            var dstArmature = OchibiChansConverterToolEditorUtility.FindAvatarMainArmature(dstRoot.transform);
             if (dstArmature == null)
             {
                 return;
@@ -597,7 +597,7 @@ namespace Aramaa.CreateChibi.Editor
 
             CopyArmatureTransforms(srcArmature, dstArmature, logs);
             AddMissingComponentsUnderArmature(srcRoot, dstRoot, srcArmature, dstArmature, logs);
-            ChibiSkinnedMeshUtility.CopySkinnedMeshRenderersBlendShapesOnlyWithLog(srcRoot, dstRoot, logs);
+            OchibiChansConverterToolSkinnedMeshUtility.CopySkinnedMeshRenderersBlendShapesOnlyWithLog(srcRoot, dstRoot, logs);
         }
 
         private static void CopyArmatureTransforms(Transform srcArmature, Transform dstArmature, List<string> logs)
@@ -621,7 +621,7 @@ namespace Aramaa.CreateChibi.Editor
                 }
 
                 string rel = AnimationUtility.CalculateTransformPath(srcT, srcArmature);
-                rel = ChibiEditorUtility.NormalizeRelPathFor(dstArmature, rel);
+                rel = OchibiChansConverterToolEditorUtility.NormalizeRelPathFor(dstArmature, rel);
 
                 var dstT = string.IsNullOrEmpty(rel) ? dstArmature : dstArmature.Find(rel);
                 if (dstT == null)
@@ -638,7 +638,7 @@ namespace Aramaa.CreateChibi.Editor
 
                 updated++;
                 // パスだけを出す（値は出さない）
-                logs.Add(F("Log.PathEntry", ChibiChansConversionLogUtility.GetHierarchyPath(dstT)));
+                logs.Add(F("Log.PathEntry", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(dstT)));
             }
 
             logs.Add(F("Log.ArmatureTransformUpdated", updated));
@@ -672,7 +672,7 @@ namespace Aramaa.CreateChibi.Editor
                 }
 
                 string rel = AnimationUtility.CalculateTransformPath(srcT, srcArmature);
-                rel = ChibiEditorUtility.NormalizeRelPathFor(dstArmature, rel);
+                rel = OchibiChansConverterToolEditorUtility.NormalizeRelPathFor(dstArmature, rel);
 
                 var dstT = string.IsNullOrEmpty(rel) ? dstArmature : dstArmature.Find(rel);
                 if (dstT == null)
@@ -748,11 +748,11 @@ namespace Aramaa.CreateChibi.Editor
                             // コピーに失敗した場合は、追加だけ残して処理続行
                         }
 
-                        ChibiEditorUtility.RemapObjectReferencesInObject(newComp, srcRoot, dstRoot);
+                        OchibiChansConverterToolEditorUtility.RemapObjectReferencesInObject(newComp, srcRoot, dstRoot);
                         EditorUtility.SetDirty(newComp);
 
                         addedCount++;
-                        logs.Add(F("Log.ComponentAdded", type.Name, ChibiChansConversionLogUtility.GetHierarchyPath(dstT)));
+                        logs.Add(F("Log.ComponentAdded", type.Name, OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(dstT)));
                     }
                 }
             }
@@ -818,8 +818,8 @@ namespace Aramaa.CreateChibi.Editor
             EditorUtility.SetDirty(instanceObj);
 
             logs.Add(F("Log.ExPrefabAdded", placement.PrefabAsset.name, prefabPath));
-            logs.Add(F("Log.ExPrefabParent", ChibiChansConversionLogUtility.GetHierarchyPath(parentTransform)));
-            logs.Add(F("Log.ExPrefabAddedTo", ChibiChansConversionLogUtility.GetHierarchyPath(instanceObj.transform)));
+            logs.Add(F("Log.ExPrefabParent", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(parentTransform)));
+            logs.Add(F("Log.ExPrefabAddedTo", OchibiChansConverterToolConversionLogUtility.GetHierarchyPath(instanceObj.transform)));
             logs.Add(L("Log.ExPrefabTransformApplied"));
 
             return true;
@@ -886,7 +886,7 @@ namespace Aramaa.CreateChibi.Editor
             return false;
         }
 
-        // ログ用ユーティリティは ChibiChansConversionLogUtility に切り出し
+        // ログ用ユーティリティは OchibiChansConverterToolConversionLogUtility に切り出し
     }
 }
 #endif

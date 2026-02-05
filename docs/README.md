@@ -1,6 +1,6 @@
-# CreateChibi Docs
+# OchibiChansConverterTool Docs
 
-このフォルダは CreateChibi のドキュメントサイト (GitHub Pages) 用の Jekyll ソースです。
+このフォルダは OchibiChansConverterTool のドキュメントサイト (GitHub Pages) 用の Jekyll ソースです。
 
 ## ローカルで表示を確認する
 
