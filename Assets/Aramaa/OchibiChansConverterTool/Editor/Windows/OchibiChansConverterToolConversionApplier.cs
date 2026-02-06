@@ -206,7 +206,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 _versionError = null;
                 _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                 _cachedProSkin = EditorGUIUtility.isProSkin;
-                InitializeStyles(forceRebuild: true);
+                ClearCachedStyles();
             }
 
             private void OnGUI()
@@ -234,7 +234,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     EnsureVersionCheck();
                     DrawVersionStatus();
                     EditorGUILayout.Space(4);
-                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), _descriptionStyle);
+                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), _descriptionStyle ?? EditorStyles.wordWrappedLabel);
                 });
 
                 EditorGUILayout.Space(6);
@@ -271,6 +271,18 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 EditorGUILayout.Space(10);
                 EditorGUILayout.EndScrollView();
+            }
+
+
+            private void ClearCachedStyles()
+            {
+                _titleStyle = null;
+                _descriptionStyle = null;
+                _cardStyle = null;
+                _sectionHeaderStyle = null;
+                _versionStatusStyle = null;
+                _accentButtonStyle = null;
+                _linkStyle = null;
             }
 
             private void InitializeStyles(bool forceRebuild = false)
@@ -311,7 +323,8 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     wordWrap = true
                 };
 
-                _accentButtonStyle = new GUIStyle(GUI.skin.button)
+                var buttonStyle = GUI.skin != null && GUI.skin.button != null ? GUI.skin.button : EditorStyles.miniButton;
+                _accentButtonStyle = new GUIStyle(buttonStyle)
                 {
                     fontSize = 14,
                     fontStyle = FontStyle.Bold,
@@ -327,13 +340,13 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             private void DrawHeader()
             {
                 var titleWithVersion = OchibiChansConverterToolLocalization.Format("Window.TitleWithVersion", ToolWindowTitle, ToolVersion);
-                EditorGUILayout.LabelField(titleWithVersion, _titleStyle);
+                EditorGUILayout.LabelField(titleWithVersion, _titleStyle ?? EditorStyles.boldLabel);
                 EditorGUILayout.Space(2);
             }
 
             private void DrawCard(Action drawContent)
             {
-                using (new EditorGUILayout.VerticalScope(_cardStyle))
+                using (new EditorGUILayout.VerticalScope(_cardStyle ?? EditorStyles.helpBox))
                 {
                     drawContent?.Invoke();
                 }
@@ -341,7 +354,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void DrawSectionHeader(string step, string title)
             {
-                EditorGUILayout.LabelField($"{step}. {title}", _sectionHeaderStyle);
+                EditorGUILayout.LabelField($"{step}. {title}", _sectionHeaderStyle ?? EditorStyles.boldLabel);
                 EditorGUILayout.Space(2);
             }
 
@@ -351,7 +364,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     ApplyStatusColor(_versionStatusStyle, color);
-                    EditorGUILayout.LabelField(message, _versionStatusStyle);
+                    EditorGUILayout.LabelField(message, _versionStatusStyle ?? EditorStyles.miniLabel);
                 }
             }
 
@@ -605,7 +618,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 using (new EditorGUI.DisabledScope(!canExecute))
                 {
-                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), _accentButtonStyle))
+                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), _accentButtonStyle ?? EditorStyles.miniButton, GUILayout.Height(36)))
                     {
                         QueueApplyFromFields();
                     }
@@ -637,7 +650,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                         using (new EditorGUI.DisabledScope(!hasValidUrl))
                         {
-                            if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), _linkStyle))
+                            if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), _linkStyle ?? EditorStyles.linkLabel))
                             {
                                 Application.OpenURL(ToolWebsiteUrl);
                             }
