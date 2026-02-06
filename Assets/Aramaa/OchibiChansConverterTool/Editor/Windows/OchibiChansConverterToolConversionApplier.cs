@@ -212,7 +212,6 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             {
                 UpdateWindowTitle();
                 InitializeStyles();
-                DrawWindowBackground();
 
                 // ------------------------------------------------------------
                 // このウィンドウは「元のアバター」と「おちびちゃんズ側 Prefab アセット」を指定し、
@@ -270,6 +269,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     DrawCard(OpenToolWebsite);
 
                     EditorGUILayout.Space(10);
+                    DrawWindowBackground(GUILayoutUtility.GetLastRect().yMax + 2f);
                 }
                 catch (ExitGUIException)
                 {
@@ -286,13 +286,18 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             }
 
 
-            private void DrawWindowBackground()
+            private void DrawWindowBackground(float contentBottomY)
             {
+                if (contentBottomY >= position.height)
+                {
+                    return;
+                }
+
                 var backgroundColor = EditorGUIUtility.isProSkin
                     ? new Color(0.09f, 0.09f, 0.09f)
                     : new Color(0.86f, 0.86f, 0.86f);
 
-                EditorGUI.DrawRect(new Rect(0f, 0f, position.width, position.height), backgroundColor);
+                EditorGUI.DrawRect(new Rect(0f, contentBottomY, position.width, position.height - contentBottomY), backgroundColor);
             }
 
             private void ClearCachedStyles()
