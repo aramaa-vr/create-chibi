@@ -439,7 +439,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 {
                     EditorApplication.delayCall += () =>
                     {
-                        if (!_isWindowActive || _opened != this)
+                        if (!_isWindowActive)
                         {
                             return;
                         }
