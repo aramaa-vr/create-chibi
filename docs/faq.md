@@ -11,13 +11,13 @@ nav_order: 5
 
 ## ツールがメニューに表示されません
 
-- VCC で **Ochibi-chans おちびちゃんズ化ツール** が **Installed** になっているか確認
+- VCC で **おちびちゃんズ化ツール（Ochibi-chans Converter Tool）** が **Installed** になっているか確認
 - Unity を再起動（初回インストール直後は読み込みが入ります）
 - Console の赤エラーを先に解消
 
 > メニューは次の場所に出ます（ツール定数 `ToolsMenuPath` / `GameObjectMenuPath`）。  
-> - Tools → Aramaa → Ochibi-chans おちびちゃんズ化ツール  
-> - GameObject → Aramaa → Ochibi-chans おちびちゃんズ化ツール
+> - Tools → Aramaa → おちびちゃんズ化ツール（Ochibi-chans Converter Tool）  
+> - GameObject → Aramaa → おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 {: .note }
 
 ---

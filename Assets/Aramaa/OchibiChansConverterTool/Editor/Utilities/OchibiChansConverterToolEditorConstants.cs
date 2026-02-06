@@ -19,8 +19,8 @@ namespace Aramaa.OchibiChansConverterTool.Editor.Utilities
         public const string ToolVersion = "0.5.0";
         public const string LatestVersionUrl = "https://raw.githubusercontent.com/aramaa-vr/ochibi-chans-converter-tool/master/Assets/Aramaa/OchibiChansConverterTool/package.json";
         public const string SupportDiscordUrl = "https://discord.gg/BJ3BpVnMna";
-        public const string ToolsMenuPath = "Tools/Aramaa/おちびちゃんズ化ツール - OchibiChansConverterTool";
-        public const string GameObjectMenuPath = "GameObject/Aramaa/おちびちゃんズ化ツール - OchibiChansConverterTool";
+        public const string ToolsMenuPath = "Tools/Aramaa/おちびちゃんズ化ツール（Ochibi-chans Converter Tool）";
+        public const string GameObjectMenuPath = "GameObject/Aramaa/おちびちゃんズ化ツール（Ochibi-chans Converter Tool）";
         public const string FaceMeshCacheFileName = "ChibiFaceMeshCache.json";
         public const string BaseFolder = "Assets/夕時茶屋";
         public const string AddMenuPrefabFileName = "Ochibichans_Addmenu.prefab";

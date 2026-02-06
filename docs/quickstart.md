@@ -25,7 +25,7 @@ nav_order: 2
 ## 1) VCCに追加してインストール
 
 1. **Add to VCC** を開く: <https://aramaa-vr.github.io/vpm-repos/redirect.html>
-2. VCC で **Ochibi-chans おちびちゃんズ化ツール** を **Install**
+2. VCC で **おちびちゃんズ化ツール（Ochibi-chans Converter Tool）** を **Install**
 
 ---
 
@@ -33,7 +33,7 @@ nav_order: 2
 
 1. Unity で変換したいアバターを Scene に配置
 2. **Hierarchy** でアバター（ルート）を 1 つ選択
-3. 右クリック → **Aramaa → Ochibi-chans おちびちゃんズ化ツール**
+3. 右クリック → **Aramaa → おちびちゃんズ化ツール（Ochibi-chans Converter Tool）**
 4. ウィンドウで、変換先のおちびちゃんズ Prefab を選択
    - 下のプルダウン候補から選ぶ（自動検出）
    - 見つからない場合は Project から Prefab をドラッグ＆ドロップ（手動指定）

@@ -1,4 +1,4 @@
-title: OchibiChansConverterTool - おちびちゃんズ化ツール
+title: おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 description: VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張の説明書
 url: https://aramaa-vr.github.io
 baseurl: /ochibi-chans-converter-tool
@@ -38,5 +38,5 @@ aux_links:
   Add to VCC: https://aramaa-vr.github.io/vpm-repos/redirect.html
   Discord: https://discord.gg/BJ3BpVnMna
 permalink: pretty
-footer_content: © Aramaa / OchibiChansConverterTool
+footer_content: © Aramaa / おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 nav_sort: case_insensitive
