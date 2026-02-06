@@ -418,32 +418,35 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 OchibiChansConverterToolVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
                 {
-                    if (!_isWindowActive || _opened != this)
+                    EditorApplication.delayCall += () =>
                     {
-                        return;
-                    }
+                        if (!_isWindowActive || _opened != this)
+                        {
+                            return;
+                        }
 
-                    _versionCheckInProgress = false;
+                        _versionCheckInProgress = false;
 
-                    if (!result.Succeeded)
-                    {
-                        _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
-                        _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                        if (!result.Succeeded)
+                        {
+                            _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
+                            _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                            Repaint();
+                            return;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(result.LatestVersion))
+                        {
+                            _versionError = OchibiChansConverterToolLocalization.Get("Version.ExtractFailed");
+                            _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                            Repaint();
+                            return;
+                        }
+
+                        _latestVersion = result.LatestVersion;
+                        _versionStatus = OchibiChansConverterToolVersionUtility.GetVersionStatus(ToolVersion, _latestVersion);
                         Repaint();
-                        return;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(result.LatestVersion))
-                    {
-                        _versionError = OchibiChansConverterToolLocalization.Get("Version.ExtractFailed");
-                        _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
-                        Repaint();
-                        return;
-                    }
-
-                    _latestVersion = result.LatestVersion;
-                    _versionStatus = OchibiChansConverterToolVersionUtility.GetVersionStatus(ToolVersion, _latestVersion);
-                    Repaint();
+                    };
                 });
             }
 
@@ -609,6 +612,8 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     !_applyQueued &&
                     _sourceTarget != null &&
                     !EditorUtility.IsPersistent(_sourceTarget) &&
+                    _sourceTarget.scene.IsValid() &&
+                    _sourceTarget.scene.isLoaded &&
                     _sourcePrefabAsset != null &&
                     IsPrefabAsset(_sourcePrefabAsset);
 
@@ -672,7 +677,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     return;
                 }
 
-                if (_sourceTarget == null || EditorUtility.IsPersistent(_sourceTarget))
+                if (_sourceTarget == null || EditorUtility.IsPersistent(_sourceTarget) || !_sourceTarget.scene.IsValid() || !_sourceTarget.scene.isLoaded)
                 {
                     EditorUtility.DisplayDialog(
                         OchibiChansConverterToolLocalization.Get("Dialog.ToolTitle"),
@@ -731,7 +736,10 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                             OchibiChansConverterToolConversionLogWindow.ShowLogs(LogWindowTitle, logs);
                         }
 
-                        Repaint();
+                        if (_isWindowActive && _opened == this)
+                        {
+                            Repaint();
+                        }
                     }
                 };
 
