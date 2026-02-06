@@ -357,11 +357,20 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             private void DrawVersionStatus()
             {
                 var message = GetVersionStatusMessage(out var color);
-                if (!string.IsNullOrWhiteSpace(message))
+                if (string.IsNullOrWhiteSpace(message))
                 {
-                    ApplyStatusColor(_versionStatusStyle, color);
-                    EditorGUILayout.LabelField(message, _versionStatusStyle ?? EditorStyles.miniLabel);
+                    return;
                 }
+
+                ApplyStatusColor(_versionStatusStyle, color);
+                var messageType = GetVersionStatusMessageType();
+                if (messageType != MessageType.None)
+                {
+                    EditorGUILayout.HelpBox(message, messageType);
+                    return;
+                }
+
+                EditorGUILayout.LabelField(message, _versionStatusStyle ?? EditorStyles.miniLabel);
             }
 
             private void UpdateWindowTitle()
@@ -484,6 +493,30 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     default:
                         color = SelectStatusColor(new Color(0.7f, 0.7f, 0.7f), new Color(0.45f, 0.45f, 0.45f));
                         return OchibiChansConverterToolLocalization.Format("Version.Unknown", ToolVersion);
+                }
+            }
+
+            private MessageType GetVersionStatusMessageType()
+            {
+                if (_versionCheckInProgress)
+                {
+                    return MessageType.Info;
+                }
+
+                if (!string.IsNullOrWhiteSpace(_versionError))
+                {
+                    return MessageType.Warning;
+                }
+
+                switch (_versionStatus)
+                {
+                    case OchibiChansConverterToolVersionStatus.UpdateAvailable:
+                        return MessageType.Warning;
+                    case OchibiChansConverterToolVersionStatus.UpToDate:
+                    case OchibiChansConverterToolVersionStatus.Ahead:
+                        return MessageType.Info;
+                    default:
+                        return MessageType.None;
                 }
             }
 
@@ -619,7 +652,11 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 using (new EditorGUI.DisabledScope(!canExecute))
                 {
-                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), _accentButtonStyle ?? EditorStyles.miniButton, GUILayout.Height(36)))
+                    var executeLabel = new GUIContent(
+                        OchibiChansConverterToolLocalization.Get("Button.Execute"),
+                        EditorGUIUtility.IconContent("d_PlayButton").image);
+
+                    if (GUILayout.Button(executeLabel, _accentButtonStyle ?? EditorStyles.miniButton, GUILayout.Height(38)))
                     {
                         QueueApplyFromFields();
                     }
@@ -663,7 +700,10 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             private void DrawMaboneProxyToggle()
             {
                 _applyMaboneProxyProcessing = EditorGUILayout.ToggleLeft(OchibiChansConverterToolLocalization.Get("Toggle.MaboneProxy"), _applyMaboneProxyProcessing);
-                EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.MaboneProxy"), MessageType.Info);
+                if (_applyMaboneProxyProcessing)
+                {
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.MaboneProxy"), MessageType.Info);
+                }
             }
 
             /// <summary>
