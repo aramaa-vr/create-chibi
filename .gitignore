@@ -64,3 +64,7 @@ UserSettings/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# docs
+docs/Gemfile.lock
+docs/_site/
