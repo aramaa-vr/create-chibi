@@ -273,6 +273,14 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                     EditorGUILayout.Space(10);
                 }
+                catch (ExitGUIException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
                 finally
                 {
                     EditorGUILayout.EndScrollView();
