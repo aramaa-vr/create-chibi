@@ -3,7 +3,7 @@
   "entries": [
     {
       "key": "Button.DiscordHelp",
-      "value": "困ったらDiscordへ（不具合報告・質問）→"
+      "value": "困ったらツールサイトへ（ガイド・FAQ）→"
     },
     {
       "key": "Button.Execute",
@@ -11,7 +11,7 @@
     },
     {
       "key": "Dialog.ConversionTitle",
-      "value": "おちびちゃんズ化"
+      "value": "おちびちゃんズ化ツール（Ochibi-chans Converter Tool）"
     },
     {
       "key": "Dialog.InvalidSourcePrefab",
@@ -495,11 +495,11 @@
     },
     {
       "key": "Tool.LogWindowTitle",
-      "value": "おちびちゃんズ化ログ"
+      "value": "おちびちゃんズ化ツール（Ochibi-chans Converter Tool）ログ"
     },
     {
       "key": "Tool.Name",
-      "value": "Ochibi-chans Converter Tool"
+      "value": "おちびちゃんズ化ツール（Ochibi-chans Converter Tool）"
     },
     {
       "key": "Undo.AddExPrefab",
