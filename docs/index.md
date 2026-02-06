@@ -7,11 +7,11 @@ nav_order: 1
 
 ![おちびちゃんズ化ツールのヒーロー画像]({{ "/assets/img/ochibi/hero.webp" | relative_url }}){: .home-hero-img }
 
-<div class="landing-hero">
+<div class="landing-hero" markdown="1">
 
 # おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 
-VRChatアバターを **「おちびちゃんズ」向けに変換**する Unity Editor 拡張です。  
+VRChatアバターを **「おちびちゃんズ」向けに変換**する Unity Editor 拡張です。<br>
 **元アバターを壊さない（Ctrl+D相当で複製 → 変換）** 方式なので、普段の改変フローにそのまま組み込めます。
 
 <div class="hero-actions">
@@ -63,4 +63,3 @@ VRChatアバターを **「おちびちゃんズ」向けに変換**する Unity
 - **Booth**: <https://aramaa.booth.pm/items/7906711>
 - **GitHub**: <https://github.com/aramaa-vr/ochibi-chans-converter-tool>
 - **Discord**（不具合報告・質問）: <https://discord.gg/BJ3BpVnMna>
-
