@@ -33,7 +33,7 @@ nav_order: 3
 ## 2) VCCでインストール
 
 1. VCC で対象プロジェクトを開きます
-2. Packages から **Ochibi-chans おちびちゃんズ化ツール** を **Install** します
+2. Packages から **おちびちゃんズ化ツール - OchibiChansConverterTool** を **Install** します
 
 > インストール後、Unity を開いてしばらく待つと、初回の読み込みが完了します。
 {: .note }
@@ -53,8 +53,8 @@ nav_order: 3
 
 Unity のメニューから、次のいずれかが見えれば導入完了です（ツール定数 `ToolsMenuPath` / `GameObjectMenuPath`）。
 
-- **Tools → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
-- **GameObject → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
+- **Tools → Aramaa → おちびちゃんズ化ツール - OchibiChansConverterTool**
+- **GameObject → Aramaa → おちびちゃんズ化ツール - OchibiChansConverterTool**
 
 > メニューが出ない場合は、まず **Unity 再起動** → **Console エラー解消** → **VCCで Installed を再確認** の順で見てください。
 {: .warning }

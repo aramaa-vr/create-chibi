@@ -17,8 +17,8 @@ nav_order: 4
 
 ## 起動方法
 
-- **Tools → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
-- **GameObject → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
+- **Tools → Aramaa → おちびちゃんズ化ツール - OchibiChansConverterTool**
+- **GameObject → Aramaa → おちびちゃんズ化ツール - OchibiChansConverterTool**
 
 ---
 
