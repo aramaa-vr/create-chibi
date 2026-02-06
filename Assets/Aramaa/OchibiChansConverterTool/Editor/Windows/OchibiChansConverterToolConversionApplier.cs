@@ -559,8 +559,15 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     return;
                 }
 
-                var currentIndex = _prefabDropdownCache.SelectedIndex;
-                var nextIndex = EditorGUILayout.Popup(OchibiChansConverterToolLocalization.Get("Label.CandidateList"), currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
+                var candidateDisplayNames = _prefabDropdownCache.CandidateDisplayNames?.ToArray() ?? Array.Empty<string>();
+                if (candidateDisplayNames.Length == 0)
+                {
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
+                    return;
+                }
+
+                var currentIndex = Mathf.Clamp(_prefabDropdownCache.SelectedIndex, 0, candidateDisplayNames.Length - 1);
+                var nextIndex = EditorGUILayout.Popup(OchibiChansConverterToolLocalization.Get("Label.CandidateList"), currentIndex, candidateDisplayNames);
                 if (nextIndex != currentIndex)
                 {
                     _prefabDropdownCache.ApplySelection(nextIndex);
