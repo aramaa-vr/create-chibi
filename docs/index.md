@@ -7,7 +7,7 @@ nav_order: 1
 
 ![おちびちゃんズ化ツールのヒーロー画像]({{ "/assets/img/ochibi/hero.webp" | relative_url }}){: .home-hero-img }
 
-<div class="landing-hero">
+<div class="landing-hero" markdown="1">
 
 # おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 
