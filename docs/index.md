@@ -1,6 +1,6 @@
 ---
 layout: minimal
-title: おちびちゃんズ化ツール - OchibiChansConverterTool
+title: おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 description: VRChatアバターを「おちびちゃんズ」向けに変換するUnity Editor拡張の導入・使い方・対応一覧・トラブル対応。
 nav_order: 1
 ---
@@ -9,7 +9,7 @@ nav_order: 1
 
 <div class="landing-hero">
 
-# おちびちゃんズ化ツール - OchibiChansConverterTool
+# おちびちゃんズ化ツール（Ochibi-chans Converter Tool）
 
 VRChatアバターを **「おちびちゃんズ」向けに変換**する Unity Editor 拡張です。  
 **元アバターを壊さない（Ctrl+D相当で複製 → 変換）** 方式なので、普段の改変フローにそのまま組み込めます。

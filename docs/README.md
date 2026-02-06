@@ -1,6 +1,6 @@
-# おちびちゃんズ化ツール - OchibiChansConverterTool Docs
+# おちびちゃんズ化ツール（Ochibi-chans Converter Tool） Docs
 
-このフォルダは おちびちゃんズ化ツール - OchibiChansConverterTool のドキュメントサイト (GitHub Pages) 用の Jekyll ソースです。
+このフォルダは おちびちゃんズ化ツール（Ochibi-chans Converter Tool） のドキュメントサイト (GitHub Pages) 用の Jekyll ソースです。
 
 ## ローカルで表示を確認する
 

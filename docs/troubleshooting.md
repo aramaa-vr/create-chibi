@@ -12,7 +12,7 @@ nav_order: 6
 
 ## まず確認すること（共通）
 
-1. VCC で おちびちゃんズ化ツール - OchibiChansConverterTool が **Installed** になっている
+1. VCC で おちびちゃんズ化ツール（Ochibi-chans Converter Tool） が **Installed** になっている
 2. Unity を再起動（初回インストール直後は読み込みが入ります）
 3. Unity Console に赤エラーが出ていない
 4. **HierarchyでScene上のアバター**を選んでいる（Project上のPrefabではない）
