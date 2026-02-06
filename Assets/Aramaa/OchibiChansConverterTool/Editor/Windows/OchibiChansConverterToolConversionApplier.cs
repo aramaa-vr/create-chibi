@@ -370,8 +370,14 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 {
                     EditorGUILayout.PrefixLabel(OchibiChansConverterToolLocalization.Get("Language.Label"));
 
-                    var currentIndex = OchibiChansConverterToolLocalization.GetLanguageIndex();
-                    var nextIndex = EditorGUILayout.Popup(currentIndex, OchibiChansConverterToolLocalization.GetLanguageDisplayNames());
+                    var displayNames = OchibiChansConverterToolLocalization.GetLanguageDisplayNames() ?? Array.Empty<string>();
+                    if (displayNames.Length == 0)
+                    {
+                        return;
+                    }
+
+                    var currentIndex = Mathf.Clamp(OchibiChansConverterToolLocalization.GetLanguageIndex(), 0, displayNames.Length - 1);
+                    var nextIndex = EditorGUILayout.Popup(currentIndex, displayNames);
                     if (nextIndex != currentIndex)
                     {
                         OchibiChansConverterToolLocalization.SetLanguage(OchibiChansConverterToolLocalization.GetLanguageCodeFromIndex(nextIndex));
@@ -403,15 +409,23 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 OchibiChansConverterToolVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
                 {
-                    if (!_isWindowActive)
+                    if (!_isWindowActive || _opened != this)
                     {
                         return;
                     }
 
                     _versionCheckInProgress = false;
+                    if (result == null)
+                    {
+                        _versionError = OchibiChansConverterToolLocalization.Get("Version.Unknown");
+                        _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                        Repaint();
+                        return;
+                    }
+
                     if (!result.Succeeded)
                     {
-                        _versionError = result.Error;
+                        _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
                         _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                         Repaint();
                         return;
@@ -467,6 +481,11 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private static void ApplyStatusColor(GUIStyle style, Color color)
             {
+                if (style == null)
+                {
+                    return;
+                }
+
                 style.normal.textColor = color;
                 style.hover.textColor = color;
                 style.active.textColor = color;
@@ -605,9 +624,15 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                     using (new EditorGUILayout.VerticalScope())
                     {
-                        if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), _linkStyle))
+                        var hasValidUrl = Uri.TryCreate(ToolWebsiteUrl, UriKind.Absolute, out var parsedUrl)
+                            && (parsedUrl.Scheme == Uri.UriSchemeHttp || parsedUrl.Scheme == Uri.UriSchemeHttps);
+
+                        using (new EditorGUI.DisabledScope(!hasValidUrl))
                         {
-                            Application.OpenURL(ToolWebsiteUrl);
+                            if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), _linkStyle))
+                            {
+                                Application.OpenURL(ToolWebsiteUrl);
+                            }
                         }
                     }
                 }
