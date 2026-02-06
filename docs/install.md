@@ -1,56 +1,68 @@
 ---
-title: 導入ガイド（最初にやること）
-nav_order: 2
+title: 導入
+nav_order: 3
 ---
 
-# 導入ガイド（最初にやること）
+# 導入
 
-このページは**導入手順**をまとめたものです。  
-ここだけ読めばインストールから起動まで進められます。
-
----
-
-## 事前チェック（1分で確認）
-
-- UnityはVRChat推奨バージョン？
-- VCC（VRChat Creator Companion）はインストール済み？
-- 変換したいアバター＆おちびちゃんズを購入・導入済み？
-
-> 💡 先に「VRChatアバターのアップロード」を一度試しておくと、導入がスムーズです。
+このページでは **前提条件 → インストール → 動作確認** までをまとめます。
 
 ---
 
-## インストール手順（VCC）
+## 前提条件（ツールが想定している環境）
 
-1. **[Add to VCC](https://aramaa-vr.github.io/vpm-repos/redirect.html)** をクリックして、VCCへリポジトリを追加します。
-2. VCCの **Settings → Packages → Installed Repositories** で「aramaa」が有効になっていることを確認します。
-3. アバタープロジェクトの **Manage Project** から「おちびちゃんズ化ツール ochibi-chans-converter-tool」をインストールします。
+以下はツールの `Assets/Aramaa/OchibiChansConverterTool/package.json` に基づく目安です。
 
-> ⚠️ 依存パッケージは自動で入るので、基本的に追加作業は不要です。
-
----
-
-## よくある導入ミス
-
-- **Add to VCCを押したのに表示されない**
-  - VCCを再起動すると表示されることがあります。
-- **Installed Repositories に aramaa がない**
-  - もう一度 Add to VCC を開き直して再登録します。
+- Unity: **2022.3 系**（`unity: 2022.3` / `unityRelease: 22f1`）
+- VRChat SDK: **3.10.1 以上**
+- 依存パッケージ（最小バージョン）
+  - `nadena.dev.modular-avatar` >= 1.15.1
+  - `net.narazaka.vrchat.floor-adjuster` >= 1.1.2
+  - `jp.lilxyzw.liltoon` >= 2.3.2
+  - `jp.aramaa.dakochite-gimmick` >= 1.1.2
 
 ---
 
-## 依存パッケージ（自動導入）
+## 1) VCCにリポジトリを追加
 
-以下は自動で導入されます。
+1. **Add to VCC** を開きます: <https://aramaa-vr.github.io/vpm-repos/redirect.html>
+2. 表示される案内に従って VCC にリポジトリを追加します
 
-- [FloorAdjuster](https://github.com/Narazaka/FloorAdjuster)
-- [lilToon](https://lilxyzw.github.io/lilToon/)
-- [Modular Avatar](https://modular-avatar.nadena.dev/ja/)
-- [だこちてギミック](https://github.com/aramaa-vr/dakochite-gimmick)
+---
+
+## 2) VCCでインストール
+
+1. VCC で対象プロジェクトを開きます
+2. Packages から **Ochibi-chans おちびちゃんズ化ツール** を **Install** します
+
+> インストール後、Unity を開いてしばらく待つと、初回の読み込みが完了します。
+{: .note }
+
+---
+
+## 3) 変換先（おちびちゃんズ）の配置について
+
+候補（プルダウン）自動検出は、Project 内の **`Assets/夕時茶屋` 配下**を走査します（ツール定数 `BaseFolder`）。
+
+> `Assets/夕時茶屋` 配下に置けない場合でも、Project から Prefab をドラッグ＆ドロップする **手動指定**で進められます。
+{: .tip }
+
+---
+
+## 4) メニューが出るか確認
+
+Unity のメニューから、次のいずれかが見えれば導入完了です（ツール定数 `ToolsMenuPath` / `GameObjectMenuPath`）。
+
+- **Tools → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
+- **GameObject → Aramaa → Ochibi-chans おちびちゃんズ化ツール**
+
+> メニューが出ない場合は、まず **Unity 再起動** → **Console エラー解消** → **VCCで Installed を再確認** の順で見てください。
+{: .warning }
 
 ---
 
 ## 次に読む
 
-- [使い方（ワンクリック変換）]({{ site.baseurl }}{% link usage.md %})
-- [よくある質問・トラブル]({{ site.baseurl }}{% link faq.md %})
+- [クイックスタート]({{ "/quickstart/" | relative_url }})
+- [使い方]({{ "/usage/" | relative_url }})
+- [困ったとき]({{ "/troubleshooting/" | relative_url }})
