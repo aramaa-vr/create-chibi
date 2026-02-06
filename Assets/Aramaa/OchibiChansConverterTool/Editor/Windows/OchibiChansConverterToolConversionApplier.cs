@@ -43,7 +43,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
     {
         private const string ToolVersion = OchibiChansConverterToolEditorConstants.ToolVersion;
         private const string LatestVersionUrl = OchibiChansConverterToolEditorConstants.LatestVersionUrl;
-        private const string SupportDiscordUrl = OchibiChansConverterToolEditorConstants.SupportDiscordUrl;
+        private const string ToolWebsiteUrl = OchibiChansConverterToolEditorConstants.ToolWebsiteUrl;
         private const string ToolsMenuPath = OchibiChansConverterToolEditorConstants.ToolsMenuPath;
         private const string GameObjectMenuPath = OchibiChansConverterToolEditorConstants.GameObjectMenuPath;
         private static string ToolWindowTitle => OchibiChansConverterToolLocalization.Get("Tool.Name");
@@ -234,7 +234,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 DrawLogToggle();
 
                 EditorGUILayout.Space(6);
-                OpenDiscord();
+                OpenToolWebsite();
 
                 EditorGUILayout.Space(10);
                 EditorGUILayout.EndScrollView();
@@ -486,7 +486,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 _showLogs = EditorGUILayout.ToggleLeft(OchibiChansConverterToolLocalization.Get("Toggle.ShowLogs"), _showLogs);
             }
 
-            private void OpenDiscord()
+            private void OpenToolWebsite()
             {
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
                 {
@@ -503,7 +503,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                         if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), linkStyle))
                         {
-                            Application.OpenURL(SupportDiscordUrl);
+                            Application.OpenURL(ToolWebsiteUrl);
                         }
                     }
                 }
