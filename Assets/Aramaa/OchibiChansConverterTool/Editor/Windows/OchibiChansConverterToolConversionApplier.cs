@@ -415,17 +415,18 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     }
 
                     _versionCheckInProgress = false;
-                    if (result == null)
+
+                    if (!result.Succeeded)
                     {
-                        _versionError = OchibiChansConverterToolLocalization.Get("Version.Unknown");
+                        _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
                         _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                         Repaint();
                         return;
                     }
 
-                    if (!result.Succeeded)
+                    if (string.IsNullOrWhiteSpace(result.LatestVersion))
                     {
-                        _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
+                        _versionError = OchibiChansConverterToolLocalization.Get("Version.ExtractFailed");
                         _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
                         Repaint();
                         return;
