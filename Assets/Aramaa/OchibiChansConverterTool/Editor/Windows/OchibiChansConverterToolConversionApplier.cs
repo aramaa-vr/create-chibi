@@ -138,6 +138,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             private GUIStyle _accentButtonStyle;
             private GUIStyle _linkStyle;
             private bool _cachedProSkin;
+            private bool _isWindowActive;
 
             // 変換対象（Hierarchy で選択されているアバター）
             private GameObject _sourceTarget;
@@ -185,6 +186,8 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void OnDisable()
             {
+                _isWindowActive = false;
+
                 // 閉じられたら参照を解放（次回また開けるように）
                 if (_opened == this)
                 {
@@ -196,6 +199,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void OnEnable()
             {
+                _isWindowActive = true;
                 _versionCheckRequested = false;
                 _versionCheckInProgress = false;
                 _latestVersion = null;
@@ -399,6 +403,11 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 OchibiChansConverterToolVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
                 {
+                    if (!_isWindowActive)
+                    {
+                        return;
+                    }
+
                     _versionCheckInProgress = false;
                     if (!result.Succeeded)
                     {
