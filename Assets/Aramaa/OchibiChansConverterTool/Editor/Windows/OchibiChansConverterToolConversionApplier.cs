@@ -224,53 +224,59 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 // ------------------------------------------------------------
 
                 _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
-                EditorGUILayout.Space(8);
-
-                DrawHeader();
-
-                DrawCard(() =>
+                try
                 {
-                    DrawLanguageSelector();
-                    EnsureVersionCheck();
-                    DrawVersionStatus();
-                    EditorGUILayout.Space(4);
-                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), _descriptionStyle ?? EditorStyles.wordWrappedLabel);
-                });
+                    EditorGUILayout.Space(8);
 
-                EditorGUILayout.Space(6);
+                    DrawHeader();
 
-                DrawCard(() =>
-                {
-                    DrawSectionHeader("1", OchibiChansConverterToolLocalization.Get("Section.SourceAvatarLabel"));
-                    DrawTargetObjectField();
-                });
+                    DrawCard(() =>
+                    {
+                        DrawLanguageSelector();
+                        EnsureVersionCheck();
+                        DrawVersionStatus();
+                        EditorGUILayout.Space(4);
+                        EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), _descriptionStyle ?? EditorStyles.wordWrappedLabel);
+                    });
 
-                EditorGUILayout.Space(6);
-
-                DrawCard(() =>
-                {
-                    DrawSectionHeader("2", OchibiChansConverterToolLocalization.Get("Section.TargetPrefabLabel"));
-                    DrawSourcePrefabObjectField();
-                });
-
-                EditorGUILayout.Space(6);
-
-                DrawCard(() =>
-                {
-                    DrawSectionHeader("3", OchibiChansConverterToolLocalization.Get("Button.Execute"));
-                    DrawExecuteButton();
-                    EditorGUILayout.Space(4);
-                    DrawLogToggle();
                     EditorGUILayout.Space(6);
-                    DrawMaboneProxyToggle();
-                });
 
-                EditorGUILayout.Space(6);
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("1", OchibiChansConverterToolLocalization.Get("Section.SourceAvatarLabel"));
+                        DrawTargetObjectField();
+                    });
 
-                DrawCard(OpenToolWebsite);
+                    EditorGUILayout.Space(6);
 
-                EditorGUILayout.Space(10);
-                EditorGUILayout.EndScrollView();
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("2", OchibiChansConverterToolLocalization.Get("Section.TargetPrefabLabel"));
+                        DrawSourcePrefabObjectField();
+                    });
+
+                    EditorGUILayout.Space(6);
+
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("3", OchibiChansConverterToolLocalization.Get("Button.Execute"));
+                        DrawExecuteButton();
+                        EditorGUILayout.Space(4);
+                        DrawLogToggle();
+                        EditorGUILayout.Space(6);
+                        DrawMaboneProxyToggle();
+                    });
+
+                    EditorGUILayout.Space(6);
+
+                    DrawCard(OpenToolWebsite);
+
+                    EditorGUILayout.Space(10);
+                }
+                finally
+                {
+                    EditorGUILayout.EndScrollView();
+                }
             }
 
 
