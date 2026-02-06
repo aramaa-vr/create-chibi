@@ -15,11 +15,11 @@ nav_order: 7
 
 ## 対応アバター
 
-<details open>
+<details open markdown="1">
 <summary>一覧を表示</summary>
 
 | 変換元（対応アバター） | 配布URL |
-|---|---|
+| :--- | :--- |
 | VRChat向けオリジナル3Dモデル「ゆうぎり」-YUGIRI- | <https://entas.booth.pm/items/6612192> |
 | オリジナル3Dモデル「ピューマのぷまちゃん」 | <https://nem3.booth.pm/items/7062407> |
 | オリジナル3Ｄモデル「愛莉」Ver.1.01 | <https://booth.pm/ja/items/6082686> |
@@ -36,7 +36,7 @@ nav_order: 7
 | オリジナル3Dモデル「真央」-mao- | <https://booth.pm/ja/items/6846646> |
 | ミルフィ Milfy / オリジナル3Dモデル | <https://mk22.booth.pm/items/6571299> |
 | オリジナル3Dモデル「イチゴ」 | <https://hamini.booth.pm/items/7328789> |
-| 【オリジナル3Dモデル】彼方-Kanata-＆此方-Konata-　 #BLUESTELLA　男性アバター | <https://bluestella1127.booth.pm/items/6813995> |
+| 【オリジナル3Dモデル】彼方-Kanata-＆此方-Konata- #BLUESTELLA | <https://bluestella1127.booth.pm/items/6813995> |
 | 【オリジナル3Dモデル】エク - Eku #Eku3D | <https://okiyudachi.booth.pm/items/6666340> |
 | オリジナル3Dモデル『ラムネ』 - Ramune | <https://emolab.booth.pm/items/7699667> |
 | プラム -Plum-【オリジナル3Dモデル】 | <https://booth.pm/ja/items/7770415> |
@@ -48,18 +48,18 @@ nav_order: 7
 
 ## 対応おちびちゃんズ
 
-<details open>
+<details open markdown="1">
 <summary>一覧を表示</summary>
 
 | 変換先（対応おちびちゃんズ） | 配布URL |
-|---|---|
+| :--- | :--- |
 | 夕時茶屋 | <https://okiyudachi.booth.pm/> |
 | おちびちゃんズ Lite！ Yugiri ⁺Sister"Z" | <https://okiyudachi.booth.pm/items/6660662> |
 | おちびちゃんズ Pmma ⁺Sister"Z" | <https://okiyudachi.booth.pm/items/6666165> |
 | おちびちゃんズ Airi&Moe | <https://okiyudachi.booth.pm/items/6130942> |
 | おちびちゃんズ Kikyo&Shinano ⁺Sister"Z" | <https://okiyudachi.booth.pm/items/6217998> |
-| おちびちゃんズ　Lime＆Chiffon | <https://okiyudachi.booth.pm/items/5784372> |
-| おちびちゃんズ　Mafuyu&Manuka | <https://okiyudachi.booth.pm/items/5903373> |
+| おちびちゃんズ Lime＆Chiffon | <https://okiyudachi.booth.pm/items/5784372> |
+| おちびちゃんズ Mafuyu&Manuka | <https://okiyudachi.booth.pm/items/5903373> |
 | おちびちゃんズ rurune&Sio | <https://okiyudachi.booth.pm/items/6070108> |
 | おちびちゃんズ Chocolat ⁺Sister"S" | <https://okiyudachi.booth.pm/items/6459569> |
 | おちびちゃんズ mao ⁺Sister?"Z" | <https://okiyudachi.booth.pm/items/6666163> |
