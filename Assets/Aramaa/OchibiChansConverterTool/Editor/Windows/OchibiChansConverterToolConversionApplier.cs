@@ -130,6 +130,15 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             private string _versionError;
             private OchibiChansConverterToolVersionStatus _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
 
+            private GUIStyle _descriptionStyle;
+            private GUIStyle _cardStyle;
+            private GUIStyle _sectionHeaderStyle;
+            private GUIStyle _versionStatusStyle;
+            private GUIStyle _accentButtonStyle;
+            private GUIStyle _linkStyle;
+            private bool _cachedProSkin;
+            private bool _isWindowActive;
+
             // 変換対象（Hierarchy で選択されているアバター）
             private GameObject _sourceTarget;
 
@@ -176,6 +185,8 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void OnDisable()
             {
+                _isWindowActive = false;
+
                 // 閉じられたら参照を解放（次回また開けるように）
                 if (_opened == this)
                 {
@@ -187,16 +198,20 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void OnEnable()
             {
+                _isWindowActive = true;
                 _versionCheckRequested = false;
                 _versionCheckInProgress = false;
                 _latestVersion = null;
                 _versionError = null;
                 _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                _cachedProSkin = EditorGUIUtility.isProSkin;
+                ClearCachedStyles();
             }
 
             private void OnGUI()
             {
                 UpdateWindowTitle();
+                InitializeStyles();
 
                 // ------------------------------------------------------------
                 // このウィンドウは「元のアバター」と「おちびちゃんズ側 Prefab アセット」を指定し、
@@ -208,46 +223,144 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                 // ------------------------------------------------------------
 
                 _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
-                EditorGUILayout.Space(8);
+                try
+                {
+                    EditorGUILayout.Space(8);
 
-                // 言語
-                DrawLanguageSelector();
+                    DrawCard(() =>
+                    {
+                        DrawLanguageSelector();
+                        EnsureVersionCheck();
+                        DrawVersionStatus();
+                        EditorGUILayout.Space(4);
+                        EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), _descriptionStyle ?? EditorStyles.wordWrappedLabel);
+                    });
 
-                // バージョン
-                EnsureVersionCheck();
-                DrawVersionStatus();
+                    EditorGUILayout.Space(6);
 
-                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Window.Description"), EditorStyles.wordWrappedLabel);
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("1", OchibiChansConverterToolLocalization.Get("Section.SourceAvatarLabel"));
+                        DrawTargetObjectField();
+                    });
 
-                // ------------------------------------------------------------
-                // 入力欄（参照指定）
-                // ------------------------------------------------------------
-                DrawTargetObjectField();
-                EditorGUILayout.Space(6);
-                DrawSourcePrefabObjectField();
-                EditorGUILayout.Space(6);
-                DrawMaboneProxyToggle();
+                    EditorGUILayout.Space(6);
 
-                EditorGUILayout.Space(10);
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("2", OchibiChansConverterToolLocalization.Get("Section.TargetPrefabLabel"));
+                        DrawSourcePrefabObjectField();
+                    });
 
-                DrawExecuteButton();
-                DrawLogToggle();
+                    EditorGUILayout.Space(6);
 
-                EditorGUILayout.Space(6);
-                OpenToolWebsite();
+                    DrawCard(() =>
+                    {
+                        DrawSectionHeader("3", OchibiChansConverterToolLocalization.Get("Button.Execute"));
+                        DrawExecuteButton();
+                        EditorGUILayout.Space(4);
+                        DrawLogToggle();
+                        EditorGUILayout.Space(6);
+                        DrawMaboneProxyToggle();
+                    });
 
-                EditorGUILayout.Space(10);
-                EditorGUILayout.EndScrollView();
+                    EditorGUILayout.Space(6);
+
+                    DrawCard(OpenToolWebsite);
+
+                    EditorGUILayout.Space(10);
+                }
+                catch (ExitGUIException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+                finally
+                {
+                    EditorGUILayout.EndScrollView();
+                }
+            }
+
+
+            private void ClearCachedStyles()
+            {
+                _descriptionStyle = null;
+                _cardStyle = null;
+                _sectionHeaderStyle = null;
+                _versionStatusStyle = null;
+                _accentButtonStyle = null;
+                _linkStyle = null;
+            }
+
+            private void InitializeStyles(bool forceRebuild = false)
+            {
+                if (!forceRebuild && _descriptionStyle != null && _cachedProSkin == EditorGUIUtility.isProSkin)
+                {
+                    return;
+                }
+
+                _cachedProSkin = EditorGUIUtility.isProSkin;
+
+                _descriptionStyle = new GUIStyle(EditorStyles.wordWrappedLabel)
+                {
+                    richText = true
+                };
+
+                _cardStyle = new GUIStyle(EditorStyles.helpBox)
+                {
+                    padding = new RectOffset(12, 12, 10, 10),
+                    margin = new RectOffset(4, 4, 2, 2)
+                };
+
+                _sectionHeaderStyle = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    fontSize = 13,
+                    wordWrap = true
+                };
+
+                _versionStatusStyle = new GUIStyle(EditorStyles.miniLabel)
+                {
+                    wordWrap = true
+                };
+
+                var buttonStyle = GUI.skin != null && GUI.skin.button != null ? GUI.skin.button : EditorStyles.miniButton;
+                _accentButtonStyle = new GUIStyle(buttonStyle)
+                {
+                    fontSize = 14,
+                    fontStyle = FontStyle.Bold,
+                    fixedHeight = 36
+                };
+
+                _linkStyle = new GUIStyle(EditorStyles.linkLabel)
+                {
+                    wordWrap = true
+                };
+            }
+
+            private void DrawCard(Action drawContent)
+            {
+                using (new EditorGUILayout.VerticalScope(_cardStyle ?? EditorStyles.helpBox))
+                {
+                    drawContent?.Invoke();
+                }
+            }
+
+            private void DrawSectionHeader(string step, string title)
+            {
+                EditorGUILayout.LabelField($"{step}. {title}", _sectionHeaderStyle ?? EditorStyles.boldLabel);
+                EditorGUILayout.Space(2);
             }
 
             private void DrawVersionStatus()
             {
-                var wrappedMini = new GUIStyle(EditorStyles.miniLabel) { wordWrap = true };
                 var message = GetVersionStatusMessage(out var color);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
-                    ApplyStatusColor(wrappedMini, color);
-                    EditorGUILayout.LabelField(message, wrappedMini);
+                    ApplyStatusColor(_versionStatusStyle, color);
+                    EditorGUILayout.LabelField(message, _versionStatusStyle ?? EditorStyles.miniLabel);
                 }
             }
 
@@ -264,12 +377,20 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Language.Label"), GUILayout.Width(140));
-                    var currentIndex = OchibiChansConverterToolLocalization.GetLanguageIndex();
-                    var nextIndex = EditorGUILayout.Popup(currentIndex, OchibiChansConverterToolLocalization.GetLanguageDisplayNames());
+                    EditorGUILayout.PrefixLabel(OchibiChansConverterToolLocalization.Get("Language.Label"));
+
+                    var displayNames = OchibiChansConverterToolLocalization.GetLanguageDisplayNames() ?? Array.Empty<string>();
+                    if (displayNames.Length == 0)
+                    {
+                        return;
+                    }
+
+                    var currentIndex = Mathf.Clamp(OchibiChansConverterToolLocalization.GetLanguageIndex(), 0, displayNames.Length - 1);
+                    var nextIndex = EditorGUILayout.Popup(currentIndex, displayNames);
                     if (nextIndex != currentIndex)
                     {
                         OchibiChansConverterToolLocalization.SetLanguage(OchibiChansConverterToolLocalization.GetLanguageCodeFromIndex(nextIndex));
+                        Repaint();
                     }
                 }
             }
@@ -297,16 +418,32 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 OchibiChansConverterToolVersionUtility.FetchLatestVersionAsync(LatestVersionUrl, result =>
                 {
+                    if (!_isWindowActive || _opened != this)
+                    {
+                        return;
+                    }
+
                     _versionCheckInProgress = false;
+
                     if (!result.Succeeded)
                     {
-                        _versionError = result.Error;
+                        _versionError = string.IsNullOrWhiteSpace(result.Error) ? OchibiChansConverterToolLocalization.Get("Version.Unknown") : result.Error;
                         _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                        Repaint();
+                        return;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(result.LatestVersion))
+                    {
+                        _versionError = OchibiChansConverterToolLocalization.Get("Version.ExtractFailed");
+                        _versionStatus = OchibiChansConverterToolVersionStatus.Unknown;
+                        Repaint();
                         return;
                     }
 
                     _latestVersion = result.LatestVersion;
                     _versionStatus = OchibiChansConverterToolVersionUtility.GetVersionStatus(ToolVersion, _latestVersion);
+                    Repaint();
                 });
             }
 
@@ -354,6 +491,11 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private static void ApplyStatusColor(GUIStyle style, Color color)
             {
+                if (style == null)
+                {
+                    return;
+                }
+
                 style.normal.textColor = color;
                 style.hover.textColor = color;
                 style.active.textColor = color;
@@ -365,8 +507,6 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             /// </summary>
             private void DrawTargetObjectField()
             {
-                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Section.SourceAvatarLabel"), EditorStyles.boldLabel);
-
                 EditorGUI.BeginChangeCheck();
                 var nextTarget = (GameObject)EditorGUILayout.ObjectField(_sourceTarget, typeof(GameObject), allowSceneObjects: true);
                 if (EditorGUI.EndChangeCheck())
@@ -396,8 +536,6 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             /// </summary>
             private void DrawSourcePrefabObjectField()
             {
-                EditorGUILayout.LabelField(OchibiChansConverterToolLocalization.Get("Section.TargetPrefabLabel"), EditorStyles.boldLabel);
-
                 _prefabDropdownCache.RefreshIfNeeded(_sourceTarget);
 
                 var hasCandidates = _prefabDropdownCache.CandidateDisplayNames.Count > 0;
@@ -430,8 +568,15 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     return;
                 }
 
-                var currentIndex = _prefabDropdownCache.SelectedIndex;
-                var nextIndex = EditorGUILayout.Popup(OchibiChansConverterToolLocalization.Get("Label.CandidateList"), currentIndex, _prefabDropdownCache.CandidateDisplayNames.ToArray());
+                var candidateDisplayNames = _prefabDropdownCache.CandidateDisplayNames?.ToArray() ?? Array.Empty<string>();
+                if (candidateDisplayNames.Length == 0)
+                {
+                    EditorGUILayout.HelpBox(OchibiChansConverterToolLocalization.Get("Help.SelectPrefabFromProject"), MessageType.Info);
+                    return;
+                }
+
+                var currentIndex = Mathf.Clamp(_prefabDropdownCache.SelectedIndex, 0, candidateDisplayNames.Length - 1);
+                var nextIndex = EditorGUILayout.Popup(OchibiChansConverterToolLocalization.Get("Label.CandidateList"), currentIndex, candidateDisplayNames);
                 if (nextIndex != currentIndex)
                 {
                     _prefabDropdownCache.ApplySelection(nextIndex);
@@ -469,7 +614,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                 using (new EditorGUI.DisabledScope(!canExecute))
                 {
-                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), GUILayout.Height(32)))
+                    if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.Execute"), _accentButtonStyle ?? EditorStyles.miniButton, GUILayout.Height(36)))
                     {
                         QueueApplyFromFields();
                     }
@@ -488,7 +633,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
             private void OpenToolWebsite()
             {
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
+                using (new EditorGUILayout.HorizontalScope())
                 {
                     // 左側のアイコン（Unity 標準の情報アイコン）
                     var icon = EditorGUIUtility.IconContent("console.infoicon");
@@ -496,14 +641,15 @@ namespace Aramaa.OchibiChansConverterTool.Editor
 
                     using (new EditorGUILayout.VerticalScope())
                     {
-                        var linkStyle = new GUIStyle(EditorStyles.linkLabel)
-                        {
-                            wordWrap = true
-                        };
+                        var hasValidUrl = Uri.TryCreate(ToolWebsiteUrl, UriKind.Absolute, out var parsedUrl)
+                            && (parsedUrl.Scheme == Uri.UriSchemeHttp || parsedUrl.Scheme == Uri.UriSchemeHttps);
 
-                        if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), linkStyle))
+                        using (new EditorGUI.DisabledScope(!hasValidUrl))
                         {
-                            Application.OpenURL(ToolWebsiteUrl);
+                            if (GUILayout.Button(OchibiChansConverterToolLocalization.Get("Button.DiscordHelp"), _linkStyle ?? EditorStyles.linkLabel))
+                            {
+                                Application.OpenURL(ToolWebsiteUrl);
+                            }
                         }
                     }
                 }
