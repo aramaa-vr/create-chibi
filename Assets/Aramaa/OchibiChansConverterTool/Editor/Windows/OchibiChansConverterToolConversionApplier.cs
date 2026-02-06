@@ -113,7 +113,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
             // 見た目（ウィンドウサイズ）
             // ------------------------------------------------------------
             // 最低サイズのみ固定（内容が増える場合はスクロール対応）
-            private static readonly Vector2 WindowMinSize = new Vector2(430, 510);
+            private static readonly Vector2 WindowMinSize = new Vector2(430, 620);
 
             // 二重起動防止：既に開いているウィンドウがあればそれを使う
             private static OchibiChansConverterToolConversionSourcePrefabWindow _opened;
