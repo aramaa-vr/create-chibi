@@ -43,7 +43,7 @@
     },
     {
       "key": "Dialog.ToolTitle",
-      "value": "おちびちゃんズ化ツール - OchibiChansConverterTool"
+      "value": "Ochibi-chans Converter Tool"
     },
     {
       "key": "Error.DuplicateFailed",
@@ -499,7 +499,7 @@
     },
     {
       "key": "Tool.Name",
-      "value": "おちびちゃんズ化ツール - OchibiChansConverterTool"
+      "value": "Ochibi-chans Converter Tool"
     },
     {
       "key": "Undo.AddExPrefab",
