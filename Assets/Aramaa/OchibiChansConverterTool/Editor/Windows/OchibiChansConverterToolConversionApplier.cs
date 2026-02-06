@@ -362,7 +362,6 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     return;
                 }
 
-                ApplyStatusColor(_versionStatusStyle, color);
                 var messageType = GetVersionStatusMessageType();
                 if (messageType != MessageType.None)
                 {
@@ -370,6 +369,7 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                     return;
                 }
 
+                ApplyStatusColor(_versionStatusStyle, color);
                 EditorGUILayout.LabelField(message, _versionStatusStyle ?? EditorStyles.miniLabel);
             }
 
