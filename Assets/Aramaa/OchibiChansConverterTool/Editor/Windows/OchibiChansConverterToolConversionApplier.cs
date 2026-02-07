@@ -259,9 +259,9 @@ namespace Aramaa.OchibiChansConverterTool.Editor
                         DrawSectionHeader("3", OchibiChansConverterToolLocalization.Get("Button.Execute"));
                         DrawExecuteButton();
                         EditorGUILayout.Space(4);
-                        DrawLogToggle();
-                        EditorGUILayout.Space(6);
                         DrawMaboneProxyToggle();
+                        EditorGUILayout.Space(6);
+                        DrawLogToggle();
                     });
 
                     EditorGUILayout.Space(6);
